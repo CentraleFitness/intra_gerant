@@ -12,7 +12,7 @@ import '../styles/TopBar.css';
 class TopBar extends React.Component {
     render() {
         return (
-            <Navbar collapseOnSelect className={"topBar"}>
+            <Navbar collapseOnSelect className={"topBar"} fixedTop={true} inverse={true}>
                 <Navbar.Header>
                     <Navbar.Brand>
                         <a href="/home">Centrale Fitness</a>

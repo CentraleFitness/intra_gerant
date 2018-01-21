@@ -8,7 +8,7 @@ class Menu extends React.Component {
 
     render() {
         return (
-            <Panel>
+            <Panel className={"menu"}>
                 <Nav bsStyle="pills" stacked activeKey={1}>
                     <LinkContainer to={"/home"}>
                         <NavItem eventKey={1}><Glyphicon glyph="home" />&nbsp;&nbsp;Accueil</NavItem>

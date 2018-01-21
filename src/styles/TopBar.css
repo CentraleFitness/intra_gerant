@@ -2,7 +2,11 @@
     margin: 5px 0 5px 0;
 }
 
+.navbar-fixed-bottom, .navbar-fixed-top, .navbar-static-top {
+    margin: 0 0 0 0 !important;
+}
+
 .container {
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+    /*padding-right: 0px !important;
+    padding-left: 0px !important;*/
 }
