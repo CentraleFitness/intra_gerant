@@ -10,29 +10,20 @@ import {
     Checkbox
 } from 'react-bootstrap';
 import {browserHistory} from 'react-router';
+import { connect } from 'react-redux';
+
+import { displayAlert, dismissAlert, setEmail, setPassword, setRemember } from "../actions/loginActions";
 
 import Communication from '../utils/Communication';
 import Paths from '../utils/Paths';
 import Fields from '../utils/Fields';
 import Status from '../utils/Status';
 import Texts from '../utils/Texts';
+import Validator from "../utils/Validator";
 
 import '../styles/Login.css';
 
 class Login extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: "",
-            remember: false,
-            showLoginModal: true,
-            showAlert: false,
-            alertText: "",
-            alertTitle: ""
-        };
-    }
 
     componentWillMount() {
         this.checkAuthToken();
@@ -62,30 +53,23 @@ class Login extends React.Component {
     }
 
     handleEmailChange(event) {
-        this.setState({
-            email: event.target.value
-        });
+        this.props.setEmail(event.target.value);
     }
 
     handlePasswordChange(event) {
-        this.setState({
-            password: event.target.value
-        });
+        this.props.setPassword(event.target.value);
     }
 
     handleRememberChange(event) {
-        this.setState({
-            remember: (event.target.checked)
-        });
+        this.props.setRemember(event.target.checked);
     }
 
     handleLoginClick() {
 
-        if (this.state.email === null || this.state.email === "" ||
-            this.state.password === null || this.state.password === "") {
+        if (!Validator.email(this.props.email) ||
+            !Validator.password(this.props.password)) {
 
-            this.setState({
-                showAlert: true,
+            this.props.displayAlert({
                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                 alertText: Texts.ERR_REMPLIR_TOUS_CHAMPS.text_fr
             });
@@ -99,8 +83,8 @@ class Login extends React.Component {
     login() {
         let params = {};
 
-        params[Fields.EMAIL] = this.state.email;
-        params[Fields.PASSWORD] = this.state.password;
+        params[Fields.EMAIL] = this.props.email;
+        params[Fields.PASSWORD] = this.props.password;
 
         let me = this;
 
@@ -110,16 +94,17 @@ class Login extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.AUTH_SUCCESS.code) {
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.CONNEXION_TITRE.text_fr,
                             alertText: Status.AUTH_SUCCESS.message_fr
                         });
 
                         localStorage.setItem('token', response.data.token);
 
-                        setTimeout(function(){ browserHistory.replace('/'); }, 750);
-
+                        setTimeout(function() {
+                            me.props.dismissAlert();
+                            browserHistory.replace('/');
+                        }, 750);
                     } else {
 
                         let message = "";
@@ -130,23 +115,22 @@ class Login extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -160,11 +144,7 @@ class Login extends React.Component {
     }
 
     handleAlertDismiss() {
-        this.setState({
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        });
+        this.props.dismissAlert();
     }
 
     handleKeyPressed(event) {
@@ -173,41 +153,84 @@ class Login extends React.Component {
         }
     }
 
-    render() {
+    getValidationState(field) {
 
+        let value;
+        switch (field) {
+            case "email":
+                value = this.props.email;
+                break;
+            case "password":
+                value = this.props.password;
+                break;
+            default:
+                return "warning";
+        }
+
+        if (field === "password") {
+
+            if (Validator.password(value))
+                return "success";
+
+        } else if (field === "email") {
+
+            if (Validator.email(value))
+                return "success";
+        }
+        return "warning";
+    }
+
+    render() {
         return (
 
             <div>
-                <Modal className="wrapper" show={this.state.showLoginModal}>
+                <Modal className="wrapper" show={true}>
                     <Modal.Header>
-                        <Modal.Title>Centrale Fitness - Intranet G&eacute;rant</Modal.Title>
-                        <Modal.Title>Connexion</Modal.Title>
+                        <Modal.Title>{Texts.CENTRALE_FITNESS.text_fr + " - " + Texts.INTRA_GERANT.text_fr}</Modal.Title>
+                        <Modal.Title>{Texts.CONNEXION_TITRE.text_fr}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
 
                         <Form horizontal>
-                            <FormGroup controlId="formHorizontalEmail">
+                            <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState('email')}>
                                 <Col componentClass={ControlLabel} sm={3}>
-                                    Email
+                                    {Texts.EMAIL.text_fr}
                                 </Col>
                                 <Col sm={9}>
-                                    <FormControl type="email" placeholder="Email" onBlur={ this.handleEmailChange.bind(this) } onKeyPress={this.handleKeyPressed.bind(this)} />
+                                    <FormControl
+                                        value={this.props.email}
+                                        type="email"
+                                        placeholder={Texts.EMAIL.text_fr}
+                                        onChange={ this.handleEmailChange.bind(this) }
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                    />
                                 </Col>
                             </FormGroup>
 
-                            <FormGroup controlId="formHorizontalPassword">
+                            <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState('password')}>
                                 <Col componentClass={ControlLabel} sm={3}>
-                                    Mot de passe
+                                    {Texts.MDP.text_fr}
                                 </Col>
                                 <Col sm={9}>
-                                    <FormControl type="password" placeholder="Mot de passe" onBlur={ this.handlePasswordChange.bind(this) } onKeyPress={this.handleKeyPressed.bind(this)}/>
+                                    <FormControl
+                                        value={this.props.password}
+                                        type="password"
+                                        placeholder={Texts.MDP.text_fr}
+                                        onChange={ this.handlePasswordChange.bind(this) }
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup>
                                 <Col smOffset={2} sm={10}>
-                                    <Checkbox onChange={this.handleRememberChange.bind(this)}>Se souvenir de moi</Checkbox>
+                                    <Checkbox
+                                        value={this.props.remember}
+                                        onChange={this.handleRememberChange.bind(this)}
+                                    >
+                                        {Texts.SE_SOUVENIR.text_fr}
+                                    </Checkbox>
                                 </Col>
                             </FormGroup>
 
@@ -215,24 +238,28 @@ class Login extends React.Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button bsStyle="success" onClick={this.handleRegisterClick.bind(this)}>Cr&eacute;er un compte</Button>
-                        <Button>Mot de passe oubli&eacute;</Button>
-                        <Button bsStyle="primary" onClick={this.handleLoginClick.bind(this)}>Connexion</Button>
+                        <Button bsStyle="success" onClick={this.handleRegisterClick.bind(this)}>
+                            {Texts.CREER_COMPTE.text_fr}
+                        </Button>
+                        <Button>{Texts.MDP_OUBLIE.text_fr}</Button>
+                        <Button bsStyle="primary" onClick={this.handleLoginClick.bind(this)}>
+                            {Texts.CONNEXION_TITRE.text_fr}
+                        </Button>
                     </Modal.Footer>
 
                 </Modal>
 
-                <Modal show={this.state.showAlert} bsSize={"small"}>
-                    <Modal.Header closeButton onHide={this.handleAlertDismiss.bind(this)}>
-                        <Modal.Title>{this.state.alertTitle}</Modal.Title>
+                <Modal show={this.props.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{this.props.alertTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <FormControl.Static>
-                            {this.state.alertText}
+                            {this.props.alertText}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>Close</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -241,4 +268,21 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    return {
+        email: state.login.email,
+        password: state.login.password,
+        remember: state.login.remember,
+        showAlert: state.login.showAlert,
+        alertText: state.login.alertText,
+        alertTitle: state.login.alertTitle
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    setEmail,
+    setPassword,
+    setRemember
+})(Login);

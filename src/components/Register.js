@@ -6,59 +6,59 @@ import {
     Col,
     FormControl,
     ControlLabel,
-    Button
+    Button,
+    HelpBlock
 } from 'react-bootstrap';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+
+import {
+    displayAlert,
+    dismissAlert,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setPassword,
+    setConfirmPassword,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    resetRegisterInfo
+} from "../actions/registerActions";
 
 import Fields from "../utils/Fields";
-import Communication from "../utils/Communication";
 import Status from "../utils/Status";
 import Texts from "../utils/Texts";
 import Paths from "../utils/Paths";
+import Communication from "../utils/Communication";
+import Validator from "../utils/Validator";
 
 import '../styles/Login.css';
 
 class Register extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            first_name: "",
-            last_name: "",
-            phone : "",
-            email: "",
-            password: "",
-            confirm_password: "",
-            name: "",
-            description: "",
-            address: "",
-            address_second: "",
-            zip_code: "",
-            city: "",
-            center_phone: "",
-            showLoginModal: true,
-            showAlert: false,
-            alertText: "",
-            alertTitle: ""
-        };
-    }
-
     handleRegisterClick() {
 
-        if (this.state.first_name === null || this.state.first_name === "" ||
-            this.state.last_name === null || this.state.last_name === "" ||
-            this.state.phone === null || this.state.phone === "" ||
-            this.state.email === null || this.state.email === "" ||
-            this.state.password === null || this.state.password === "" ||
-            this.state.confirm_password === null || this.state.confirm_password === "" ||
-            this.state.name === null || this.state.name === "" ||
-            this.state.description === null || this.state.description === "" ||
-            this.state.address === null || this.state.address === "" ||
-            this.state.zip_code === null || this.state.zip_code === "" ||
-            this.state.city === null || this.state.city === "") {
+        if (!Validator.name(this.props.first_name) ||
+            !Validator.name(this.props.last_name) ||
+            !Validator.name(this.props.name) ||
+            !Validator.description(this.props.description) ||
+            !Validator.name(this.props.city) ||
+            !Validator.address(this.props.address) ||
+            !Validator.address(this.props.address_second) ||
+            !Validator.phoneNumber(this.props.phone) ||
+            !Validator.phoneNumber(this.props.center_phone) ||
+            !Validator.zipCode(this.props.zip_code) ||
+            !Validator.password(this.props.password) ||
+            !Validator.password(this.props.confirm_password) ||
+            !Validator.email(this.props.email)) {
 
-            this.setState({
-                showAlert: true,
+            this.props.displayAlert({
                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                 alertText: Texts.ERR_REMPLIR_TOUS_CHAMPS.text_fr
             });
@@ -66,10 +66,9 @@ class Register extends React.Component {
             return;
         }
 
-        if (this.state.password !== this.state.confirm_password) {
+        if (this.props.password !== this.props.confirm_password) {
 
-            this.setState({
-                showAlert: true,
+            this.props.displayAlert({
                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                 alertText: Texts.ERR_CONFIRM_MDP.text_fr
             });
@@ -83,11 +82,11 @@ class Register extends React.Component {
     register() {
         let params = {};
 
-        params[Fields.FIRSTNAME] = this.state.first_name;
-        params[Fields.LASTNAME] = this.state.last_name;
-        params[Fields.PHONE] = this.state.phone;
-        params[Fields.EMAIL] = this.state.email;
-        params[Fields.PASSWORD] = this.state.password;
+        params[Fields.FIRSTNAME] = this.props.first_name;
+        params[Fields.LASTNAME] = this.props.last_name;
+        params[Fields.PHONE] = this.props.phone;
+        params[Fields.EMAIL] = this.props.email;
+        params[Fields.PASSWORD] = this.props.password;
 
         let me = this;
 
@@ -109,23 +108,20 @@ class Register extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -137,16 +133,16 @@ class Register extends React.Component {
         let params = {};
 
         params[Fields.TOKEN] = token;
-        params[Fields.NAME] = this.state.name;
-        params[Fields.DESCRIPTION] = this.state.description;
-        params[Fields.ADDRESS] = this.state.address;
-        if (this.state.address_second !== "" && this.state.address_second !== null) {
-            params[Fields.ADDRESS_SECOND] = this.state.address_second;
+        params[Fields.NAME] = this.props.name;
+        params[Fields.DESCRIPTION] = this.props.description;
+        params[Fields.ADDRESS] = this.props.address;
+        if (this.props.address_second !== "" && this.props.address_second !== null) {
+            params[Fields.ADDRESS_SECOND] = this.props.address_second;
         }
-        params[Fields.ZIP_CODE] = this.state.zip_code;
-        params[Fields.CITY] = this.state.city;
-        if (this.state.center_phone !== "" && this.state.center_phone !== null) {
-            params[Fields.PHONE] = this.state.center_phone;
+        params[Fields.ZIP_CODE] = this.props.zip_code;
+        params[Fields.CITY] = this.props.city;
+        if (this.props.center_phone !== "" && this.props.center_phone !== null) {
+            params[Fields.PHONE] = this.props.center_phone;
         }
 
         let me = this;
@@ -157,15 +153,19 @@ class Register extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.CTR_REG_SUCCESS.code) {
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.CREATION_COMPTE_TITRE.text_fr,
                             alertText: Status.REG_SUCCESS.message_fr
                         });
 
                         localStorage.setItem('token', token);
 
-                        setTimeout(function(){ browserHistory.replace('/'); }, 750);
+                        me.props.resetRegisterInfo();
+
+                        setTimeout(function(){
+                            me.props.dismissAlert();
+                            browserHistory.replace('/');
+                        }, 750);
 
 
                     } else {
@@ -178,23 +178,20 @@ class Register extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -202,306 +199,368 @@ class Register extends React.Component {
         );
     }
 
+    handleKeyPressed(event) {
+        if (event.key === 'Enter') {
+            this.handleRegisterClick();
+        }
+    }
+
     getValidationState(field) {
 
         let value;
         switch (field) {
             case "first_name":
-                value = this.state.first_name;
+                value = this.props.first_name;
                 break;
             case "last_name":
-                value = this.state.last_name;
+                value = this.props.last_name;
                 break;
             case "phone":
-                value = this.state.phone;
+                value = this.props.phone;
                 break;
             case "email":
-                value = this.state.email;
+                value = this.props.email;
                 break;
             case "password":
-                value = this.state.password;
+                value = this.props.password;
                 break;
             case "confirm_password":
-                value = this.state.confirm_password;
+                value = this.props.confirm_password;
                 break;
             case "name":
-                value = this.state.name;
+                value = this.props.name;
                 break;
             case "description":
-                value = this.state.description;
+                value = this.props.description;
                 break;
             case "address":
-                value = this.state.address;
+                value = this.props.address;
                 break;
             case "address_second":
-                value = this.state.address_second;
+                value = this.props.address_second;
                 break;
             case "zip_code":
-                value = this.state.zip_code;
+                value = this.props.zip_code;
                 break;
             case "city":
-                value = this.state.city;
+                value = this.props.city;
                 break;
             case "center_phone":
-                value = this.state.center_phone;
+                value = this.props.center_phone;
                 break;
+            default:
+                return "warning";
         }
 
         if (field === "first_name" || field === "last_name" ||
-            field === "name" || field === "description" ||
-            field === "address" || field === "address_second" || field === "city") {
+            field === "name" || field === "city") {
 
-            if (value.length === 0)
-                return 'warning';
-            else
-                return 'success';
+            if (Validator.name(value))
+                return "success";
+
+        } else if (field === "description") {
+
+            if (Validator.description(value))
+                return "success";
+
+        } else if (field === "address" || field === "address_second") {
+
+            if (Validator.address(value))
+                return "success";
 
         } else if (field === "phone" || field === "center_phone") {
 
-            return 'warning';
+            if (Validator.phoneNumber(value))
+                return "success";
 
         } else if (field === "zip_code") {
 
-            if (value.length === 5)
-                return 'success';
-            else
-                return 'warning';
+            if (Validator.zipCode(value))
+                return "success";
 
         } else if (field === "password" || field === "confirm_password") {
 
-            if (value.length >= 8)
-                return 'success';
-            else
-                return 'warning';
+            if (Validator.password(value))
+                return "success";
 
         } else if (field === "email") {
 
-            return 'warning';
-
+            if (Validator.email(value))
+                return "success";
         }
-        return null;
+        return "warning";
     }
 
     handleFirstNameChange(event) {
-        this.setState({
-            first_name: event.target.value
-        });
+        this.props.setFirstName(event.target.value);
     }
 
     handleLastNameChange(event) {
-        this.setState({
-            last_name: event.target.value
-        });
+        this.props.setLastName(event.target.value);
     }
 
     handlePhoneChange(event) {
-        this.setState({
-            phone: event.target.value
-        });
+        this.props.setPhone(event.target.value);
     }
 
     handleEmailChange(event) {
-        this.setState({
-            email: event.target.value
-        });
+        this.props.setEmail(event.target.value);
     }
 
     handlePasswordChange(event) {
-        this.setState({
-            password: event.target.value
-        });
+        this.props.setPassword(event.target.value);
     }
 
     handleConfirmPasswordChange(event) {
-        this.setState({
-            confirm_password: event.target.value
-        });
+        this.props.setConfirmPassword(event.target.value);
     }
 
     handleNameChange(event) {
-        this.setState({
-            name: event.target.value
-        });
+        this.props.setName(event.target.value);
     }
 
     handleDescriptionChange(event) {
-        this.setState({
-            description: event.target.value
-        });
+        this.props.setDescription(event.target.value);
     }
 
     handleAddressChange(event) {
-        this.setState({
-            address: event.target.value
-        });
+        this.props.setAddress(event.target.value);
     }
 
     handleAddressSecondChange(event) {
-        this.setState({
-            address_second: event.target.value
-        });
+        this.props.setAddressSecond(event.target.value);
     }
 
     handleZipCodeChange(event) {
-        this.setState({
-            zip_code: event.target.value
-        });
+        this.props.setZipCode(event.target.value);
     }
 
     handleCityChange(event) {
-        this.setState({
-            city: event.target.value
-        });
+        this.props.setCity(event.target.value);
     }
 
     handleCenterPhoneChange(event) {
-        this.setState({
-            center_phone: event.target.value
-        });
+        this.props.setCenterPhone(event.target.value);
     }
 
     handleAlertDismiss() {
-        this.setState({
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        });
+        this.props.dismissAlert();
     }
 
     render() {
         return (
             <div>
-                <Modal className="wrapper" show={this.state.showLoginModal}>
+                <Modal className="wrapper" show={true}>
                     <Modal.Header>
-                        <Modal.Title>Centrale Fitness - Intranet G&eacute;rant</Modal.Title>
-                        <Modal.Title>Création du compte</Modal.Title>
+                        <Modal.Title>{Texts.CENTRALE_FITNESS.text_fr + " - " + Texts.INTRA_GERANT.text_fr}</Modal.Title>
+                        <Modal.Title>{Texts.CREATION_COMPTE_TITRE.text_fr}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
 
                         <Form horizontal>
 
-                            <div align={"right"}>* Informations obligatoires</div>
+                            <div align={"right"}>{Texts.INFORMATIONS_OBLIGATOIRE.text_fr}</div>
 
-                            <h4>Gérant</h4>
+                            <h4>{Texts.GERANT.text_fr}</h4>
 
                             <FormGroup controlId="formHorizontalFirstName" validationState={this.getValidationState('first_name')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Prénom *
+                                    {Texts.PRENOM.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.first_name} onChange={this.handleFirstNameChange.bind(this)} type="text" placeholder="Prénom"/>
+                                    <FormControl
+                                        value={this.props.first_name}
+                                        onChange={this.handleFirstNameChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.PRENOM.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalLastName" validationState={this.getValidationState('last_name')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Nom *
+                                    {Texts.NOM.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.last_name} onChange={this.handleLastNameChange.bind(this)} type="text" placeholder="Nom"/>
+                                    <FormControl
+                                        value={this.props.last_name}
+                                        onChange={this.handleLastNameChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.NOM.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalPhone" validationState={this.getValidationState('phone')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Téléphone *
+                                    {Texts.TELEPHONE.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.phone} onChange={this.handlePhoneChange.bind(this)} type="text" placeholder="Téléphone"/>
+                                    <FormControl
+                                        value={this.props.phone}
+                                        onChange={this.handlePhoneChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.TELEPHONE.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState('email')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Email *
+                                    {Texts.EMAIL.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.email} onChange={this.handleEmailChange.bind(this)} type="email" placeholder="Email"/>
+                                    <FormControl
+                                        value={this.props.email}
+                                        onChange={this.handleEmailChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="email"
+                                        placeholder={Texts.EMAIL.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState('password')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Mot de passe *
+                                    {Texts.MDP.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.password} onChange={this.handlePasswordChange.bind(this)} type="password" placeholder="Mot de passe"/>
+                                    <FormControl
+                                        value={this.props.password}
+                                        onChange={this.handlePasswordChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="password"
+                                        placeholder={Texts.MDP.text_fr}
+                                    />
+                                    <HelpBlock>{Texts.REGLE_MDP.text_fr}</HelpBlock>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalConfirmPassword" validationState={this.getValidationState('confirm_password')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Confirmer mot de passe *
+                                    {Texts.CONFIRM_MDP.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.confirm_password} onChange={this.handleConfirmPasswordChange.bind(this)} type="password" placeholder="Mot de passe"/>
+                                    <FormControl
+                                        value={this.props.confirm_password}
+                                        onChange={this.handleConfirmPasswordChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="password"
+                                        placeholder={Texts.CONFIRM_MDP.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <br/><br/>
-                            <h4>Salle de sport</h4>
+                            <h4>{Texts.SALLE_SPORT.text_fr}</h4>
 
                             <FormGroup controlId="formHorizontalName" validationState={this.getValidationState('name')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Nom *
+                                    {Texts.NOM_SALLE.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.name} onChange={this.handleNameChange.bind(this)} type="text" placeholder="Nom"/>
+                                    <FormControl
+                                        value={this.props.name}
+                                        onChange={this.handleNameChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.NOM_SALLE.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalDescription" validationState={this.getValidationState('description')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Description *
+                                    {Texts.DESCRIPTION.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} componentClass="textarea" type="text" placeholder="Description"/>
+                                    <FormControl
+                                        value={this.props.description}
+                                        onChange={this.handleDescriptionChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        componentClass="textarea"
+                                        type="text"
+                                        placeholder={Texts.DESCRIPTION.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalAddress" validationState={this.getValidationState('address')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Adresse *
+                                    {Texts.ADRESSE.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.address} onChange={this.handleAddressChange.bind(this)} type="text" placeholder="Adresse"/>
+                                    <FormControl
+                                        value={this.props.address}
+                                        onChange={this.handleAddressChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.ADRESSE.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalAddressSecond" validationState={this.getValidationState('address_second')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Adresse complément
+                                    {Texts.ADRESSE_COMP.text_fr}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.address_second} onChange={this.handleAddressSecondChange.bind(this)} type="text" placeholder="Adresse complément"/>
+                                    <FormControl
+                                        value={this.props.address_second}
+                                        onChange={this.handleAddressSecondChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.ADRESSE_COMP.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalZipCode" validationState={this.getValidationState('zip_code')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Code postal *
+                                    {Texts.CODE_POSTAL.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.zip_code} onChange={this.handleZipCodeChange.bind(this)} type="text" placeholder="Code postal"/>
+                                    <FormControl
+                                        value={this.props.zip_code}
+                                        onChange={this.handleZipCodeChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.CODE_POSTAL.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalCity" validationState={this.getValidationState('city')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Ville *
+                                    {Texts.VILLE.text_fr + " *"}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.city} onChange={this.handleCityChange.bind(this)} type="text" placeholder="Ville"/>
+                                    <FormControl
+                                        value={this.props.city}
+                                        onChange={this.handleCityChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.VILLE.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup controlId="formHorizontalPhoneCenter" validationState={this.getValidationState('center_phone')}>
                                 <Col componentClass={ControlLabel} sm={4}>
-                                    Téléphone
+                                    {Texts.TELEPHONE_SALLE.text_fr}
                                 </Col>
                                 <Col sm={7}>
-                                    <FormControl value={this.state.center_phone} onChange={this.handleCenterPhoneChange.bind(this)} type="text" placeholder="Téléphone"/>
+                                    <FormControl
+                                        value={this.props.center_phone}
+                                        onChange={this.handleCenterPhoneChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.TELEPHONE_SALLE.text_fr}
+                                    />
                                 </Col>
                             </FormGroup>
 
@@ -514,17 +573,17 @@ class Register extends React.Component {
 
                 </Modal>
 
-                <Modal show={this.state.showAlert} bsSize={"small"}>
-                    <Modal.Header closeButton onHide={this.handleAlertDismiss.bind(this)}>
-                        <Modal.Title>{this.state.alertTitle}</Modal.Title>
+                <Modal show={this.props.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
+                    <Modal.Header closeButton >
+                        <Modal.Title>{this.props.alertTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <FormControl.Static>
-                            {this.state.alertText}
+                            {this.props.alertText}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>Close</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -532,4 +591,42 @@ class Register extends React.Component {
     }
 }
 
-export default Register;
+function mapStateToProps(state) {
+    return {
+        first_name: state.register.first_name,
+        last_name: state.register.last_name,
+        phone : state.register.phone,
+        email: state.register.email,
+        password: state.register.password,
+        confirm_password: state.register.confirm_password,
+        name: state.register.name,
+        description: state.register.description,
+        address: state.register.address,
+        address_second: state.register.address_second,
+        zip_code: state.register.zip_code,
+        city: state.register.city,
+        center_phone: state.register.center_phone,
+        showAlert: state.register.showAlert,
+        alertText: state.register.alertText,
+        alertTitle: state.register.alertTitle,
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setPassword,
+    setConfirmPassword,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    resetRegisterInfo
+})(Register);

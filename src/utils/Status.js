@@ -109,6 +109,11 @@ const Status = {
         message_fr: "Erreur de base de données.",
         message_en: "Database problem."
     },
+    GENERAL_MISSING_PARAM: {
+        code: "402",
+        message_fr: "Paramètre(s) manquant(s).",
+        message_en: "Missing parameter(s)."
+    },
     MISC_RANDOM: {
         code: "666",
         message_fr: "Erreur inconnue.",

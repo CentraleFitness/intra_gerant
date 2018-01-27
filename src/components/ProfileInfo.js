@@ -16,317 +16,629 @@ import {
     Modal,
     HelpBlock
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import {
+    displayAlert,
+    dismissAlert,
+    displayManagerPictureModal,
+    dismissManagerPictureModal,
+    displayCenterPictureModal,
+    dismissCenterPictureModal,
+    setManagerInfo,
+    setCenterInfo,
+    resetManagerCenterInfo,
+    setManagerKeepInfo,
+    setCenterKeepInfo,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    setManagerPicturePreview,
+    setCenterPicturePreview,
+    setManagerPicture,
+    setCenterPicture
+} from "../actions/profileActions";
+
+import Texts from "../utils/Texts";
+import Paths from "../utils/Paths";
+import Communication from "../utils/Communication";
+import Fields from "../utils/Fields";
+import Status from "../utils/Status";
+import Validator from "../utils/Validator";
+
+import "../styles/Profile.css";
 
 class ProfileInfo extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showManagerModal: false,
-            showClubModal: false,
-            manager_first_name: this.props.manager_first_name,
-            manager_last_name: this.props.manager_last_name,
-            manager_email: this.props.manager_email,
-            manager_phone: this.props.manager_phone,
-            club_name: this.props.club_name,
-            club_address: this.props.club_address,
-            club_address2: this.props.club_address2,
-            club_zip_code: this.props.club_zip_code,
-            club_city: this.props.club_city,
-            club_phone: this.props.club_phone,
-            club_description: this.props.club_description
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            manager_first_name: nextProps.manager_first_name,
-            manager_last_name: nextProps.manager_last_name,
-            manager_email: nextProps.manager_email,
-            manager_phone: nextProps.manager_phone,
-            club_name: nextProps.club_name,
-            club_address: nextProps.club_address,
-            club_address2: nextProps.club_address2,
-            club_zip_code: nextProps.club_zip_code,
-            club_city: nextProps.club_city,
-            club_phone: nextProps.club_phone,
-            club_description: nextProps.club_description
-        });
+    componentWillMount() {
+        this.getManagerPicture();
     }
 
     onUpdateManagerImageClick() {
-        this.setState({
-            showManagerModal: true
-        });
+        this.props.displayManagerPictureModal();
+    }
+
+    onUpdateManagerPictureFile() {
+        let me = this;
+        let reader = new FileReader();
+        reader.readAsDataURL(this.managerPictureInputFile.files[0]);
+        reader.addEventListener("load", function () {
+            me.props.setManagerPicturePreview(reader.result);
+        }, false);
     }
 
     onUpdateManagerImageSaveClick() {
-        this.setState({
-            showManagerModal: false
-        });
-        console.log(this.managerUpdateImageRef.value);
-        //plus dautre chose
+        if (this.managerPictureInputFile.value === "") {
+
+            this.props.displayAlert({
+                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                alertText: Texts.ERR_CHOISIR_UNE_IMAGE.text_fr
+            });
+
+        } else {
+            this.updateManagerPicture(this.props.manager_picture_preview);
+            this.onUpdateManagerImageCloseClick();
+        }
     }
 
     onUpdateManagerImageCloseClick() {
-        this.setState({
-            showManagerModal: false
-        });
+        this.props.setManagerPicturePreview("/img/folder.svg");
+        this.props.dismissManagerPictureModal();
     }
 
-    onUpdateClubImageClick() {
-        this.setState({
-            showClubModal: true
-        });
+    onUpdateCenterImageClick() {
+        this.props.displayCenterPictureModal();
     }
 
-    onUpdateClubImageSaveClick() {
-        this.setState({
-            showClubModal: false
-        });
-        console.log(this.clubUpdateImageRef.value);
-        //plus dautre chose
+    onUpdateCenterPictureFile() {
+        let me = this;
+        let reader = new FileReader();
+        reader.readAsDataURL(this.centerPictureInputFile.files[0]);
+        reader.addEventListener("load", function () {
+            me.props.setCenterPicturePreview(reader.result);
+
+        }, false);
     }
 
-    onUpdateClubImageCloseClick() {
-        this.setState({
-            showClubModal: false
-        });
+    onUpdateCenterImageSaveClick() {
+        if (this.centerPictureInputFile.value === "") {
+
+            this.props.displayAlert({
+                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                alertText: Texts.ERR_CHOISIR_UNE_IMAGE.text_fr
+            });
+
+        } else {
+            this.updateCenterPicture(this.props.center_picture_preview);
+            this.onUpdateCenterImageCloseClick();
+        }
+    }
+
+    onUpdateCenterImageCloseClick() {
+        this.props.setCenterPicturePreview("/img/folder.svg");
+        this.props.dismissCenterPictureModal();
     }
 
     onResetClick() {
-        this.managerFirstNameRef.value = this.props.manager_first_name;
-        this.managerLastNameRef.value = this.props.manager_last_name;
-        this.managerEmailRef.value = this.props.manager_email;
-        this.managerPhoneRef.value = this.props.manager_phone;
-        this.clubNameRef.value = this.props.club_name;
-        this.clubAdressRef.value = this.props.club_address;
-        this.clubAdress2Ref.value = this.props.club_address2;
-        this.clubZipCodeRef.value = this.props.club_zip_code;
-        this.clubCityRef.value = this.props.club_city;
-        this.clubPhoneRef.value = this.props.club_phone;
-        this.clubDescriptionRef.value = this.props.club_description;
+        this.props.resetManagerCenterInfo();
+    }
+
+    checkUpdateManager() {
+        return (this.props.manager_first_name !== this.props.manager_keep_first_name ||
+            this.props.manager_last_name !== this.props.manager_keep_last_name ||
+            this.props.manager_email !== this.props.manager_keep_email ||
+            this.props.manager_phone !== this.props.manager_keep_phone);
+    }
+
+    checkUpdateCenter() {
+        return (this.props.center_name !== this.props.center_keep_name ||
+            this.props.center_address !== this.props.center_keep_address ||
+            this.props.center_address2 !== this.props.center_keep_address2 ||
+            this.props.center_zip_code !== this.props.center_keep_zip_code ||
+            this.props.center_city !== this.props.center_keep_city ||
+            this.props.center_phone !== this.props.center_keep_phone ||
+            this.props.center_description !== this.props.center_keep_description);
     }
 
     onSaveClick() {
-        console.log(this.managerFirstNameRef.value);
-        console.log(this.managerLastNameRef.value);
-        console.log(this.managerEmailRef.value);
-        console.log(this.managerPhoneRef.value);
-        console.log(this.clubNameRef.value);
-        console.log(this.clubAdressRef.value);
-        console.log(this.clubAdress2Ref.value);
-        console.log(this.clubZipCodeRef.value);
-        console.log(this.clubCityRef.value);
-        console.log(this.clubPhoneRef.value);
-        console.log(this.clubDescriptionRef.value);
+
+        if (!Validator.name(this.props.manager_first_name) ||
+            !Validator.name(this.props.manager_last_name) ||
+            !Validator.name(this.props.center_name) ||
+            !Validator.description(this.props.center_description) ||
+            !Validator.name(this.props.center_city) ||
+            !Validator.address(this.props.center_address) ||
+            !Validator.address(this.props.center_address_second) ||
+            !Validator.phoneNumber(this.props.manager_phone) ||
+            !Validator.phoneNumber(this.props.center_phone) ||
+            !Validator.zipCode(this.props.center_zip_code) ||
+            !Validator.email(this.props.manager_email)) {
+
+            this.props.displayAlert({
+                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                alertText: Texts.ERR_REMPLIR_TOUS_CHAMPS.text_fr
+            });
+
+            return;
+        }
+
+        let updateCenter = this.checkUpdateCenter();
+
+        if (this.checkUpdateManager()) {
+
+            this.updateManagerProfile(updateCenter);
+        }
+
+        if (this.checkUpdateCenter()) {
+
+            this.updateCenterProfile();
+        }
+    }
+
+    updateManagerProfile(updateCenter) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.FIRSTNAME] = this.props.manager_first_name;
+        params[Fields.LASTNAME] = this.props.manager_last_name;
+        params[Fields.PHONE] = this.props.manager_phone;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.MANAGER_UPDATE_PROFILE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setManagerKeepInfo();
+
+                        if (!updateCenter) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.PROFIL.text_fr,
+                                alertText: Texts.PROFIL_A_BIEN_ETE_MIS_A_JOUR.text_fr
+                            });
+                        }
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    updateCenterProfile() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.NAME] = this.props.center_name;
+        params[Fields.DESCRIPTION] = this.props.center_description;
+        params[Fields.ADDRESS] = this.props.center_address;
+        if (this.props.center_address_second !== "" && this.props.center_address_second !== null) {
+            params[Fields.ADDRESS_SECOND] = this.props.center_address_second;
+        }
+        params[Fields.ZIP_CODE] = this.props.center_zip_code;
+        params[Fields.CITY] = this.props.center_city;
+        if (this.props.center_phone !== "" && this.props.center_phone !== null) {
+            params[Fields.PHONE] = this.props.center_phone;
+        }
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_UPDATE_PROFILE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setCenterKeepInfo();
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.PROFIL.text_fr,
+                            alertText: Texts.PROFIL_A_BIEN_ETE_MIS_A_JOUR.text_fr
+                        });
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    getManagerPicture() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.MANAGER_GET_PICTURE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setManagerPicture(response.data[Fields.PICTURE]);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    console.log('ICI2');
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    updateManagerPicture(picture) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PICTURE] = picture;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.MANAGER_UPDATE_PICTURE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setManagerPicture(picture);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    updateCenterPicture(picture) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PICTURE] = picture;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_UPDATE_PICTURE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setCenterPicture(picture);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    getValidationState(field) {
+
+        let value;
+        switch (field) {
+            case "manager_first_name":
+                value = this.props.manager_first_name;
+                break;
+            case "manager_last_name":
+                value = this.props.manager_last_name;
+                break;
+            case "manager_phone":
+                value = this.props.manager_phone;
+                break;
+            case "manager_email":
+                value = this.props.manager_email;
+                break;
+            case "center_name":
+                value = this.props.center_name;
+                break;
+            case "center_description":
+                value = this.props.center_description;
+                break;
+            case "center_address":
+                value = this.props.center_address;
+                break;
+            case "center_address_second":
+                value = this.props.center_address_second;
+                break;
+            case "center_zip_code":
+                value = this.props.center_zip_code;
+                break;
+            case "center_city":
+                value = this.props.center_city;
+                break;
+            case "center_phone":
+                value = this.props.center_phone;
+                break;
+            default:
+                return "warning";
+        }
+
+        if (field === "manager_first_name" || field === "manager_last_name" ||
+            field === "center_name" || field === "center_city") {
+
+            if (Validator.name(value))
+                return "success";
+
+        } else if (field === "center_description") {
+
+            if (Validator.description(value))
+                return "success";
+
+        } else if (field === "center_address" || field === "center_address_second") {
+
+            if (Validator.address(value))
+                return "success";
+
+        } else if (field === "manager_phone" || field === "center_phone") {
+
+            if (Validator.phoneNumber(value))
+                return "success";
+
+        } else if (field === "center_zip_code") {
+
+            if (Validator.zipCode(value))
+                return "success";
+
+        } else if (field === "manager_email") {
+
+            if (Validator.email(value))
+                return "success";
+        }
+        return "warning";
+    }
+
+    handleFirstNameChange(event) {
+        this.props.setFirstName(event.target.value);
+    }
+
+    handleLastNameChange(event) {
+        this.props.setLastName(event.target.value);
+    }
+
+    handlePhoneChange(event) {
+        this.props.setPhone(event.target.value);
+    }
+
+    handleEmailChange(event) {
+        this.props.setEmail(event.target.value);
+    }
+
+    handleNameChange(event) {
+        this.props.setName(event.target.value);
+        console.log(this.props);
+    }
+
+    handleDescriptionChange(event) {
+        this.props.setDescription(event.target.value);
+    }
+
+    handleAddressChange(event) {
+        this.props.setAddress(event.target.value);
+    }
+
+    handleAddressSecondChange(event) {
+        this.props.setAddressSecond(event.target.value);
+    }
+
+    handleZipCodeChange(event) {
+        this.props.setZipCode(event.target.value);
+    }
+
+    handleCityChange(event) {
+        this.props.setCity(event.target.value);
+    }
+
+    handleCenterPhoneChange(event) {
+        this.props.setCenterPhone(event.target.value);
+    }
+
+    handleManagerPictureFileChange(event) {
+        this.props.setManagerPictureFile(event.target.value);
+    }
+
+    handleCenterPictureFileChange(event) {
+        this.props.setCenterPictureFile(event.target.value);
     }
 
     render() {
 
         const popoverPhone = (
-            <Popover title="Téléphone" id={"ProfilePopoverPhone"}>
-                <strong>Votre numéro de téléphone ne sera pas visible par les autres utilisateurs.</strong>
+            <Popover title={Texts.TELEPHONE.text_fr} id={"ProfilePopoverPhone"}>
+                <strong>{Texts.NUMERO_PAS_VISIBLE.text_fr}</strong>
             </Popover>
         );
 
         return (
             <Panel>
-                <Panel header={<div><Glyphicon glyph="user" /> Profil Gérant</div>} bsStyle="primary">
+                <Panel header={<div><Glyphicon glyph="user" /> {Texts.PROFIL.text_fr + " " + Texts.GERANT.text_fr}</div>} bsStyle="primary">
                     <Grid fluid={true}>
                         <Row>
-                            <Col xs={6} sm={6} md={8} lg={8}>
+                            <Col xs={9} sm={9} md={9} lg={9}>
                                 <Form horizontal>
-                                    <FormGroup controlId="formHorizontalText">
+                                    <FormGroup controlId="formHorizontalFirstName" validationState={this.getValidationState('manager_first_name')}>
                                         <Col componentClass={ControlLabel} sm={2}>
-                                            Prénom
+                                            {Texts.PRENOM.text_fr}
                                         </Col>
                                         <Col sm={8}>
                                             <FormControl
                                                 type="text"
-                                                placeholder="Prénom"
-                                                value={this.state.manager_first_name}
-                                                inputRef={ref => this.managerFirstNameRef = ref}
+                                                placeholder={Texts.PRENOM.text_fr}
+                                                value={this.props.manager_first_name}
+                                                onChange={this.handleFirstNameChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
 
-                                    <FormGroup controlId="formHorizontalText">
+                                    <FormGroup controlId="formHorizontalLastName" validationState={this.getValidationState('manager_last_name')}>
                                         <Col componentClass={ControlLabel} sm={2}>
-                                            Nom
+                                            {Texts.NOM.text_fr}
                                         </Col>
                                         <Col sm={8}>
                                             <FormControl
                                                 type="text"
-                                                placeholder="Nom"
-                                                value={this.state.manager_last_name}
-                                                inputRef={ref => this.managerLastNameRef = ref}
+                                                placeholder={Texts.NOM.text_fr}
+                                                value={this.props.manager_last_name}
+                                                onChange={this.handleLastNameChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
 
-                                    <FormGroup controlId="formHorizontalEmail">
+                                    <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState('manager_email')}>
                                         <Col componentClass={ControlLabel} sm={2}>
-                                            Email
+                                            {Texts.EMAIL.text_fr}
                                         </Col>
                                         <Col sm={8}>
                                             <FormControl
+                                                readOnly
                                                 type="email"
-                                                placeholder="Email"
-                                                value={this.state.manager_email}
-                                                inputRef={ref => this.managerEmailRef = ref}
+                                                placeholder={Texts.EMAIL.text_fr}
+                                                value={this.props.manager_email}
+                                                onChange={this.handleEmailChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
-                                    <FormGroup controlId="formHorizontalText">
+                                    <FormGroup controlId="formHorizontalPhone"  validationState={this.getValidationState('manager_phone')}>
                                         <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={popoverPhone}>
                                             <Col componentClass={ControlLabel} sm={2}>
-                                                Téléphone *
+                                                {Texts.TELEPHONE.text_fr + " *"}
                                             </Col>
                                         </OverlayTrigger>
                                         <Col sm={8}>
                                             <FormControl
                                                 type="text"
-                                                placeholder="Téléphone"
-                                                value={this.state.manager_phone}
-                                                inputRef={ref => this.managerPhoneRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                </Form>
-                            </Col>
-                            <Col xs={6} sm={6} md={4} lg={4}>
-                                <Image
-                                    src={"/img/user.png"}
-                                    circle
-                                    responsive={true}
-                                    thumbnail={true}
-                                    className={"profileImage"}
-                                />
-                                <Button
-                                    block
-                                    onClick={this.onUpdateManagerImageClick.bind(this)}
-                                >
-                                    <Glyphicon glyph="picture" /> Modifier image
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Grid>
-
-                    <Modal show={this.state.showManagerModal} onHide={this.onUpdateManagerImageCloseClick.bind(this)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Modifier l'image de profil gérant</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <FormGroup controlId="formControlsFile">
-                                <ControlLabel>Sélectionner une image</ControlLabel>
-                                <FormControl type="file" inputRef={ref => this.managerUpdateImageRef = ref}/>
-                                <HelpBlock>Format autorisés : PNG JPG</HelpBlock>
-                            </FormGroup>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={this.onUpdateManagerImageCloseClick.bind(this)}>Fermer</Button>
-                            <Button bsStyle="primary" onClick={this.onUpdateManagerImageSaveClick.bind(this)}>Sauvegarder</Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                </Panel>
-
-                <Panel header={<div><Glyphicon glyph="info-sign" /> Profil de la Salle</div>} bsStyle="primary">
-                    <Grid fluid={true}>
-                        <Row>
-                            <Col xs={9} sm={9} md={9} lg={9}>
-                                <Form horizontal>
-                                    <FormGroup controlId="formHorizontalText">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Nom de la salle
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Nom de la salle"
-                                                value={this.state.club_name}
-                                                inputRef={ref => this.clubNameRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup controlId="formHorizontalText">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Adresse
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Adresse"
-                                                value={this.state.club_address}
-                                                inputRef={ref => this.clubAdressRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup controlId="formHorizontalText">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Adresse
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Adresse suplémentaire"
-                                                value={this.state.club_address2}
-                                                inputRef={ref => this.clubAdress2Ref = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="formHorizontalNumber">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Code postale
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="number"
-                                                placeholder="Code postale"
-                                                value={this.state.club_zip_code}
-                                                inputRef={ref => this.clubZipCodeRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="formHorizontalText">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Ville
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Ville"
-                                                value={this.state.club_city}
-                                                inputRef={ref => this.clubCityRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="formHorizontalText">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Téléphone
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Téléphone"
-                                                value={this.state.club_phone}
-                                                inputRef={ref => this.clubPhoneRef = ref}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="formControlsTextarea">
-                                        <Col componentClass={ControlLabel} sm={2}>
-                                            Description
-                                        </Col>
-                                        <Col sm={8}>
-                                            <FormControl
-                                                componentClass="textarea"
-                                                placeholder="Description"
-                                                value={this.state.club_description}
-                                                inputRef={ref => this.clubDescriptionRef = ref}
+                                                placeholder={Texts.TELEPHONE.text_fr}
+                                                value={this.props.manager_phone}
+                                                onChange={this.handlePhoneChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
@@ -334,35 +646,205 @@ class ProfileInfo extends React.Component {
                             </Col>
                             <Col xs={2} sm={2} md={2} lg={2}>
                                 <Image
-                                    src={"/img/store.png"}
-                                    rounded
+                                    src={(this.props.manager_picture === "" ? "/img/user.svg" : this.props.manager_picture)}
+                                    circle
                                     responsive={true}
                                     thumbnail={true}
+                                    className={"center-block profileImage"}
                                 />
                                 <Button
                                     block
-                                    onClick={this.onUpdateClubImageClick.bind(this)}
+                                    onClick={this.onUpdateManagerImageClick.bind(this)}
                                 >
-                                    <Glyphicon glyph="picture" /> Modifier image
+                                    <Glyphicon glyph="picture" /> {Texts.MODIFIER_IMG.text_fr}
                                 </Button>
                             </Col>
                         </Row>
                     </Grid>
 
-                    <Modal show={this.state.showClubModal} onHide={this.onUpdateClubImageCloseClick.bind(this)}>
+                    <Modal show={this.props.showManagerPictureModal} onHide={this.onUpdateManagerImageCloseClick.bind(this)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Modifier l'image de la salle</Modal.Title>
+                            <Modal.Title>{Texts.MODIFIER_IMG_PROFIL_GERANT.text_fr}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <FormGroup controlId="formControlsFile">
-                                <ControlLabel>Sélectionner une image</ControlLabel>
-                                <FormControl type="file" inputRef={ref => this.clubUpdateImageRef = ref}/>
-                                <HelpBlock>Format autorisés : PNG JPG</HelpBlock>
+                            <FormGroup controlId="formControlsManagerPictureFile">
+                                <ControlLabel>
+                                    {Texts.SELECTIONNER_IMG.text_fr}
+                                    </ControlLabel>
+                                <FormControl
+                                    type="file"
+                                    accept=".png,.jpg,.svg"
+                                    inputRef={ref => this.managerPictureInputFile = ref}
+                                    onChange={this.onUpdateManagerPictureFile.bind(this)}
+                                />
+                                <HelpBlock>
+                                    {Texts.FORMATS_AUTORISES.text_fr}
+                                </HelpBlock>
+                                <Image
+                                    src={this.props.manager_picture_preview}
+                                    circle
+                                    responsive={true}
+                                    thumbnail={true}
+                                    className={"center-block profileImage"}
+                                />
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.onUpdateClubImageCloseClick.bind(this)}>Fermer</Button>
-                            <Button bsStyle="primary" onClick={this.onUpdateClubImageSaveClick.bind(this)}>Sauvegarder</Button>
+                            <Button onClick={this.onUpdateManagerImageCloseClick.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                            <Button bsStyle="primary" onClick={this.onUpdateManagerImageSaveClick.bind(this)}>{Texts.SAUVEGARDER.text_fr}</Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                </Panel>
+
+                <Panel header={<div><Glyphicon glyph="info-sign" /> {Texts.PROFIL_SALLE.text_fr}</div>} bsStyle="primary">
+                    <Grid fluid={true}>
+                        <Row>
+                            <Col xs={9} sm={9} md={9} lg={9}>
+                                <Form horizontal>
+                                    <FormGroup controlId="formHorizontalName" validationState={this.getValidationState('center_name')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.NOM_SALLE.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.NOM_SALLE.text_fr}
+                                                value={this.props.center_name}
+                                                onChange={this.handleNameChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+
+                                    <FormGroup controlId="formHorizontalAddress" validationState={this.getValidationState('center_address')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.ADRESSE.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.ADRESSE.text_fr}
+                                                value={this.props.center_address}
+                                                onChange={this.handleAddressChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+
+                                    <FormGroup controlId="formHorizontalAddressSecond" validationState={this.getValidationState('center_address_second')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.ADRESSE_COMP.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.ADRESSE_COMP.text_fr}
+                                                value={this.props.center_address2}
+                                                onChange={this.handleAddressSecondChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup controlId="formHorizontalZipCode" validationState={this.getValidationState('center_zip_code')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.CODE_POSTAL.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.CODE_POSTAL.text_fr}
+                                                value={this.props.center_zip_code}
+                                                onChange={this.handleZipCodeChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup controlId="formHorizontalCity" validationState={this.getValidationState('center_city')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.VILLE.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.VILLE.text_fr}
+                                                value={this.props.center_city}
+                                                onChange={this.handleCityChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup controlId="formHorizontalCenterPhone" validationState={this.getValidationState('center_phone')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.TELEPHONE_SALLE.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                type="text"
+                                                placeholder={Texts.TELEPHONE_SALLE.text_fr}
+                                                value={this.props.center_phone}
+                                                onChange={this.handleCenterPhoneChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup controlId="formControlsDescription" validationState={this.getValidationState('center_description')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.DESCRIPTION.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                componentClass="textarea"
+                                                placeholder={Texts.DESCRIPTION.text_fr}
+                                                value={this.props.center_description}
+                                                onChange={this.handleDescriptionChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                </Form>
+                            </Col>
+                            <Col xs={2} sm={2} md={2} lg={2}>
+                                <Image
+                                    src={(this.props.center_picture === "" ? "/img/store.svg" : this.props.center_picture)}
+                                    rounded
+                                    responsive={true}
+                                    thumbnail={true}
+                                    className={"center-block profileImage"}
+                                />
+                                <Button
+                                    block
+                                    onClick={this.onUpdateCenterImageClick.bind(this)}
+                                >
+                                    <Glyphicon glyph="picture" /> {Texts.MODIFIER_IMG.text_fr}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Grid>
+
+                    <Modal show={this.props.showCenterPictureModal} onHide={this.onUpdateCenterImageCloseClick.bind(this)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{Texts.MODIFIER_IMG_SALLE.text_fr}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <FormGroup controlId="formControlsCenterPictureFile">
+                                <ControlLabel>
+                                    {Texts.SELECTIONNER_IMG.text_fr}
+                                </ControlLabel>
+                                <FormControl
+                                    type="file"
+                                    accept=".png,.jpg,.svg"
+                                    inputRef={ref => this.centerPictureInputFile = ref}
+                                    onChange={this.onUpdateCenterPictureFile.bind(this)}
+                                />
+                                <HelpBlock>
+                                    {Texts.FORMATS_AUTORISES.text_fr}
+                                </HelpBlock>
+                                <Image
+                                    src={this.props.center_picture_preview}
+                                    rounded
+                                    responsive={true}
+                                    thumbnail={true}
+                                    className={"center-block profileImage"}
+                                />
+                            </FormGroup>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.onUpdateCenterImageCloseClick.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                            <Button bsStyle="primary" onClick={this.onUpdateCenterImageSaveClick.bind(this)}>{Texts.SAUVEGARDER.text_fr}</Button>
                         </Modal.Footer>
                     </Modal>
 
@@ -374,7 +856,7 @@ class ProfileInfo extends React.Component {
                         block
                         onClick={this.onResetClick.bind(this)}
                     >
-                        <Glyphicon glyph="repeat" /> Réinitialiser
+                        <Glyphicon glyph="repeat" /> {Texts.REINITIALISER.text_fr}
                     </Button>
                 </Col>
                 <Col xs={2} sm={2} md={2} lg={2}>
@@ -383,7 +865,7 @@ class ProfileInfo extends React.Component {
                         bsStyle="primary"
                         onClick={this.onSaveClick.bind(this)}
                     >
-                        <Glyphicon glyph="floppy-disk" /> Sauvegarder
+                        <Glyphicon glyph="floppy-disk" /> {Texts.SAUVEGARDER.text_fr}
                     </Button>
                 </Col>
                 <Col xs={4} sm={4} md={4} lg={4}>
@@ -393,4 +875,75 @@ class ProfileInfo extends React.Component {
     }
 }
 
-export default ProfileInfo;
+function mapStateToProps(state) {
+    return {
+        manager_first_name: state.profile.manager_first_name,
+        manager_last_name: state.profile.manager_last_name,
+        manager_email: state.profile.manager_email,
+        manager_phone: state.profile.manager_phone,
+
+        center_name: state.profile.center_name,
+        center_address: state.profile.center_address,
+        center_address2: state.profile.center_address2,
+        center_zip_code: state.profile.center_zip_code,
+        center_city: state.profile.center_city,
+        center_phone: state.profile.center_phone,
+        center_description: state.profile.center_description,
+        center_nb_subscribers: state.profile.center_nb_subscribers,
+        center_nb_followers: state.profile.center_nb_followers,
+
+        manager_keep_first_name: state.profile.manager_keep_first_name,
+        manager_keep_last_name: state.profile.manager_keep_last_name,
+        manager_keep_email: state.profile.manager_keep_email,
+        manager_keep_phone: state.profile.manager_keep_phone,
+
+        center_keep_name: state.profile.center_keep_name,
+        center_keep_address: state.profile.center_keep_address,
+        center_keep_address2: state.profile.center_keep_address2,
+        center_keep_zip_code: state.profile.center_keep_zip_code,
+        center_keep_city: state.profile.center_keep_city,
+        center_keep_phone: state.profile.center_keep_phone,
+        center_keep_description: state.profile.center_keep_description,
+
+        showAlert: state.profile.showAlert,
+        alertTitle: state.profile.alertTitle,
+        alertText: state.profile.alertText,
+        showManagerPictureModal: state.profile.showManagerPictureModal,
+        showCenterPictureModal: state.profile.showCenterPictureModal,
+
+        manager_picture_preview: state.profile.manager_picture_preview,
+        center_picture_preview: state.profile.center_picture_preview,
+
+        manager_picture: state.profile.manager_picture,
+        center_picture: state.profile.center_picture
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    displayManagerPictureModal,
+    dismissManagerPictureModal,
+    displayCenterPictureModal,
+    dismissCenterPictureModal,
+    setManagerInfo,
+    setCenterInfo,
+    resetManagerCenterInfo,
+    setManagerKeepInfo,
+    setCenterKeepInfo,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    setManagerPicturePreview,
+    setCenterPicturePreview,
+    setManagerPicture,
+    setCenterPicture
+})(ProfileInfo);

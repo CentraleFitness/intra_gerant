@@ -10,57 +10,140 @@ import {
     Button,
     Well
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import {
+    setCurrentPublication,
+    setPublications,
+    addPublication,
+    displayAlert
+} from "../actions/profileActions";
+
+import Dates from "../utils/Dates";
+import Texts from "../utils/Texts";
+import Fields from "../utils/Fields";
+import Communication from "../utils/Communication";
+import Paths from "../utils/Paths";
+import Status from "../utils/Status";
+import Validator from "../utils/Validator";
 
 import '../styles/ProfileSocial.css';
+import '../styles/Profile.css';
 
 class ProfileSocial extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            comments: []
-        };
-        //Surement temporaire
-        this.commentCpt = 0;
+    componentWillMount() {
+        this.getPublications();
+    }
+
+    getPublications() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_GET_PUBLICATIONS, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setPublications(response.data.publications.reverse());
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
     }
 
     onPublishClick() {
 
-        if (this.currentCommentRef.value.length <= 0)
+        if (!Validator.description(this.props.current_publication))
             return;
 
-        let comments = this.state.comments;
-        let today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1;
-        let yyyy = today.getFullYear();
-        let hh = today.getHours();
-        let mn = today.getMinutes();
-        let ss = today.getSeconds();
+        this.addPublication();
+    }
 
-        comments.unshift(
-            {
-                id: this.commentCpt++,
-                text: this.currentCommentRef.value,
-                author: "You",
-                time: (dd > 9 ? dd : ('0' + dd)) + "/" +
-                        (mm > 9 ? mm : ('0' + mm)) + "/" +
-                        yyyy + " " +
-                        (hh > 9 ? hh : ('0' + hh)) + ":" +
-                        (mn > 9 ? mn : ('0' + mn)) + ":" +
-                        (ss > 9 ? ss : ('0' + ss))
+    addPublication() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.TEXT] = this.props.current_publication;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_ADD_PUBLICATION, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        let now = new Date();
+                        me.props.addPublication({
+                            text: me.props.current_publication,
+                            creation_date: now.getTime()
+                        });
+                        me.props.setCurrentPublication("");
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
             }
         );
-        this.setState({
-            comments: comments
-        });
-        this.currentCommentRef.value = "";
     }
 
     handleCurrentCommentChange(event) {
-        this.setState({
-            currentComment: (event.target.value)
-        });
+        this.props.setCurrentPublication(event.target.value);
     }
 
     render() {
@@ -69,34 +152,40 @@ class ProfileSocial extends React.Component {
             <Panel>
                 <Panel>
                     <Col sm={2}>
-                        <Image src={"/img/store.png"} rounded responsive={true} thumbnail={true}/>
+                        <Image
+                            src={(this.props.center_picture === "" ? "/img/store.svg" : this.props.center_picture)}
+                            rounded
+                            responsive={true}
+                            thumbnail={true}
+                            className={"center-block profileImage"}
+                        />
                     </Col>
                     <Col sm={3}>
                         <FormGroup>
-                            <ControlLabel>{this.props.club_name}</ControlLabel>
+                            <ControlLabel>{this.props.center_name}</ControlLabel>
                             <FormControl.Static>
                                 {this.props.manager_email}
                             </FormControl.Static>
                             <FormControl.Static>
-                                <Glyphicon glyph="heart" /> <strong>{this.props.club_nb_subscribers}</strong> Abonnés
+                                <Glyphicon glyph="heart" /> <strong>{this.props.center_nb_subscribers}</strong> Abonnés
                             </FormControl.Static>
                             <FormControl.Static>
-                                <Glyphicon glyph="star" /> <strong>{this.props.club_nb_followers}</strong> Suivent
+                                <Glyphicon glyph="star" /> <strong>{this.props.center_nb_followers}</strong> Suivent
                             </FormControl.Static>
                         </FormGroup>
                     </Col>
                     <Col sm={7}>
                         <FormControl.Static>
-                            {this.props.club_description}
+                            {this.props.center_description}
                         </FormControl.Static>
                     </Col>
                 </Panel>
                 <Panel>
                     <FormControl
                         componentClass="textarea"
-                        placeholder="Publier quelque chose ..."
-                        onBlur={ this.handleCurrentCommentChange.bind(this) }
-                        inputRef={ref => this.currentCommentRef = ref}
+                        placeholder={Texts.PUBLIER_QQCHOSE.text_fr}
+                        value={this.props.current_publication}
+                        onChange={ this.handleCurrentCommentChange.bind(this) }
                     />
                     <Col sm={10}>
 
@@ -108,15 +197,15 @@ class ProfileSocial extends React.Component {
                             className={"submitButton"}
                             onClick={this.onPublishClick.bind(this)}
                         >
-                            <Glyphicon glyph="ok" /> Publier
+                            <Glyphicon glyph="ok" /> {Texts.PUBLIER.text_fr}
                         </Button>
                     </Col>
                 </Panel>
                 <Panel className={"commentsZone"}>
                     {
-                        this.state.comments.map((item) => (
-                            <div key={item.id}>
-                                <em>{item.author} - {item.time}</em>
+                        this.props.publications.map((item) => (
+                            <div key={item.creation_date}>
+                                <em>{Dates.format(item.creation_date)}</em>
                                 <Well>{item.text}</Well>
                             </div>
                         ))
@@ -127,4 +216,22 @@ class ProfileSocial extends React.Component {
     }
 }
 
-export default ProfileSocial;
+function mapStateToProps(state) {
+    return {
+        manager_email: state.profile.manager_email,
+        center_name: state.profile.center_name,
+        center_description: state.profile.center_description,
+        center_nb_subscribers: state.profile.center_nb_subscribers,
+        center_nb_followers: state.profile.center_nb_followers,
+        publications: state.profile.publications,
+        current_publication: state.profile.current_publication,
+        center_picture: state.profile.center_picture
+    };
+}
+
+export default connect(mapStateToProps, {
+    setCurrentPublication,
+    setPublications,
+    addPublication,
+    displayAlert
+})(ProfileSocial);

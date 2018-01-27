@@ -6,6 +6,29 @@ import {
     FormControl,
     Button
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import {
+    displayAlert,
+    dismissAlert,
+    setManagerInfo,
+    setCenterInfo,
+    resetManagerCenterInfo,
+    setManagerKeepInfo,
+    setCenterKeepInfo,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    setCenterPicture
+} from "../actions/profileActions";
 
 import ProfileSocial from "./ProfileSocial";
 import ProfilePhotos from "./ProfilePhotos";
@@ -19,31 +42,10 @@ import Texts from '../utils/Texts';
 
 class Profile extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            manager_first_name: "",
-            manager_last_name: "",
-            manager_email: "",
-            manager_phone: "",
-            club_name: "",
-            club_address: "",
-            club_address2: "",
-            club_zip_code: "",
-            club_city: "",
-            club_phone: "",
-            club_description: "",
-            club_nb_subscribers: "",
-            club_nb_followers: "",
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        };
-    }
-
     componentWillMount() {
         this.getManagerProfile();
         this.getCenterProfile();
+        this.getCenterPicture();
     }
 
     getManagerProfile() {
@@ -59,12 +61,14 @@ class Profile extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.setState({
+                        me.props.setManagerInfo({
                             manager_first_name: response.data[Fields.FIRSTNAME],
                             manager_last_name: response.data[Fields.LASTNAME],
                             manager_email: response.data[Fields.EMAIL],
                             manager_phone: response.data[Fields.PHONE]
                         });
+
+                        me.props.setManagerKeepInfo();
 
                     } else {
 
@@ -76,23 +80,20 @@ class Profile extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -113,15 +114,17 @@ class Profile extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.setState({
-                            club_name: response.data[Fields.NAME],
-                            club_address: response.data[Fields.ADDRESS],
-                            club_address2: response.data[Fields.ADDRESS_SECOND],
-                            club_zip_code: response.data[Fields.ZIP_CODE],
-                            club_city: response.data[Fields.CITY],
-                            club_phone: response.data[Fields.PHONE],
-                            club_description: response.data[Fields.DESCRIPTION]
+                        me.props.setCenterInfo({
+                            center_name: response.data[Fields.NAME],
+                            center_address: response.data[Fields.ADDRESS],
+                            center_address2: response.data[Fields.ADDRESS_SECOND],
+                            center_zip_code: response.data[Fields.ZIP_CODE],
+                            center_city: response.data[Fields.CITY],
+                            center_phone: response.data[Fields.PHONE],
+                            center_description: response.data[Fields.DESCRIPTION]
                         });
+
+                        me.props.setCenterKeepInfo();
 
                     } else {
 
@@ -133,23 +136,20 @@ class Profile extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -157,12 +157,59 @@ class Profile extends React.Component {
         );
     }
 
+    getCenterPicture() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_GET_PICTURE, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setCenterPicture(response.data[Fields.PICTURE]);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    console.log('ICI');
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    handleLeaveProfileInfo() {
+        this.props.resetManagerCenterInfo();
+    }
+
     handleAlertDismiss() {
-        this.setState({
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        });
+        this.props.dismissAlert();
     }
 
     render() {
@@ -170,47 +217,32 @@ class Profile extends React.Component {
         return (
             <div>
 
-                <Tabs defaultActiveKey={1} id={"profileTabs"}>
-                    <Tab eventKey={1} title={Texts.SOCIAL_TITRE.text_fr}>
-                        <ProfileSocial
-                            manager_email={this.state.manager_email}
-                            club_name={this.state.club_name}
-                            club_nb_subscribers={this.state.club_nb_subscribers}
-                            club_nb_followers={this.state.club_nb_followers}
-                            club_description={this.state.club_description}
-                        />
-                    </Tab>
-                    <Tab eventKey={2} title={Texts.PHOTOS_TITRE.text_fr}>
+                <Tabs
+                    defaultActiveKey={"social"}
+                    id={"profileTabs"}
+                >
+                    <Tab.Pane eventKey={"social"} title={Texts.SOCIAL_TITRE.text_fr}>
+                        <ProfileSocial />
+                    </Tab.Pane>
+                    <Tab.Pane eventKey={"photos"} title={Texts.PHOTOS_TITRE.text_fr}>
                         <ProfilePhotos/>
-                    </Tab>
-                    <Tab eventKey={3} title={Texts.INFOS_TITRE.text_fr}>
-                        <ProfileInfo
-                            manager_first_name={this.state.manager_first_name}
-                            manager_last_name={this.state.manager_last_name}
-                            manager_email={this.state.manager_email}
-                            manager_phone={this.state.manager_phone}
-                            club_name={this.state.club_name}
-                            club_address={this.state.club_address}
-                            club_address2={this.state.club_address2}
-                            club_zip_code={this.state.club_zip_code}
-                            club_city={this.state.club_city}
-                            club_phone={this.state.club_phone}
-                            club_description={this.state.club_description}
-                        />
-                    </Tab>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey={"infos"} title={Texts.INFOS_TITRE.text_fr} onExit={this.handleLeaveProfileInfo.bind(this)}>
+                        <ProfileInfo />
+                    </Tab.Pane>
                 </Tabs>
 
-                <Modal show={this.state.showAlert} bsSize={"small"}>
-                    <Modal.Header closeButton onHide={this.handleAlertDismiss.bind(this)}>
-                        <Modal.Title>{this.state.alertTitle}</Modal.Title>
+                <Modal show={this.props.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
+                    <Modal.Header closeButton >
+                        <Modal.Title>{this.props.alertTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <FormControl.Static>
-                            {this.state.alertText}
+                            {this.props.alertText}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>Close</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -219,4 +251,45 @@ class Profile extends React.Component {
     }
 }
 
-export default Profile;
+function mapStateToProps(state) {
+    return {
+        manager_first_name: state.profile.manager_first_name,
+        manager_last_name: state.profile.manager_last_name,
+        manager_email: state.profile.manager_email,
+        manager_phone: state.profile.manager_phone,
+        center_name: state.profile.center_name,
+        center_address: state.profile.center_address,
+        center_address2: state.profile.center_address2,
+        center_zip_code: state.profile.center_zip_code,
+        center_city: state.profile.center_city,
+        center_phone: state.profile.center_phone,
+        center_description: state.profile.center_description,
+        center_nb_subscribers: state.profile.center_nb_subscribers,
+        center_nb_followers: state.profile.center_nb_followers,
+        showAlert: state.profile.showAlert,
+        alertTitle: state.profile.alertTitle,
+        alertText: state.profile.alertText
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    setManagerInfo,
+    setCenterInfo,
+    setManagerKeepInfo,
+    setCenterKeepInfo,
+    resetManagerCenterInfo,
+    setFirstName,
+    setLastName,
+    setPhone,
+    setEmail,
+    setName,
+    setDescription,
+    setAddress,
+    setAddressSecond,
+    setZipCode,
+    setCity,
+    setCenterPhone,
+    setCenterPicture
+})(Profile);
