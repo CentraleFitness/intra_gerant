@@ -1,8 +1,10 @@
 import React from 'react';
 import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 
-import Dashboard from './Dashboard'
-import Home from './Home'
+import Dashboard from './Dashboard';
+import Home from './Home';
+import Events from './Events';
+import Contact from './Contact';
 import Statistics from "./Statistics";
 import Profile from "./Profile";
 import Login from "./Login";
@@ -23,6 +25,8 @@ class App extends React.Component {
                         <Route path={"home"} component={Home}/>
                         <Route path={"profile"} component={Profile}/>
                         <Route path={"statistics"} component={Statistics}/>
+                        <Route path={"events"} component={Events}/>
+                        <Route path={"contact"} component={Contact}/>
                     </Route>
                 </Route>
             </Router>

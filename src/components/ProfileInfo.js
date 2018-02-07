@@ -47,6 +47,10 @@ import {
     setCenterPicture
 } from "../actions/profileActions";
 
+import {
+    setManagerPictureIsLoad
+} from "../actions/globalActions";
+
 import Texts from "../utils/Texts";
 import Paths from "../utils/Paths";
 import Communication from "../utils/Communication";
@@ -58,8 +62,10 @@ import "../styles/Profile.css";
 
 class ProfileInfo extends React.Component {
 
-    componentWillMount() {
-        this.getManagerPicture();
+    componentDidMount() {
+        if (this.props.manager_picture_is_load === false) {
+            this.getManagerPicture();
+        }
     }
 
     onUpdateManagerImageClick() {
@@ -152,7 +158,7 @@ class ProfileInfo extends React.Component {
 
         if (!Validator.name(this.props.manager_first_name) ||
             !Validator.name(this.props.manager_last_name) ||
-            !Validator.name(this.props.center_name) ||
+            !Validator.description(this.props.center_name) ||
             !Validator.description(this.props.center_description) ||
             !Validator.name(this.props.center_city) ||
             !Validator.address(this.props.center_address) ||
@@ -315,6 +321,7 @@ class ProfileInfo extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         me.props.setManagerPicture(response.data[Fields.PICTURE]);
+                        me.props.setManagerPictureIsLoad();
 
                     } else {
 
@@ -483,13 +490,12 @@ class ProfileInfo extends React.Component {
                 return "warning";
         }
 
-        if (field === "manager_first_name" || field === "manager_last_name" ||
-            field === "center_name" || field === "center_city") {
+        if (field === "manager_first_name" || field === "manager_last_name" || field === "center_city") {
 
             if (Validator.name(value))
                 return "success";
 
-        } else if (field === "center_description") {
+        } else if (field === "center_description" || field === "center_name") {
 
             if (Validator.description(value))
                 return "success";
@@ -690,8 +696,8 @@ class ProfileInfo extends React.Component {
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.onUpdateManagerImageCloseClick.bind(this)}>{Texts.FERMER.text_fr}</Button>
-                            <Button bsStyle="primary" onClick={this.onUpdateManagerImageSaveClick.bind(this)}>{Texts.SAUVEGARDER.text_fr}</Button>
+                            <Button onClick={this.onUpdateManagerImageCloseClick.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
+                            <Button bsStyle="primary" onClick={this.onUpdateManagerImageSaveClick.bind(this)}><Glyphicon glyph="floppy-disk" /> {Texts.SAUVEGARDER.text_fr}</Button>
                         </Modal.Footer>
                     </Modal>
 
@@ -843,8 +849,8 @@ class ProfileInfo extends React.Component {
                             </FormGroup>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.onUpdateCenterImageCloseClick.bind(this)}>{Texts.FERMER.text_fr}</Button>
-                            <Button bsStyle="primary" onClick={this.onUpdateCenterImageSaveClick.bind(this)}>{Texts.SAUVEGARDER.text_fr}</Button>
+                            <Button onClick={this.onUpdateCenterImageCloseClick.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
+                            <Button bsStyle="primary" onClick={this.onUpdateCenterImageSaveClick.bind(this)}><Glyphicon glyph="floppy-disk" /> {Texts.SAUVEGARDER.text_fr}</Button>
                         </Modal.Footer>
                     </Modal>
 
@@ -915,7 +921,9 @@ function mapStateToProps(state) {
         center_picture_preview: state.profile.center_picture_preview,
 
         manager_picture: state.profile.manager_picture,
-        center_picture: state.profile.center_picture
+        center_picture: state.profile.center_picture,
+
+        manager_picture_is_load: state.global.manager_picture_is_load
     };
 }
 
@@ -945,5 +953,7 @@ export default connect(mapStateToProps, {
     setManagerPicturePreview,
     setCenterPicturePreview,
     setManagerPicture,
-    setCenterPicture
+    setCenterPicture,
+
+    setManagerPictureIsLoad
 })(ProfileInfo);

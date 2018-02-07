@@ -13,8 +13,26 @@ import {
     FormGroup,
     ControlLabel,
     HelpBlock,
-    Image
+    Image,
+    Glyphicon
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import {
+    displayAlert,
+    dismissAlert,
+    displayPhotoModal,
+    dismissPhotoModal,
+    setPhotos,
+    addPhoto,
+    setPictureTitle,
+    setPictureDescription,
+    setPicturePreview
+} from "../actions/profileActions";
+
+import {
+    setAlbumIsLoad
+} from "../actions/globalActions";
 
 import Texts from "../utils/Texts";
 import Dates from "../utils/Dates";
@@ -28,32 +46,14 @@ import '../styles/ProfilePhotos.css';
 
 class ProfilePhotos extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showPhotoModal: false,
-            photos: [],
-            current_title: "",
-            current_source: "",
-            current_description: "",
-            current_creation_date: 0,
-            showAlert: false,
-            alertTitle: "",
-            alertText: "",
-            picture_title: "",
-            picture_description: "",
-            picture_preview: "/img/folder.svg"
-        };
-    }
-
-    componentWillMount() {
-        this.getAlbum();
+    componentDidMount() {
+        if (this.props.album_is_load === false) {
+            this.getAlbum();
+        }
     }
 
     onPhotoClick(curItem) {
-        this.setState({
-            showPhotoModal: true,
+        this.props.displayPhotoModal({
             current_title: curItem.title,
             current_creation_date: curItem.creation_date,
             current_source: curItem.picture,
@@ -64,13 +64,12 @@ class ProfilePhotos extends React.Component {
     onAddPhotoClick() {
 
         if (this.centerAddPictureRef.value === "") {
-            this.setState({
-                showAlert: true,
+            this.props.displayAlert({
                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                 alertText: Texts.ERR_CHOISIR_UNE_IMAGE.text_fr
             });
         } else {
-            this.addPicture(this.state.picture_preview);
+            this.addPicture(this.props.picture_preview);
         }
     }
 
@@ -87,9 +86,8 @@ class ProfilePhotos extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.setState({
-                            photos: response.data.album
-                        });
+                        me.props.setPhotos(response.data.album);
+                        me.props.setAlbumIsLoad();
 
                     } else {
 
@@ -101,23 +99,20 @@ class ProfilePhotos extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -130,8 +125,8 @@ class ProfilePhotos extends React.Component {
 
         params[Fields.TOKEN] = localStorage.getItem("token");
         params[Fields.PICTURE] = picture;
-        params[Fields.TITLE] = this.state.picture_title;
-        params[Fields.DESCRIPTION] = this.state.picture_description;
+        params[Fields.TITLE] = this.props.picture_title;
+        params[Fields.DESCRIPTION] = this.props.picture_description;
 
         let me = this;
 
@@ -141,15 +136,18 @@ class ProfilePhotos extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        let tmp = me.state.photos;
-                        tmp.push({
-                            title: me.state.picture_title,
-                            description: me.state.picture_description,
-                            picture: me.state.picture_preview
+                        let now = new Date();
+                        me.props.addPhoto({
+                            title: me.props.picture_title,
+                            description: me.props.picture_description,
+                            picture: me.props.picture_preview,
+                            creation_date: now.getTime(),
+                            picture_id: response.data.picture_id
                         });
-                        me.setState({
-                            photos: tmp
-                        });
+                        me.props.setPictureTitle("");
+                        me.props.setPictureDescription("");
+                        me.props.setPicturePreview("/img/folder.svg");
+                        me.centerAddPictureRef.value = "";
 
                     } else {
 
@@ -161,23 +159,20 @@ class ProfilePhotos extends React.Component {
                             }
                         }
 
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
                     }
                 } else {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
             },
             function (error) {
-                me.setState({
-                    showAlert: true,
+                me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
                 });
@@ -186,33 +181,15 @@ class ProfilePhotos extends React.Component {
     }
 
     onPhotoCloseClick() {
-        this.setState({
-            showPhotoModal: false,
-            current_title: "",
-            current_source: "",
-            current_creation_date: 0,
-            current_description: ""
-        });
-    }
-
-    handleAlertDismiss() {
-        this.setState({
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        });
+        this.props.dismissPhotoModal();
     }
 
     handlePictureTitleChange(event) {
-        this.setState({
-            picture_title: event.target.value
-        });
+        this.props.setPictureTitle(event.target.value);
     }
 
     handlePictureDescriptionChange(event) {
-        this.setState({
-            picture_description: event.target.value
-        });
+        this.props.setPictureDescription(event.target.value);
     }
 
     onUpdatePictureFile() {
@@ -220,9 +197,7 @@ class ProfilePhotos extends React.Component {
         let reader = new FileReader();
         reader.readAsDataURL(this.centerAddPictureRef.files[0]);
         reader.addEventListener("load", function () {
-            me.setState({
-                picture_preview: reader.result
-            });
+            me.props.setPicturePreview(reader.result);
         }, false);
     }
 
@@ -246,28 +221,32 @@ class ProfilePhotos extends React.Component {
                                 </FormGroup>
                             </Col>
                             <Col xs={2} sm={3} md={4} lg={4}>
-                                <FormControl
-                                    type="text"
-                                    placeholder={Texts.TITRE.text_fr}
-                                    value={this.state.picture_title}
-                                    onChange={this.handlePictureTitleChange.bind(this)}
-                                />
-                                <FormControl
-                                    componentClass="textarea"
-                                    placeholder={Texts.DESCRIPTION.text_fr}
-                                    value={this.state.picture_description}
-                                    onChange={this.handlePictureDescriptionChange.bind(this)}
-                                />
+                                <FormGroup controlId="formControlsTitle">
+                                    <FormControl
+                                        type="text"
+                                        placeholder={Texts.TITRE.text_fr}
+                                        value={this.props.picture_title}
+                                        onChange={this.handlePictureTitleChange.bind(this)}
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="formControlsDescription">
+                                    <FormControl
+                                        componentClass="textarea"
+                                        placeholder={Texts.DESCRIPTION.text_fr}
+                                        value={this.props.picture_description}
+                                        onChange={this.handlePictureDescriptionChange.bind(this)}
+                                    />
+                                </FormGroup>
                                 <Button
                                     className={"center-block"}
                                     onClick={this.onAddPhotoClick.bind(this)}
                                 >
-                                    {Texts.AJOUTER.text_fr}
+                                    <Glyphicon glyph="plus" /> {Texts.AJOUTER.text_fr}
                                 </Button>
                             </Col>
                             <Col xs={2} sm={3} md={5} lg={5}>
                                 <Image
-                                    src={this.state.picture_preview}
+                                    src={this.props.picture_preview}
                                     rounded
                                     responsive={true}
                                     thumbnail={true}
@@ -280,7 +259,7 @@ class ProfilePhotos extends React.Component {
                 <Grid fluid={true}>
                     <Row>
                         {
-                            this.state.photos.map((item) => (
+                            this.props.photos.map((item) => (
                                 <span
                                     style={{cursor:"pointer"}}
                                     key={item.picture_id}
@@ -305,33 +284,19 @@ class ProfilePhotos extends React.Component {
                     </Row>
                 </Grid>
 
-                <Modal className={"photoModal"} show={this.state.showPhotoModal} onHide={this.onPhotoCloseClick.bind(this)}>
+                <Modal className={"photoModal"} show={this.props.showPhotoModal} onHide={this.onPhotoCloseClick.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.state.current_title}</Modal.Title>
+                        <Modal.Title>{this.props.current_title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Thumbnail alt={this.state.current_title} src={this.state.current_source} />
-                        <em>{Dates.format(this.state.current_creation_date)}</em>
+                        <Thumbnail alt={this.props.current_title} src={this.props.current_source} />
+                        <em>{Dates.format(this.props.current_creation_date)}</em>
                         <FormControl.Static className={"photoModalBody"}>
-                            {this.state.current_description}
+                            {this.props.current_description}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.onPhotoCloseClick.bind(this)}>{Texts.FERMER.text_fr}</Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal show={this.state.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{this.state.alertTitle}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormControl.Static>
-                            {this.state.alertText}
-                        </FormControl.Static>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                        <Button onClick={this.onPhotoCloseClick.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -340,4 +305,32 @@ class ProfilePhotos extends React.Component {
     }
 }
 
-export default ProfilePhotos;
+function mapStateToProps(state) {
+    return {
+        showPhotoModal: state.profile.showPhotoModal,
+        photos: state.profile.photos,
+        current_title: state.profile.current_title,
+        current_source: state.profile.current_source,
+        current_description: state.profile.current_description,
+        current_creation_date: state.profile.current_creation_date,
+        picture_title: state.profile.picture_title,
+        picture_description: state.profile.picture_description,
+        picture_preview: state.profile.picture_preview,
+
+        album_is_load: state.global.album_is_load
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    displayPhotoModal,
+    dismissPhotoModal,
+    setPhotos,
+    addPhoto,
+    setPictureTitle,
+    setPictureDescription,
+    setPicturePreview,
+
+    setAlbumIsLoad
+})(ProfilePhotos);

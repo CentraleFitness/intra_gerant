@@ -35,6 +35,34 @@ const Texts = {
         text_fr: "Photos",
         text_en: "Photos"
     },
+    EVENEMENTS: {
+        text_fr: "Evénements",
+        text_en: "Events"
+    },
+    CONTACT: {
+        text_fr: "Contact",
+        text_en: "Contact"
+    },
+    FILTRE: {
+        text_fr: "Filtres",
+        text_en: "Filters"
+    },
+    PAR_MOTS_CLEFS: {
+        text_fr: "Par mots clefs",
+        text_en: "By keywords"
+    },
+    PAR_STATUS: {
+        text_fr: "Par status",
+        text_en: "By status"
+    },
+    FAIRE_UN_RETOUR_DINFORMATION: {
+        text_fr: "Faire un retour d'information",
+        text_en: "Post a feedback"
+    },
+    MOTS_CLEFS: {
+        text_fr: "Mots clefs",
+        text_en: "Keywords"
+    },
     INFOS_TITRE: {
         text_fr: "Infos",
         text_en: "Infos"
@@ -230,6 +258,94 @@ const Texts = {
     ERR_CHOISIR_UNE_IMAGE: {
         text_fr: "Veuillez choisir une image.",
         text_en: "Please select a picture."
+    },
+    DERNIERE_MODIFICATION: {
+        text_fr: "Dernière modification",
+        text_en: "Last update"
+    },
+    RETOUR_DINFORMATION: {
+        text_fr: "Retour d'information",
+        text_en: "Feedback"
+    },
+    TOUS: {
+        text_fr: "Tous",
+        text_en: "all"
+    },
+    A_VENIR: {
+        text_fr: "A venir",
+        text_en: "To come"
+    },
+    EN_COURS: {
+        text_fr: "En cours",
+        text_en: "In progress"
+    },
+    TERMINE: {
+        text_fr: "Terminé",
+        text_en: "Finished"
+    },
+    PAR_PERIODE: {
+        text_fr: "Par période",
+        text_en: "By period"
+    },
+    PAR_NOMBRE_D_INSCRIT: {
+        text_fr: "Par nombre d'inscrits",
+        text_en: "By number of subscribers"
+    },
+    CREER_UN_EVENEMENT: {
+        text_fr: "Créer un événement",
+        text_en: "Create an event"
+    },
+    INFERIEUR_A: {
+        text_fr: "Inférieur à",
+        text_en: "Less than"
+    },
+    EGAL_A: {
+        text_fr: "Egal à",
+        text_en: "Equal to"
+    },
+    SUPERIEUR_A: {
+        text_fr: "Supérieur à",
+        text_en: "Greater than"
+    },
+    DE: {
+        text_fr: "de",
+        text_en: "from"
+    },
+    A: {
+        text_fr: "à",
+        text_en: "to"
+    },
+    EDITER: {
+        text_fr: "Editer",
+        text_en: "Edit"
+    },
+    NOMBRE_D_INSCRIT: {
+        text_fr: "Nombre d'inscrits",
+        text_en: "Number of subscribers"
+    },
+    REINITIALISER_LES_FILTRES: {
+        text_fr: "Réinitialiser les filtres",
+        text_en: "Reset filters"
+    },
+    EVENEMENT: {
+        text_fr: "Evénement",
+        text_en: "Event"
+    },
+    DATE_DE_DEBUT: {
+        text_fr: "Date de début",
+        text_en: "Start date"
+    },
+    DATE_DE_FIN: {
+        text_fr: "Date de fin",
+        text_en: "End date"
+    },
+    LA_DATE_DE_FIN_PRECEDE_LA_DATE_DE_DEBUT: {
+        text_fr: "La date de fin précède la date de début.",
+        text_en: "End date preceed the start date."
+    },
+    PAS_DIMAGE_SELECTIONNE: {
+        text_fr: "Pas d'image sélectionnée.",
+        text_en: "No selected picture."
     }
 };
 

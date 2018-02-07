@@ -28,7 +28,15 @@ import {
     SET_PUBLICATIONS,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
-    RESET_PROFILE_INFO
+    RESET_PROFILE_INFO,
+
+    DISPLAY_PHOTO_MODAL,
+    DISMISS_PHOTO_MODAL,
+    SET_PHOTOS,
+    ADD_PHOTO,
+    SET_PICTURE_TITLE,
+    SET_PICTURE_DESCRIPTION,
+    SET_PICTURE_PREVIEW
 } from "../actions/types"
 
 const initialState = {
@@ -66,7 +74,17 @@ const initialState = {
     manager_picture: "",
     center_picture: "",
     publications: [],
-    current_publication: ""
+    current_publication: "",
+
+    showPhotoModal: false,
+    photos: [],
+    current_title: "",
+    current_source: "",
+    current_description: "",
+    current_creation_date: 0,
+    picture_title: "",
+    picture_description: "",
+    picture_preview: "/img/folder.svg"
 };
 
 export default (state = initialState, action) => {
@@ -239,11 +257,11 @@ export default (state = initialState, action) => {
                 publications: action.payload
             };
         case ADD_PUBLICATION:
-            let tmp = state.publications;
-            tmp.unshift(action.payload);
+            let tmp_publications = state.publications;
+            tmp_publications.unshift(action.payload);
             return {
                 ...state,
-                publications: tmp
+                publications: tmp_publications
             };
         case SET_CURRENT_PUBLICATION:
             return {
@@ -282,7 +300,61 @@ export default (state = initialState, action) => {
                 manager_picture: "",
                 center_picture: "",
                 publications: [],
-                current_publication: ""
+                current_publication: "",
+                showPhotoModal: false,
+                photos: [],
+                current_title: "",
+                current_source: "",
+                current_description: "",
+                current_creation_date: 0,
+                picture_title: "",
+                picture_description: "",
+                picture_preview: "/img/folder.svg"
+            };
+        case DISPLAY_PHOTO_MODAL:
+            return {
+                ...state,
+                showPhotoModal: true,
+                current_title: action.payload.current_title,
+                current_source: action.payload.current_source,
+                current_description: action.payload.current_description,
+                current_creation_date: action.payload.current_creation_date
+            };
+        case DISMISS_PHOTO_MODAL:
+            return {
+                ...state,
+                showPhotoModal: false,
+                current_title: "",
+                current_source: "",
+                current_description: "",
+                current_creation_date: 0
+            };
+        case SET_PHOTOS:
+            return {
+                ...state,
+                photos: action.payload
+            };
+        case ADD_PHOTO:
+            let tmp_photos = state.photos;
+            tmp_photos.push(action.payload);
+            return {
+                ...state,
+                photos: tmp_photos
+            };
+        case SET_PICTURE_TITLE:
+            return {
+                ...state,
+                picture_title: action.payload
+            };
+        case SET_PICTURE_DESCRIPTION:
+            return {
+                ...state,
+                picture_description: action.payload
+            };
+        case SET_PICTURE_PREVIEW:
+            return {
+                ...state,
+                picture_preview: action.payload
             };
         default:
             return state;

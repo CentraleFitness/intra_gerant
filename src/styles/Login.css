@@ -6,6 +6,8 @@
     background: linear-gradient(to bottom right, rgb(207, 178, 197), rgb(131, 155, 199)); /* Standard syntax */
 }
 
-.alert {
-    background-color: rgb(244, 93, 108);
+.logo {
+    height: 200px;
+    width:200px;
 }
+

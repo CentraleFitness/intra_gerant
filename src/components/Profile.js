@@ -4,7 +4,8 @@ import {
     Tab,
     Modal,
     FormControl,
-    Button
+    Button,
+    Glyphicon
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -30,6 +31,12 @@ import {
     setCenterPicture
 } from "../actions/profileActions";
 
+import {
+    setManagerProfileIsLoad,
+    setCenterProfileIsLoad,
+    setCenterPictureIsLoad
+} from "../actions/globalActions";
+
 import ProfileSocial from "./ProfileSocial";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileInfo from "./ProfileInfo";
@@ -42,10 +49,16 @@ import Texts from '../utils/Texts';
 
 class Profile extends React.Component {
 
-    componentWillMount() {
-        this.getManagerProfile();
-        this.getCenterProfile();
-        this.getCenterPicture();
+    componentDidMount() {
+        if (this.props.manager_profile_is_load === false) {
+            this.getManagerProfile();
+        }
+        if (this.props.center_profile_is_load === false) {
+            this.getCenterProfile();
+        }
+        if (this.props.center_picture_is_load === false) {
+            this.getCenterPicture();
+        }
     }
 
     getManagerProfile() {
@@ -69,6 +82,7 @@ class Profile extends React.Component {
                         });
 
                         me.props.setManagerKeepInfo();
+                        me.props.setManagerProfileIsLoad();
 
                     } else {
 
@@ -125,6 +139,7 @@ class Profile extends React.Component {
                         });
 
                         me.props.setCenterKeepInfo();
+                        me.props.setCenterProfileIsLoad();
 
                     } else {
 
@@ -171,6 +186,7 @@ class Profile extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         me.props.setCenterPicture(response.data[Fields.PICTURE]);
+                        me.props.setCenterPictureIsLoad();
 
                     } else {
 
@@ -242,7 +258,7 @@ class Profile extends React.Component {
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -268,7 +284,11 @@ function mapStateToProps(state) {
         center_nb_followers: state.profile.center_nb_followers,
         showAlert: state.profile.showAlert,
         alertTitle: state.profile.alertTitle,
-        alertText: state.profile.alertText
+        alertText: state.profile.alertText,
+
+        manager_profile_is_load: state.global.manager_profile_is_load,
+        center_profile_is_load: state.global.center_profile_is_load,
+        center_picture_is_load: state.global.center_picture_is_load
     };
 }
 
@@ -291,5 +311,9 @@ export default connect(mapStateToProps, {
     setZipCode,
     setCity,
     setCenterPhone,
-    setCenterPicture
+    setCenterPicture,
+
+    setManagerProfileIsLoad,
+    setCenterProfileIsLoad,
+    setCenterPictureIsLoad
 })(Profile);

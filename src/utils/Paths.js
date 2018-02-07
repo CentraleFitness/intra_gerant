@@ -24,7 +24,15 @@ const Paths = {
 
     CENTER_ADD_PUBLICATION: "/club/add/publication",
     CENTER_DELETE_PUBLICATION: "/club/delete/publication",
-    CENTER_GET_PUBLICATIONS: "/club/get/publications"
+    CENTER_GET_PUBLICATIONS: "/club/get/publications",
+
+    ADD_FEEDBACK: "/manager/add/feedback",
+    GET_FEEDBACKS: "/manager/get/feedbacks",
+    GET_FEEDBACK_STATES: "/manager/get/feedbackstates",
+
+    ADD_EVENT: "/center/add/event",
+    GET_EVENTS: "/center/get/events",
+    UPDATE_EVENT: "/center/update/event"
 };
 
 export default Paths;

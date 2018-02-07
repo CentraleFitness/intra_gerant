@@ -7,7 +7,8 @@ import {
     FormControl,
     ControlLabel,
     Button,
-    HelpBlock
+    HelpBlock,
+    Glyphicon
 } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -46,7 +47,7 @@ class Register extends React.Component {
 
         if (!Validator.name(this.props.first_name) ||
             !Validator.name(this.props.last_name) ||
-            !Validator.name(this.props.name) ||
+            !Validator.description(this.props.name) ||
             !Validator.description(this.props.description) ||
             !Validator.name(this.props.city) ||
             !Validator.address(this.props.address) ||
@@ -252,13 +253,12 @@ class Register extends React.Component {
                 return "warning";
         }
 
-        if (field === "first_name" || field === "last_name" ||
-            field === "name" || field === "city") {
+        if (field === "first_name" || field === "last_name" || field === "city") {
 
             if (Validator.name(value))
                 return "success";
 
-        } else if (field === "description") {
+        } else if (field === "description" || field === "name") {
 
             if (Validator.description(value))
                 return "success";
@@ -568,7 +568,7 @@ class Register extends React.Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button bsStyle="primary" onClick={this.handleRegisterClick.bind(this)}>Confirmer</Button>
+                        <Button bsStyle="primary" onClick={this.handleRegisterClick.bind(this)}><Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}</Button>
                     </Modal.Footer>
 
                 </Modal>
@@ -583,7 +583,7 @@ class Register extends React.Component {
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}><Glyphicon glyph="remove" />{Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

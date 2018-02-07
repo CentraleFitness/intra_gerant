@@ -1,0 +1,24 @@
+.eventImage {
+    height: 200px;
+    max-width: 200px;
+}
+
+.previewImage {
+    max-height: 300px;
+    max-width: 500px;
+}
+
+.previewImageNotSelected {
+    max-height: 100px;
+    max-width: 100px;
+}
+
+.helpBlock {
+    text-align: center;
+}
+
+.blockEllipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

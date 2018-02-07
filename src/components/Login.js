@@ -7,12 +7,20 @@ import {
     FormControl,
     ControlLabel,
     Form,
-    Checkbox
+    Checkbox,
+    Image,
+    Glyphicon
 } from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import { connect } from 'react-redux';
 
-import { displayAlert, dismissAlert, setEmail, setPassword, setRemember } from "../actions/loginActions";
+import {
+    displayAlert,
+    dismissAlert,
+    setEmail,
+    setPassword,
+    setRemember
+} from "../actions/loginActions";
 
 import Communication from '../utils/Communication';
 import Paths from '../utils/Paths';
@@ -140,6 +148,8 @@ class Login extends React.Component {
 
     handleRegisterClick() {
 
+        this.props.setEmail("");
+        this.props.setPassword("");
         browserHistory.push('/register');
     }
 
@@ -192,6 +202,14 @@ class Login extends React.Component {
 
                     <Modal.Body>
 
+                        <Image
+                            src={"/img/logo_cf.svg"}
+                            rounded
+                            responsive={true}
+
+                            className={"center-block logo"}
+                        />
+
                         <Form horizontal>
                             <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState('email')}>
                                 <Col componentClass={ControlLabel} sm={3}>
@@ -239,11 +257,11 @@ class Login extends React.Component {
 
                     <Modal.Footer>
                         <Button bsStyle="success" onClick={this.handleRegisterClick.bind(this)}>
-                            {Texts.CREER_COMPTE.text_fr}
+                            <Glyphicon glyph="wrench" /> {Texts.CREER_COMPTE.text_fr}
                         </Button>
-                        <Button>{Texts.MDP_OUBLIE.text_fr}</Button>
+                        <Button><Glyphicon glyph="warning-sign" /> {Texts.MDP_OUBLIE.text_fr}</Button>
                         <Button bsStyle="primary" onClick={this.handleLoginClick.bind(this)}>
-                            {Texts.CONNEXION_TITRE.text_fr}
+                            <Glyphicon glyph="log-in" /> {Texts.CONNEXION_TITRE.text_fr}
                         </Button>
                     </Modal.Footer>
 
@@ -259,7 +277,7 @@ class Login extends React.Component {
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

@@ -19,6 +19,10 @@ import {
     displayAlert
 } from "../actions/profileActions";
 
+import {
+    setPublicationsIsLoad
+} from "../actions/globalActions";
+
 import Dates from "../utils/Dates";
 import Texts from "../utils/Texts";
 import Fields from "../utils/Fields";
@@ -32,8 +36,10 @@ import '../styles/Profile.css';
 
 class ProfileSocial extends React.Component {
 
-    componentWillMount() {
-        this.getPublications();
+    componentDidMount() {
+        if (this.props.publications_is_load === false) {
+            this.getPublications();
+        }
     }
 
     getPublications() {
@@ -50,6 +56,7 @@ class ProfileSocial extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         me.props.setPublications(response.data.publications.reverse());
+                        me.props.setPublicationsIsLoad();
 
                     } else {
 
@@ -84,8 +91,9 @@ class ProfileSocial extends React.Component {
 
     onPublishClick() {
 
-        if (!Validator.description(this.props.current_publication))
+        if (!Validator.description(this.props.current_publication)) {
             return;
+        }
 
         this.addPublication();
     }
@@ -197,7 +205,7 @@ class ProfileSocial extends React.Component {
                             className={"submitButton"}
                             onClick={this.onPublishClick.bind(this)}
                         >
-                            <Glyphicon glyph="ok" /> {Texts.PUBLIER.text_fr}
+                            <Glyphicon glyph="send" /> {Texts.PUBLIER.text_fr}
                         </Button>
                     </Col>
                 </Panel>
@@ -225,7 +233,9 @@ function mapStateToProps(state) {
         center_nb_followers: state.profile.center_nb_followers,
         publications: state.profile.publications,
         current_publication: state.profile.current_publication,
-        center_picture: state.profile.center_picture
+        center_picture: state.profile.center_picture,
+
+        publications_is_load: state.global.publications_is_load
     };
 }
 
@@ -233,5 +243,7 @@ export default connect(mapStateToProps, {
     setCurrentPublication,
     setPublications,
     addPublication,
-    displayAlert
+    displayAlert,
+
+    setPublicationsIsLoad
 })(ProfileSocial);

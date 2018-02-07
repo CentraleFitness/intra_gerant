@@ -18,6 +18,17 @@ import {browserHistory} from 'react-router';
 import { connect } from 'react-redux';
 
 import { resetProfileInfo } from "../actions/profileActions";
+import {
+    setFeedbacksIsNotLoad,
+    setFeedbacksStatusIsNotLoad,
+    setAlbumIsNotLoad,
+    setPublicationsIsNotLoad,
+    setManagerPictureIsNotLoad,
+    setCenterPictureIsNotLoad,
+    setCenterProfileIsNotLoad,
+    setManagerProfileIsNotLoad,
+    setEventsIsNotLoad
+} from "../actions/globalActions";
 
 import '../styles/TopBar.css';
 import Texts from "../utils/Texts";
@@ -46,6 +57,17 @@ class TopBar extends React.Component {
     handleLogoutClick() {
         localStorage.removeItem("token");
         this.props.resetProfileInfo();
+
+        this.props.setFeedbacksIsNotLoad();
+        this.props.setFeedbacksStatusIsNotLoad();
+        this.props.setAlbumIsNotLoad();
+        this.props.setPublicationsIsNotLoad();
+        this.props.setManagerPictureIsNotLoad();
+        this.props.setCenterPictureIsNotLoad();
+        this.props.setCenterProfileIsNotLoad();
+        this.props.setManagerProfileIsNotLoad();
+        this.props.setEventsIsNotLoad();
+
         browserHistory.replace("/auth");
     }
 
@@ -290,8 +312,8 @@ class TopBar extends React.Component {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleModalDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
-                        <Button bsStyle={"primary"} onClick={this.handleConfirmChangePassword.bind(this)}>{Texts.CONFIRMER.text_fr}</Button>
+                        <Button onClick={this.handleModalDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
+                        <Button bsStyle={"primary"} onClick={this.handleConfirmChangePassword.bind(this)}><Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -305,7 +327,7 @@ class TopBar extends React.Component {
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleAlertDismiss.bind(this)}>{Texts.FERMER.text_fr}</Button>
+                        <Button onClick={this.handleAlertDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -320,5 +342,15 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+    setFeedbacksIsNotLoad,
+    setFeedbacksStatusIsNotLoad,
+    setAlbumIsNotLoad,
+    setPublicationsIsNotLoad,
+    setManagerPictureIsNotLoad,
+    setCenterPictureIsNotLoad,
+    setCenterProfileIsNotLoad,
+    setManagerProfileIsNotLoad,
+    setEventsIsNotLoad,
+
     resetProfileInfo
 })(TopBar);

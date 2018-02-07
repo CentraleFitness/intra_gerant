@@ -28,7 +28,15 @@ import {
     SET_PUBLICATIONS,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
-    RESET_PROFILE_INFO
+    RESET_PROFILE_INFO,
+
+    DISPLAY_PHOTO_MODAL,
+    DISMISS_PHOTO_MODAL,
+    SET_PHOTOS,
+    ADD_PHOTO,
+    SET_PICTURE_TITLE,
+    SET_PICTURE_DESCRIPTION,
+    SET_PICTURE_PREVIEW
 } from "./types"
 
 export const displayAlert = (alertInfo) => {
@@ -229,5 +237,53 @@ export const setCurrentPublication = (value) => {
 export const resetProfileInfo = () => {
     return {
         type: RESET_PROFILE_INFO
+    };
+};
+
+export const displayPhotoModal = (photoModalInfo) => {
+    return {
+        type: DISPLAY_PHOTO_MODAL,
+        payload: photoModalInfo
+    };
+};
+
+export const dismissPhotoModal = () => {
+    return {
+        type: DISMISS_PHOTO_MODAL
+    };
+};
+
+export const setPhotos = (photos) => {
+    return {
+        type: SET_PHOTOS,
+        payload: photos
+    };
+};
+
+export const addPhoto = (photo) => {
+    return {
+        type: ADD_PHOTO,
+        payload: photo
+    };
+};
+
+export const setPictureTitle = (value) => {
+    return {
+        type: SET_PICTURE_TITLE,
+        payload: value
+    };
+};
+
+export const setPictureDescription = (value) => {
+    return {
+        type: SET_PICTURE_DESCRIPTION,
+        payload: value
+    };
+};
+
+export const setPicturePreview = (value) => {
+    return {
+        type: SET_PICTURE_PREVIEW,
+        payload: value
     };
 };
