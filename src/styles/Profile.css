@@ -7,3 +7,7 @@
     height: 150px;
     width:150px;
 }
+
+.showNewLine{
+    white-space: pre-wrap;
+}

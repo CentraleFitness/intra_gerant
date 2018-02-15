@@ -1,8 +1,11 @@
 import {
     DISPLAY_ALERT,
     DISMISS_ALERT,
+    DISPLAY_DELETE_CONFIRM,
+    DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
     ADD_EVENT,
+    DELETE_EVENT,
     UPDATE_EVENT,
     SET_INITIAL_EVENTS,
     SET_FILTER_EVENTS_KEYWORDS,
@@ -19,7 +22,8 @@ import {
     SET_EVENT_MODAL_CURRENT_DESCRIPTION,
     SET_EVENT_MODAL_CURRENT_START_DATE,
     SET_EVENT_MODAL_CURRENT_END_DATE,
-    SET_EVENT_MODAL_CURRENT_PICTURE
+    SET_EVENT_MODAL_CURRENT_PICTURE,
+    SET_DELETION_CAUSE
 } from "./types"
 
 export const displayAlert = (alertInfo) => {
@@ -32,6 +36,19 @@ export const displayAlert = (alertInfo) => {
 export const dismissAlert = () => {
     return {
         type: DISMISS_ALERT
+    };
+};
+
+export const displayDeleteConfirm = (id) => {
+    return {
+        type: DISPLAY_DELETE_CONFIRM,
+        payload: id
+    };
+};
+
+export const dismissDeleteConfirm = () => {
+    return {
+        type: DISMISS_DELETE_CONFIRM
     };
 };
 
@@ -63,6 +80,12 @@ export const updateEvent = (event) => {
     };
 };
 
+export const deleteEvent = (id) => {
+    return {
+        type: DELETE_EVENT,
+        payload: id
+    };
+};
 
 export const setFilterEventsKeywords = (value) => {
     return {
@@ -162,6 +185,13 @@ export const setEventModalCurrentEndDate = (value) => {
 export const setEventModalCurrentPicture = (value) => {
     return {
         type: SET_EVENT_MODAL_CURRENT_PICTURE,
+        payload: value
+    };
+};
+
+export const setDeletionCause = (value) => {
+    return {
+        type: SET_DELETION_CAUSE,
         payload: value
     };
 };

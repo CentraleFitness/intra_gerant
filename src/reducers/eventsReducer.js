@@ -1,8 +1,11 @@
 import {
     DISPLAY_ALERT,
     DISMISS_ALERT,
+    DISPLAY_DELETE_CONFIRM,
+    DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
     ADD_EVENT,
+    DELETE_EVENT,
     UPDATE_EVENT,
     SET_INITIAL_EVENTS,
     SET_FILTER_EVENTS_KEYWORDS,
@@ -19,7 +22,8 @@ import {
     SET_EVENT_MODAL_CURRENT_DESCRIPTION,
     SET_EVENT_MODAL_CURRENT_START_DATE,
     SET_EVENT_MODAL_CURRENT_END_DATE,
-    SET_EVENT_MODAL_CURRENT_PICTURE
+    SET_EVENT_MODAL_CURRENT_PICTURE,
+    SET_DELETION_CAUSE
 } from "../actions/types"
 
 const initialState = {
@@ -28,13 +32,18 @@ const initialState = {
     filter_keywords: "",
     filter_start_date: "",
     filter_end_date: "",
-    filter_status: 0,
+    filter_status: [1, 2],
+    initial_filter_status: [1, 2],
     filter_subscribers_select: "superieur",
     filter_number_subscribers: 0,
     showAlert: false,
     alertTitle: "",
     alertText: "",
     showEventModal: false,
+
+    showDeleteConfirm: false,
+    delete_id: "",
+    deletion_cause: "",
 
     current_id: "",
     current_picture: "",
@@ -67,6 +76,20 @@ export default (state = initialState, action) => {
                 alertTitle: "",
                 alertText: ""
             };
+        case DISPLAY_DELETE_CONFIRM:
+            return {
+                ...state,
+                showDeleteConfirm: true,
+                deletion_cause: "",
+                delete_id: action.payload
+            };
+        case DISMISS_DELETE_CONFIRM:
+            return {
+                ...state,
+                showDeleteConfirm: false,
+                deletion_cause: "",
+                delete_id: ""
+            };
         case SET_EVENTS:
             return {
                 ...state,
@@ -79,14 +102,14 @@ export default (state = initialState, action) => {
             };
         case ADD_EVENT:
             let tmp_events = state.initial_events;
-            tmp_events.push(action.payload);
+            tmp_events.unshift(action.payload);
             return {
                 ...state,
                 events: tmp_events,
                 initial_events: tmp_events
             };
         case UPDATE_EVENT:
-            let tmp_events_update = state.initial_events;
+            let tmp_events_update = state.events;
             let index = tmp_events_update.findIndex(function (item) {
                 return item._id === action.payload._id;
             });
@@ -100,6 +123,17 @@ export default (state = initialState, action) => {
                 ...state,
                 events: tmp_events_update,
                 initial_events: tmp_events_update
+            };
+        case DELETE_EVENT:
+            let tmp_events_delete = state.initial_events;
+            let index_delete = tmp_events_delete.findIndex(function (item) {
+                return item._id === action.payload;
+            });
+            delete tmp_events_delete[index_delete];
+            return {
+                ...state,
+                events: tmp_events_delete,
+                initial_events: tmp_events_delete
             };
         case SET_FILTER_EVENTS_KEYWORDS:
             return {
@@ -219,6 +253,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 current_picture: action.payload
+            };
+        case SET_DELETION_CAUSE:
+            return {
+                ...state,
+                deletion_cause: action.payload
             };
         default:
             return state;

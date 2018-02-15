@@ -25,15 +25,24 @@ import {
     SET_CENTER_PICTURE_PREVIEW,
     SET_MANAGER_PICTURE,
     SET_CENTER_PICTURE,
+
     SET_PUBLICATIONS,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
+    DELETE_PUBLICATION,
+    DISPLAY_PUBLICATION_DELETE_CONFIRM,
+    DISMISS_PUBLICATION_DELETE_CONFIRM,
+
     RESET_PROFILE_INFO,
+
+    DISPLAY_DELETE_PICTURE_CONFIRM,
+    DISMISS_DELETE_PICTURE_CONFIRM,
 
     DISPLAY_PHOTO_MODAL,
     DISMISS_PHOTO_MODAL,
     SET_PHOTOS,
     ADD_PHOTO,
+    DELETE_PHOTO,
     SET_PICTURE_TITLE,
     SET_PICTURE_DESCRIPTION,
     SET_PICTURE_PREVIEW
@@ -75,6 +84,12 @@ const initialState = {
     center_picture: "",
     publications: [],
     current_publication: "",
+
+    delete_publication_id: "",
+    showDeletePublicationConfirm: false,
+
+    delete_picture_id: "",
+    showDeletePictureConfirm: false,
 
     showPhotoModal: false,
     photos: [],
@@ -263,6 +278,28 @@ export default (state = initialState, action) => {
                 ...state,
                 publications: tmp_publications
             };
+        case DELETE_PUBLICATION:
+            let tmp_publications_delete = state.publications;
+            let index_publications_delete = tmp_publications_delete.findIndex(function (item) {
+                return item._id === action.payload;
+            });
+            delete tmp_publications_delete[index_publications_delete];
+            return {
+                ...state,
+                publications: tmp_publications_delete
+            };
+        case DISPLAY_PUBLICATION_DELETE_CONFIRM:
+            return {
+                ...state,
+                showDeletePublicationConfirm: true,
+                delete_publication_id: action.payload
+            };
+        case DISMISS_PUBLICATION_DELETE_CONFIRM:
+            return {
+                ...state,
+                showDeletePublicationConfirm: false,
+                delete_publication_id: ""
+            };
         case SET_CURRENT_PUBLICATION:
             return {
                 ...state,
@@ -341,6 +378,16 @@ export default (state = initialState, action) => {
                 ...state,
                 photos: tmp_photos
             };
+        case DELETE_PHOTO:
+            let tmp_photos_delete = state.photos;
+            let index_delete = tmp_photos_delete.findIndex(function (item) {
+                return item.picture_id === action.payload;
+            });
+            delete tmp_photos_delete[index_delete];
+            return {
+                ...state,
+                photos: tmp_photos_delete
+            };
         case SET_PICTURE_TITLE:
             return {
                 ...state,
@@ -355,6 +402,18 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 picture_preview: action.payload
+            };
+        case DISPLAY_DELETE_PICTURE_CONFIRM:
+            return {
+                ...state,
+                showDeletePictureConfirm: true,
+                delete_picture_id: action.payload
+            };
+        case DISMISS_DELETE_PICTURE_CONFIRM:
+            return {
+                ...state,
+                showDeletePictureConfirm: false,
+                delete_picture_id: ""
             };
         default:
             return state;

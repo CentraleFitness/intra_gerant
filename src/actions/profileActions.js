@@ -25,15 +25,24 @@ import {
     SET_CENTER_PICTURE_PREVIEW,
     SET_MANAGER_PICTURE,
     SET_CENTER_PICTURE,
+
     SET_PUBLICATIONS,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
+    DELETE_PUBLICATION,
+    DISPLAY_PUBLICATION_DELETE_CONFIRM,
+    DISMISS_PUBLICATION_DELETE_CONFIRM,
+
     RESET_PROFILE_INFO,
+
+    DISPLAY_DELETE_PICTURE_CONFIRM,
+    DISMISS_DELETE_PICTURE_CONFIRM,
 
     DISPLAY_PHOTO_MODAL,
     DISMISS_PHOTO_MODAL,
     SET_PHOTOS,
     ADD_PHOTO,
+    DELETE_PHOTO,
     SET_PICTURE_TITLE,
     SET_PICTURE_DESCRIPTION,
     SET_PICTURE_PREVIEW
@@ -227,6 +236,26 @@ export const addPublication = (publication) => {
     };
 };
 
+export const deletePublication = (id) => {
+    return {
+        type: DELETE_PUBLICATION,
+        payload: id
+    };
+};
+
+export const displayPublicationDeleteConfirm = (id) => {
+    return {
+        type: DISPLAY_PUBLICATION_DELETE_CONFIRM,
+        payload: id
+    };
+};
+
+export const dismissPublicationDeleteConfirm = () => {
+    return {
+        type: DISMISS_PUBLICATION_DELETE_CONFIRM
+    };
+};
+
 export const setCurrentPublication = (value) => {
     return {
         type: SET_CURRENT_PUBLICATION,
@@ -285,5 +314,25 @@ export const setPicturePreview = (value) => {
     return {
         type: SET_PICTURE_PREVIEW,
         payload: value
+    };
+};
+
+export const displayDeletePictureConfirm = (id) => {
+    return {
+        type: DISPLAY_DELETE_PICTURE_CONFIRM,
+        payload: id
+    };
+};
+
+export const dismissDeletePictureConfirm = () => {
+    return {
+        type: DISMISS_DELETE_PICTURE_CONFIRM
+    };
+};
+
+export const deletePhoto = (id) => {
+    return {
+        type: DELETE_PHOTO,
+        payload: id
     };
 };

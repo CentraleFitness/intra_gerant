@@ -8,7 +8,8 @@ import {
     FormControl,
     Glyphicon,
     Button,
-    Well
+    Well,
+    Modal
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -16,7 +17,10 @@ import {
     setCurrentPublication,
     setPublications,
     addPublication,
-    displayAlert
+    displayAlert,
+    deletePublication,
+    displayPublicationDeleteConfirm,
+    dismissPublicationDeleteConfirm
 } from "../actions/profileActions";
 
 import {
@@ -150,8 +154,71 @@ class ProfileSocial extends React.Component {
         );
     }
 
+    deletePublication() {
+
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PUBLICATION_ID] = this.props.delete_publication_id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_DELETE_PUBLICATION, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.deletePublication(me.props.delete_publication_id);
+                        me.handleDeletePublicationConfirmDismiss();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
     handleCurrentCommentChange(event) {
+        console.log(event.target.value);
+        console.log(this.props.current_publication);
         this.props.setCurrentPublication(event.target.value);
+    }
+
+    onPublicationDelete(item) {
+        this.props.displayPublicationDeleteConfirm(item._id);
+    }
+
+    handleDeletePublicationConfirmDismiss() {
+        this.props.dismissPublicationDeleteConfirm();
+    }
+
+    confirmPublicationDelete() {
+        this.deletePublication();
     }
 
     render() {
@@ -183,7 +250,7 @@ class ProfileSocial extends React.Component {
                         </FormGroup>
                     </Col>
                     <Col sm={7}>
-                        <FormControl.Static>
+                        <FormControl.Static className={"showNewLine"}>
                             {this.props.center_description}
                         </FormControl.Static>
                     </Col>
@@ -214,11 +281,32 @@ class ProfileSocial extends React.Component {
                         this.props.publications.map((item) => (
                             <div key={item.creation_date}>
                                 <em>{Dates.format(item.creation_date)}</em>
-                                <Well>{item.text}</Well>
+                                <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                <Well className={"showNewLine"}>{item.text}</Well>
                             </div>
                         ))
                     }
                 </Panel>
+
+                <Modal show={this.props.showDeletePublicationConfirm} bsSize={"small"} onHide={this.handleDeletePublicationConfirmDismiss.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{Texts.SUPPRIMER_UNE_PUBLICATION.text_fr}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <FormControl.Static>
+                            {Texts.ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CETTE_PUBLICATION.text_fr}
+                        </FormControl.Static>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleDeletePublicationConfirmDismiss.bind(this)}>
+                            <Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}
+                        </Button>
+                        <Button onClick={this.confirmPublicationDelete.bind(this)}>
+                            <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </Panel>
         );
     }
@@ -235,6 +323,9 @@ function mapStateToProps(state) {
         current_publication: state.profile.current_publication,
         center_picture: state.profile.center_picture,
 
+        showDeletePublicationConfirm: state.profile.showDeletePublicationConfirm,
+        delete_publication_id: state.profile.delete_publication_id,
+
         publications_is_load: state.global.publications_is_load
     };
 }
@@ -244,6 +335,9 @@ export default connect(mapStateToProps, {
     setPublications,
     addPublication,
     displayAlert,
+    deletePublication,
+    displayPublicationDeleteConfirm,
+    dismissPublicationDeleteConfirm,
 
     setPublicationsIsLoad
 })(ProfileSocial);

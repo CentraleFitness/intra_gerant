@@ -27,7 +27,10 @@ import {
     addPhoto,
     setPictureTitle,
     setPictureDescription,
-    setPicturePreview
+    setPicturePreview,
+    displayDeletePictureConfirm,
+    dismissDeletePictureConfirm,
+    deletePhoto
 } from "../actions/profileActions";
 
 import {
@@ -180,6 +183,54 @@ class ProfilePhotos extends React.Component {
         );
     }
 
+    deletePicture() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PICTURE_ID] = this.props.delete_picture_id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_DECREASE_ALBUM, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.deletePhoto(me.props.delete_picture_id);
+                        me.handleDeletePictureConfirmDismiss();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
     onPhotoCloseClick() {
         this.props.dismissPhotoModal();
     }
@@ -199,6 +250,19 @@ class ProfilePhotos extends React.Component {
         reader.addEventListener("load", function () {
             me.props.setPicturePreview(reader.result);
         }, false);
+    }
+
+    onPhotoDelete(item) {
+        console.log(item);
+        this.props.displayDeletePictureConfirm(item.picture_id);
+    }
+
+    handleDeletePictureConfirmDismiss() {
+        this.props.dismissDeletePictureConfirm();
+    }
+
+    confirmPictureDelete() {
+        this.deletePicture()
     }
 
     render() {
@@ -263,21 +327,24 @@ class ProfilePhotos extends React.Component {
                                 <span
                                     style={{cursor:"pointer"}}
                                     key={item.picture_id}
-                                    onClick={this.onPhotoClick.bind(this, item)}
                                 >
-                                    <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
-                                        <Popover title={item.title} id={"PhotoPopover"}>
-                                            <strong>{item.description}</strong>
-                                        </Popover>
-                                    }>
+
                                         <Col xs={2} sm={2} md={2} lg={2}>
-                                            <Thumbnail
-                                                alt={item.title}
-                                                src={item.picture}
-                                                className={"center-block profileImage"}
-                                            />
+                                            <a onClick={this.onPhotoDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                            <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
+                                                <Popover title={item.title} id={"PhotoPopover"} className={"blockEllipsis"}>
+                                                    <strong className={"showNewLine"}>{item.description}</strong>
+                                                </Popover>
+                                            }>
+                                                <Thumbnail
+                                                    alt={item.title}
+                                                    src={item.picture}
+                                                    onClick={this.onPhotoClick.bind(this, item)}
+                                                    className={"center-block profileImage"}
+                                                />
+                                            </OverlayTrigger>
                                         </Col>
-                                    </OverlayTrigger>
+
                                 </span>
                             ))
                         }
@@ -286,17 +353,36 @@ class ProfilePhotos extends React.Component {
 
                 <Modal className={"photoModal"} show={this.props.showPhotoModal} onHide={this.onPhotoCloseClick.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.props.current_title}</Modal.Title>
+                        <Modal.Title className={"blockEllipsis"}>{this.props.current_title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Thumbnail alt={this.props.current_title} src={this.props.current_source} />
-                        <em>{Dates.format(this.props.current_creation_date)}</em>
-                        <FormControl.Static className={"photoModalBody"}>
+                        <em>{Texts.AJOUTER_LE.text_fr + " " + Dates.format(this.props.current_creation_date)}</em>
+                        <FormControl.Static className={"photoModalBody showNewLine"}>
                             {this.props.current_description}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.onPhotoCloseClick.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.props.showDeletePictureConfirm} bsSize={"small"} onHide={this.handleDeletePictureConfirmDismiss.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{Texts.SUPPRIMER_UNE_PHOTO.text_fr}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <FormControl.Static>
+                            {Texts.ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CETTE_PHOTO.text_fr}
+                        </FormControl.Static>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleDeletePictureConfirmDismiss.bind(this)}>
+                            <Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}
+                        </Button>
+                        <Button onClick={this.confirmPictureDelete.bind(this)}>
+                            <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
+                        </Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -317,6 +403,9 @@ function mapStateToProps(state) {
         picture_description: state.profile.picture_description,
         picture_preview: state.profile.picture_preview,
 
+        delete_picture_id: state.profile.delete_picture_id,
+        showDeletePictureConfirm: state.profile.showDeletePictureConfirm,
+
         album_is_load: state.global.album_is_load
     };
 }
@@ -331,6 +420,9 @@ export default connect(mapStateToProps, {
     setPictureTitle,
     setPictureDescription,
     setPicturePreview,
+    displayDeletePictureConfirm,
+    dismissDeletePictureConfirm,
+    deletePhoto,
 
     setAlbumIsLoad
 })(ProfilePhotos);

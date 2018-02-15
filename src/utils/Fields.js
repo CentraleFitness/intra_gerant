@@ -19,9 +19,11 @@ const Fields = {
     TEXT: "text",
     CREATION_DATE: "creation_date",
     PUBLICATIONS: "publications",
+    PUBLICATION_ID: "publication_id",
     EVENT_ID: "event_id",
     START_DATE: "start_date",
-    END_DATE: "end_date"
+    END_DATE: "end_date",
+    DELETION_CAUSE: "deletion_cause"
 };
 
 export default Fields;

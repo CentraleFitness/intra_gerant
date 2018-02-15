@@ -400,6 +400,7 @@ class Contact extends React.Component {
                                 header={item.title}
                                 bsStyle={this.getStatusStyle(item.feedback_state)}
                                 onClick={this.handleFeedbackOnClick.bind(this, item)}
+                                className={"showNewLine"}
                             >
                                 {item.description + " ("}
                                 <em>{Texts.DERNIERE_MODIFICATION.text_fr + " " + Dates.format(item.update_date)}</em>

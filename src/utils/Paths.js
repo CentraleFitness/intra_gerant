@@ -32,7 +32,8 @@ const Paths = {
 
     ADD_EVENT: "/center/add/event",
     GET_EVENTS: "/center/get/events",
-    UPDATE_EVENT: "/center/update/event"
+    UPDATE_EVENT: "/center/update/event",
+    DELETE_EVENT: "/center/delete/event"
 };
 
 export default Paths;

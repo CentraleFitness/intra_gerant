@@ -346,6 +346,46 @@ const Texts = {
     PAS_DIMAGE_SELECTIONNE: {
         text_fr: "Pas d'image sélectionnée.",
         text_en: "No selected picture."
+    },
+    SUPPRIMER: {
+        text_fr: "Supprimer",
+        text_en: "Delete"
+    },
+    SUPPRIMER_UN_EVENEMENT: {
+        text_fr: "Supprimer un événement",
+        text_en: "Delete an event"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CET_EVENEMENT: {
+        text_fr: "Etes-vous sûr de vouloir supprimer cet événement ?",
+        text_en: "Do you really want to delete this event ?"
+    },
+    VOUS_POUVEZ_PRECISER_LA_RAISON_DE_CETTE_SUPPRESSION: {
+        text_fr: "Vous pouvez préciser la raison de cette suppression, si vous le souhaitez :",
+        text_en: "You can precise the cause of this deleteion, if you want:"
+    },
+    RAISON_DE_LA_SUPPRESSION: {
+        text_fr: "Raison de la suppression ...",
+        text_en: "Deleteion cause ..."
+    },
+    SUPPRIMER_UNE_PHOTO: {
+        text_fr: "Supprimer une photo",
+        text_en: "Delete a picture"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CETTE_PHOTO: {
+        text_fr: "Etes-vous sûr de vouloir supprimer cette photo ?",
+        text_en: "Do you really want to delete this picture ?"
+    },
+    SUPPRIMER_UNE_PUBLICATION: {
+        text_fr: "Supprimer une publication",
+        text_en: "Delete a publication"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CETTE_PUBLICATION: {
+        text_fr: "Etes-vous sûr de vouloir supprimer cette publication ?",
+        text_en: "Do you really want to delete this publication ?"
+    },
+    AJOUTER_LE: {
+        text_fr: "Ajouté le",
+        text_en: "Added the"
     }
 };
 

@@ -16,7 +16,8 @@ import {
     Image,
     Badge,
     Modal,
-    HelpBlock
+    HelpBlock,
+    Label
 } from 'react-bootstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -24,10 +25,13 @@ import { connect } from 'react-redux';
 import {
     displayAlert,
     dismissAlert,
+    displayDeleteConfirm,
+    dismissDeleteConfirm,
     setEvents,
     setInitialEvents,
     addEvent,
     updateEvent,
+    deleteEvent,
     setFilterEventsStartDate,
     setFilterEventsEndDate,
     setFilterEventsKeywords,
@@ -42,7 +46,8 @@ import {
     setEventModalCurrentDescription,
     setEventModalCurrentStartDate,
     setEventModalCurrentEndDate,
-    setEventModalCurrentPicture
+    setEventModalCurrentPicture,
+    setDeletionCause
 } from "../actions/eventsActions";
 
 import {
@@ -84,6 +89,7 @@ class Events extends React.Component {
                         let rev_events = response.data.events.reverse();
                         me.props.setEvents(rev_events);
                         me.props.setInitialEvents(rev_events);
+                        me.filterStatus(me.props.filter_status);
                         me.props.setEventsIsLoad();
 
                     } else {
@@ -176,6 +182,56 @@ class Events extends React.Component {
 
                         me.filterStatus(me.props.filter_status);
                         me.handleEventModalDismiss();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    deleteEvent() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.EVENT_ID] = this.props.delete_id;
+        params[Fields.DELETION_CAUSE] = this.props.deletion_cause;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.DELETE_EVENT, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.deleteEvent(me.props.delete_id);
+                        me.filterStatus(me.props.filter_status);
+                        me.handleDeleteConfirmDismiss();
 
                     } else {
 
@@ -314,7 +370,6 @@ class Events extends React.Component {
     filterStatus(value) {
         let me = this;
         let updatedEvents = this.props.initial_events;
-        console.log(updatedEvents);
         updatedEvents = updatedEvents.filter(function(item){
             return me.getStatusBool(value, item) && me.getKeywordsBool(me.props.filter_keywords, item) &&
                 me.getNbSubscribersBool(me.props.filter_subscribers_select, me.props.filter_number_subscribers, item) &&
@@ -325,10 +380,13 @@ class Events extends React.Component {
 
     getStatusBool(value, item) {
         let now = new Date().getTime();
-        return ((value === 0) ||
-            (value === 1 && now <= item.start_date) ||
-            (value === 2 && item.start_date <= now && now <= item.end_date) ||
-            (value === 3 && item.end_date <= now));
+        let stat1 = (value.indexOf(1) !== -1),
+            stat2 = (value.indexOf(2) !== -1),
+            stat3 = (value.indexOf(3) !== -1);
+        return ((stat1 && stat2 && stat3) ||
+            (stat1 && now <= item.start_date) ||
+            (stat2 && item.start_date <= now && now <= item.end_date) ||
+            (stat3 && item.end_date <= now));
     }
 
     getKeywordsBool(value, item) {
@@ -351,6 +409,7 @@ class Events extends React.Component {
     resetFilters() {
         this.props.resetFilters();
         this.props.setEvents(this.props.initial_events);
+        this.filterStatus(this.props.initial_filter_status);
     }
 
     handleEventModalDismiss() {
@@ -407,6 +466,10 @@ class Events extends React.Component {
             current_end_date: item.end_date,
             current_update_date: item.update_date
         });
+    }
+
+    deleteEventClick(item) {
+        this.props.displayDeleteConfirm(item._id);
     }
 
     onCurrentTitleChange(event) {
@@ -476,6 +539,44 @@ class Events extends React.Component {
         return "warning";
     }
 
+    handleDeleteConfirmDismiss() {
+        this.props.dismissDeleteConfirm();
+    }
+
+    confirmEventDelete() {
+        this.deleteEvent();
+    }
+
+    getStatusStyle(start_date, end_date) {
+        let now = new Date().getTime();
+        if (now <= start_date || (start_date === 1 && end_date === "")) {
+            return "warning";
+        } else if ((start_date <= now && now <= end_date) || (start_date === 2 && end_date === "")) {
+            return "primary";
+        } else if (end_date <= now || (start_date === 3 && end_date === "")) {
+            return "danger";
+        } else {
+            return "default";
+        }
+    }
+
+    getStatusName(start_date, end_date) {
+        let now = new Date().getTime();
+        if (now <= start_date || (start_date === 1 && end_date === "")) {
+            return Texts.A_VENIR.text_fr;
+        } else if ((start_date <= now && now <= end_date) || (start_date === 2 && end_date === "")) {
+            return Texts.EN_COURS.text_fr;
+        } else if (end_date <= now || (start_date === 3 && end_date === "")) {
+            return Texts.TERMINE.text_fr;
+        } else {
+            return "";
+        }
+    }
+
+    handleEventDeletionCauseChange(event) {
+        this.props.setDeletionCause(event.target.value);
+    }
+
     render() {
 
         const inferieur_a = Texts.INFERIEUR_A.text_fr;
@@ -535,16 +636,15 @@ class Events extends React.Component {
                                     </Col>
                                     <Col xs={8} sm={8} md={8} lg={8}>
                                         <ToggleButtonGroup
-                                            type="radio"
+                                            type="checkbox"
                                             name="date"
                                             value={this.props.filter_status}
-                                            defaultValue={0}
+                                            defaultValue={this.props.initial_filter_status}
                                             onChange={this.statusFilterChange.bind(this)}
                                         >
-                                            <ToggleButton value={0}>{Texts.TOUS.text_fr}</ToggleButton>
-                                            <ToggleButton value={1} bsStyle={"warning"}>{Texts.A_VENIR.text_fr}</ToggleButton>
-                                            <ToggleButton value={2} bsStyle={"primary"}>{Texts.EN_COURS.text_fr}</ToggleButton>
-                                            <ToggleButton value={3} bsStyle={"danger"}>{Texts.TERMINE.text_fr}</ToggleButton>
+                                            <ToggleButton value={1} bsStyle={this.getStatusStyle(1, "")}>{this.getStatusName(1, "")}</ToggleButton>
+                                            <ToggleButton value={2} bsStyle={this.getStatusStyle(2, "")}>{this.getStatusName(2, "")}</ToggleButton>
+                                            <ToggleButton value={3} bsStyle={this.getStatusStyle(3, "")}>{this.getStatusName(3, "")}</ToggleButton>
                                         </ToggleButtonGroup>
                                     </Col>
                                 </FormGroup>
@@ -580,7 +680,7 @@ class Events extends React.Component {
                         onClick={this.resetFilters.bind(this)}
                     >
                         <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_FILTRES.text_fr}
-                    </Button>
+                    </Button>&nbsp;
                     <Button
                         className={"pull-right"}
                         onClick={this.createEventClick.bind(this)}
@@ -600,19 +700,28 @@ class Events extends React.Component {
                                             className={"eventImage center-block"}
                                         />
                                         <h4 className={"blockEllipsis"}>{item.title}</h4>
+                                        <Label bsStyle={this.getStatusStyle(item.start_date, item.end_date)}>
+                                            {this.getStatusName(item.start_date, item.end_date)}
+                                        </Label>
                                         <h5>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
                                         <p>
                                             {Texts.NOMBRE_D_INSCRIT.text_fr + " : "}<Badge>{item.nb_subscribers}</Badge>
                                         </p>
-                                        <p>
+                                        <div>
                                             <Button
-                                                className={"center-block"}
+
                                                 bsStyle="primary"
                                                 onClick={this.editEventClick.bind(this, item)}
                                             >
                                                 <Glyphicon glyph="pencil" /> {Texts.EDITER.text_fr}
+                                            </Button>&nbsp;
+                                            <Button
+                                                bsStyle="danger"
+                                                onClick={this.deleteEventClick.bind(this, item)}
+                                            >
+                                                <Glyphicon glyph="remove" /> {Texts.SUPPRIMER.text_fr}
                                             </Button>
-                                        </p>
+                                        </div>
                                     </Thumbnail>
                                 </Col>
                             ))
@@ -738,6 +847,36 @@ class Events extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+
+                <Modal show={this.props.showDeleteConfirm} onHide={this.handleDeleteConfirmDismiss.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{Texts.SUPPRIMER_UN_EVENEMENT.text_fr}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <FormControl.Static>
+                            {Texts.ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CET_EVENEMENT.text_fr}<br/>
+                            {Texts.VOUS_POUVEZ_PRECISER_LA_RAISON_DE_CETTE_SUPPRESSION.text_fr}
+                        </FormControl.Static>
+                        <FormGroup>
+                            <FormControl
+                                rows={6}
+                                componentClass="textarea"
+                                placeholder={Texts.RAISON_DE_LA_SUPPRESSION.text_fr}
+                                value={this.props.deletion_cause}
+                                onChange={this.handleEventDeletionCauseChange.bind(this)}
+                            />
+                        </FormGroup>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleDeleteConfirmDismiss.bind(this)}>
+                            <Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}
+                        </Button>
+                        <Button onClick={this.confirmEventDelete.bind(this)}>
+                            <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </Panel>
         );
     }
@@ -754,9 +893,14 @@ function mapStateToProps(state) {
         filter_start_date: state.events.filter_start_date,
         filter_end_date: state.events.filter_end_date,
         filter_status: state.events.filter_status,
+        initial_filter_status: state.events.initial_filter_status,
         filter_subscribers_select: state.events.filter_subscribers_select,
         filter_number_subscribers: state.events.filter_number_subscribers,
         showEventModal: state.events.showEventModal,
+
+        showDeleteConfirm: state.events.showDeleteConfirm,
+        delete_id: state.events.delete_id,
+        deletion_cause: state.events.deletion_cause,
 
         current_id: state.events.current_id,
         current_picture: state.events.current_picture,
@@ -779,10 +923,13 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     displayAlert,
     dismissAlert,
+    displayDeleteConfirm,
+    dismissDeleteConfirm,
     setEvents,
     setInitialEvents,
     addEvent,
     updateEvent,
+    deleteEvent,
     setFilterEventsStartDate,
     setFilterEventsEndDate,
     setFilterEventsKeywords,
@@ -798,6 +945,7 @@ export default connect(mapStateToProps, {
     setEventModalCurrentStartDate,
     setEventModalCurrentEndDate,
     setEventModalCurrentPicture,
+    setDeletionCause,
 
     setEventsIsLoad
 })(Events);

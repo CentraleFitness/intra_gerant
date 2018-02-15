@@ -16,7 +16,7 @@ class Menu extends React.Component {
 
     render() {
         return (
-            <Col xsHidden smHidden md={0} lg={0}>
+            <Col xs={0} sm={0} md={0} lg={0}>
             <Panel className={"menu"}>
                 <Nav bsStyle="pills" stacked activeKey={1}>
                     <LinkContainer to={"/home"}>
