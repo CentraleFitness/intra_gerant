@@ -109,7 +109,7 @@ export default (state = initialState, action) => {
                 initial_events: tmp_events
             };
         case UPDATE_EVENT:
-            let tmp_events_update = state.events;
+            let tmp_events_update = state.initial_events;
             let index = tmp_events_update.findIndex(function (item) {
                 return item._id === action.payload._id;
             });

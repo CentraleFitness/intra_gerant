@@ -5,6 +5,7 @@ import ProfileReducer from './profileReducer';
 import GlobalReducer from './globalReducer';
 import ContactReducer from './contactReducer';
 import EventsReducer from './eventsReducer';
+import CustomPrograms from './customProgramsReducer';
 
 export default combineReducers({
     login: LoginReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     profile: ProfileReducer,
     contact: ContactReducer,
     events: EventsReducer,
+    custom_programs: CustomPrograms,
     global: GlobalReducer
 });

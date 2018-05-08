@@ -39,6 +39,11 @@ class Menu extends React.Component {
                             <Glyphicon glyph="calendar" />&nbsp;&nbsp;{Texts.EVENEMENTS.text_fr}
                         </NavItem>
                     </LinkContainer>
+                    <LinkContainer to={"/customprograms"}>
+                        <NavItem eventKey={"customprograms"}>
+                            <Glyphicon glyph="time" />&nbsp;&nbsp;{Texts.PROGRAMMES.text_fr}
+                        </NavItem>
+                    </LinkContainer>
                     <LinkContainer to={"/contact"}>
                         <NavItem eventKey={"contact"}>
                             <Glyphicon glyph="envelope" />&nbsp;&nbsp;{Texts.CONTACT.text_fr}

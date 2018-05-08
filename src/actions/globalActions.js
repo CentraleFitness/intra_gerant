@@ -1,4 +1,6 @@
 import {
+    SET_CUSTOM_PROGRAMS_IS_LOAD,
+    SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_LOAD,
     SET_FEEDBACKS_IS_LOAD,
     SET_FEEDBACKS_STATUS_IS_LOAD,
     SET_EVENTS_IS_LOAD,
@@ -9,6 +11,8 @@ import {
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
 
+    SET_CUSTOM_PROGRAMS_IS_NOT_LOAD,
+    SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_NOT_LOAD,
     SET_FEEDBACKS_IS_NOT_LOAD,
     SET_FEEDBACKS_STATUS_IS_NOT_LOAD,
     SET_EVENTS_IS_NOT_LOAD,
@@ -19,6 +23,19 @@ import {
     SET_PUBLICATIONS_IS_NOT_LOAD,
     SET_ALBUM_IS_NOT_LOAD
 } from "./types"
+
+export const setCustomProgramsIsLoad = () => {
+    return {
+        type: SET_CUSTOM_PROGRAMS_IS_LOAD
+    };
+};
+
+export const setCustomProgramsActivitiesIsLoad = () => {
+    return {
+        type: SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_LOAD
+    };
+};
+
 
 export const setFeedbacksIsLoad = () => {
     return {
@@ -71,6 +88,18 @@ export const setPublicationsIsLoad = () => {
 export const setAlbumIsLoad = () => {
     return {
         type: SET_ALBUM_IS_LOAD
+    };
+};
+
+export const setCustomProgramsIsNotLoad = () => {
+    return {
+        type: SET_CUSTOM_PROGRAMS_IS_NOT_LOAD
+    };
+};
+
+export const setCustomProgramsActivitiesIsNotLoad = () => {
+    return {
+        type: SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_NOT_LOAD
     };
 };
 

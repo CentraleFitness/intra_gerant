@@ -183,6 +183,14 @@ const Texts = {
         text_fr: "Statistiques",
         text_en: "Statistics"
     },
+    PROGRAMMES_PERSONNALISES: {
+        text_fr: "Programmes personnalisés",
+        text_en: "Custom programs"
+    },
+    PROGRAMMES: {
+        text_fr: "Programmes",
+        text_en: "Programs"
+    },
     NUMERO_PAS_VISIBLE: {
         text_fr: "Votre numéro de téléphone ne sera pas visible par les autres utilisateurs.",
         text_en: "Your phone number will not be displayed to others users."
@@ -386,6 +394,58 @@ const Texts = {
     AJOUTER_LE: {
         text_fr: "Ajouté le",
         text_en: "Added the"
+    },
+    NOMBRE_D_ACTIVITES: {
+        text_fr: "Nombre d'activités",
+        text_en: "Activities number"
+    },
+    DUREE_TOTALE: {
+        text_fr: "Durée totale",
+        text_en: "Total duration"
+    },
+    ACTIVITES: {
+        text_fr: "Activité(s)",
+        text_en: "Activities"
+    },
+    DISPONIBLE: {
+        text_fr: "Disponible",
+        text_en: "Available"
+    },
+    INDISPONIBLE: {
+        text_fr: "Indisponible",
+        text_en: "Unavailable"
+    },
+    IMAGE: {
+        text_fr: "Image",
+        text_en: "Picture"
+    },
+    PAR_NOM: {
+        text_fr: "Par nom",
+        text_en: "By name"
+    },
+    CREER_UN_PROGRAMME: {
+        text_fr: "Créer un programme",
+        text_en: "Create a program"
+    },
+    PAR_NOMBRE_D_ACTIVITES: {
+        text_fr: "Par nombre d'activités",
+        text_en: "By activities number"
+    },
+    PAR_DUREE_TOTALE: {
+        text_fr: "Par durée totale",
+        text_en: "By total duration"
+    },
+    PAR_DISPONIBILITE: {
+        text_fr: "Par disponibilité",
+        text_en: "By availability"
+    },
+    EN_MINUTES: {
+        text_fr: "En minutes",
+        text_en: "In minutes"
+    },
+    DUREE: {
+        text_fr: "Durée",
+        text_en: "Duration"
     }
 };
 

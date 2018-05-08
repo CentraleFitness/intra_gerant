@@ -4,6 +4,7 @@ import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 import Dashboard from './Dashboard';
 import Home from './Home';
 import Events from './Events';
+import CustomPrograms from './CustomPrograms';
 import Contact from './Contact';
 import Statistics from "./Statistics";
 import Profile from "./Profile";
@@ -26,6 +27,7 @@ class App extends React.Component {
                         <Route path={"profile"} component={Profile}/>
                         <Route path={"statistics"} component={Statistics}/>
                         <Route path={"events"} component={Events}/>
+                        <Route path={"customprograms"} component={CustomPrograms}/>
                         <Route path={"contact"} component={Contact}/>
                     </Route>
                 </Route>
