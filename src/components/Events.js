@@ -500,11 +500,13 @@ class Events extends React.Component {
 
     onCurrentPictureChange() {
         let me = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(this.eventPictureRef.files[0]);
-        reader.addEventListener("load", function () {
-            me.props.setEventModalCurrentPicture(reader.result);
-        }, false);
+        if (this.eventPictureRef.files.length > 0) {
+            let reader = new FileReader();
+            reader.readAsDataURL(this.eventPictureRef.files[0]);
+            reader.addEventListener("load", function () {
+                me.props.setEventModalCurrentPicture(reader.result);
+            }, false);
+        }
     }
 
     getValidationState(field) {

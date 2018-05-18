@@ -35,6 +35,13 @@ class Dates {
         let yyyy = today.getFullYear();
         return yyyy + "-" + (mm > 9 ? mm : ('0' + mm)) + "-" + (dd > 9 ? dd : ('0' + dd));
     }
+
+    static formatMinutesDuration(duration) {
+        let hours = parseInt(duration / 60);
+        let minutes = parseInt(duration % 60);
+
+        return (hours === 0 ? "" : (hours + " h ")) + (minutes === 0 ? "" : (minutes + " min"));
+    }
 }
 
 export default Dates;

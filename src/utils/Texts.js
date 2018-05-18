@@ -446,7 +446,48 @@ const Texts = {
     DUREE: {
         text_fr: "Durée",
         text_en: "Duration"
+    },
+    PROGRAMME: {
+        text_fr: "Programme",
+        text_en: "Program"
+    },
+    ICONE: {
+        text_fr: "Icone",
+        text_en: "Icon"
+    },
+    RENDRE_DISPONIBLE: {
+        text_fr: "Rendre disponible",
+        text_en: "Make available"
+    },
+    AJOUTER_UNE_ACTIVITE: {
+        text_fr: "Ajouter une activité",
+        text_en: "Add an activity"
+    },
+    ENREGISTRER_LES_DISPONIBILITES: {
+        text_fr: "Enregistrer les disponibilités",
+        text_en: "Save availabilities"
+    },
+    REINITIALISER_LES_DISPONIBILITES: {
+        text_fr: "Reinitialiser les disponibilités",
+        text_en: "Reset availabilities"
+    },
+    PROGRAMME_NE_CONTIENT_QUUNE_SEULE_ACTIVITE: {
+        text_fr: "Le programme ne contient qu'une suele activité",
+        text_en: "The program only contain one activity"
+    },
+    ACTION: {
+        text_fr: "Action",
+        text_en: "Action"
+    },
+    SUPPRIMER_UN_PROGRAMME_PRERSONNALISE: {
+        text_fr: "Supprimer un programme personnalisé",
+        text_en: "Delete a custom program"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CE_PROGRAMME: {
+        text_fr: "Etes-vous sûr de vouloir supprimer ce programme personnalisé ?",
+        text_en: "Do you really want to delete this custom program ?"
     }
+
 };
 
 export default Texts;

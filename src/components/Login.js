@@ -203,7 +203,7 @@ class Login extends React.Component {
                     <Modal.Body>
 
                         <Image
-                            src={"/img/logo_cf.svg"}
+                            src={"/img/logo_cf.png"}
                             rounded
                             responsive={true}
 

@@ -6,6 +6,7 @@ const Fields = {
     FIRSTNAME: "first_name",
     LASTNAME: "last_name",
     PHONE: "phone_number",
+    CENTER_PHONE: "center_phone_number",
     NAME: "name",
     DESCRIPTION: "description",
     ADDRESS: "address",
@@ -23,7 +24,12 @@ const Fields = {
     EVENT_ID: "event_id",
     START_DATE: "start_date",
     END_DATE: "end_date",
-    DELETION_CAUSE: "deletion_cause"
+    DELETION_CAUSE: "deletion_cause",
+    CUSTOM_PROGRAM_ID: "custom_program_id",
+    NB_ACTIVITIES: "nb_activities",
+    TOTAL_TIME: "total_time",
+    AVAILABLE: "available",
+    ACTIVITIES: "activities"
 };
 
 export default Fields;

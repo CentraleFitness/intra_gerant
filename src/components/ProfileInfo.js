@@ -74,11 +74,13 @@ class ProfileInfo extends React.Component {
 
     onUpdateManagerPictureFile() {
         let me = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(this.managerPictureInputFile.files[0]);
-        reader.addEventListener("load", function () {
-            me.props.setManagerPicturePreview(reader.result);
-        }, false);
+        if (this.managerPictureInputFile.files.length > 0) {
+            let reader = new FileReader();
+            reader.readAsDataURL(this.managerPictureInputFile.files[0]);
+            reader.addEventListener("load", function () {
+                me.props.setManagerPicturePreview(reader.result);
+            }, false);
+        }
     }
 
     onUpdateManagerImageSaveClick() {
@@ -106,12 +108,14 @@ class ProfileInfo extends React.Component {
 
     onUpdateCenterPictureFile() {
         let me = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(this.centerPictureInputFile.files[0]);
-        reader.addEventListener("load", function () {
-            me.props.setCenterPicturePreview(reader.result);
+        if (this.centerPictureInputFile.files.length > 0) {
+            let reader = new FileReader();
+            reader.readAsDataURL(this.centerPictureInputFile.files[0]);
+            reader.addEventListener("load", function () {
+                me.props.setCenterPicturePreview(reader.result);
 
-        }, false);
+            }, false);
+        }
     }
 
     onUpdateCenterImageSaveClick() {
@@ -162,9 +166,9 @@ class ProfileInfo extends React.Component {
             !Validator.description(this.props.center_description) ||
             !Validator.name(this.props.center_city) ||
             !Validator.address(this.props.center_address) ||
-            !Validator.address(this.props.center_address_second) ||
+            (this.props.address_second !== "" && !Validator.address(this.props.address_second)) ||
             !Validator.phoneNumber(this.props.manager_phone) ||
-            !Validator.phoneNumber(this.props.center_phone) ||
+            (this.props.center_phone !== "" && !Validator.phoneNumber(this.props.center_phone)) ||
             !Validator.zipCode(this.props.center_zip_code) ||
             !Validator.email(this.props.manager_email)) {
 

@@ -245,11 +245,13 @@ class ProfilePhotos extends React.Component {
 
     onUpdatePictureFile() {
         let me = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(this.centerAddPictureRef.files[0]);
-        reader.addEventListener("load", function () {
-            me.props.setPicturePreview(reader.result);
-        }, false);
+        if (this.centerAddPictureRef.files.length > 0) {
+            let reader = new FileReader();
+            reader.readAsDataURL(this.centerAddPictureRef.files[0]);
+            reader.addEventListener("load", function () {
+                me.props.setPicturePreview(reader.result);
+            }, false);
+        }
     }
 
     onPhotoDelete(item) {

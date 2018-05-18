@@ -33,7 +33,16 @@ const Paths = {
     ADD_EVENT: "/center/add/event",
     GET_EVENTS: "/center/get/events",
     UPDATE_EVENT: "/center/update/event",
-    DELETE_EVENT: "/center/delete/event"
+    DELETE_EVENT: "/center/delete/event",
+
+    SET_CUSTOM_PROGRAMS_AVAILABILITY: "/center/set/customprogramavailability",
+    ADD_CUSTOM_PROGRAM: "/center/add/customprogram",
+    UPDATE_CUSTOM_PROGRAM: "/center/update/customprogram",
+    GET_CUSTOM_PROGRAMS: "/center/get/customprograms",
+    DELETE_CUSTOM_PROGRAM: "/center/delete/customprogram",
+    GET_ACTIVITIES: "/center/get/activities",
+
+    GET_FITNESS_CENTER_ID: "/center/get/id",
 };
 
 export default Paths;

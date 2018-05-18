@@ -51,9 +51,9 @@ class Register extends React.Component {
             !Validator.description(this.props.description) ||
             !Validator.name(this.props.city) ||
             !Validator.address(this.props.address) ||
-            !Validator.address(this.props.address_second) ||
+            (this.props.address_second !== "" && !Validator.address(this.props.address_second)) ||
             !Validator.phoneNumber(this.props.phone) ||
-            !Validator.phoneNumber(this.props.center_phone) ||
+            (this.props.center_phone !== "" && !Validator.phoneNumber(this.props.center_phone)) ||
             !Validator.zipCode(this.props.zip_code) ||
             !Validator.password(this.props.password) ||
             !Validator.password(this.props.confirm_password) ||
@@ -88,6 +88,17 @@ class Register extends React.Component {
         params[Fields.PHONE] = this.props.phone;
         params[Fields.EMAIL] = this.props.email;
         params[Fields.PASSWORD] = this.props.password;
+        params[Fields.NAME] = this.props.name;
+        params[Fields.DESCRIPTION] = this.props.description;
+        params[Fields.ADDRESS] = this.props.address;
+        if (this.props.address_second !== "" && this.props.address_second !== null) {
+            params[Fields.ADDRESS_SECOND] = this.props.address_second;
+        }
+        params[Fields.ZIP_CODE] = this.props.zip_code;
+        params[Fields.CITY] = this.props.city;
+        if (this.props.center_phone !== "" && this.props.center_phone !== null) {
+            params[Fields.CENTER_PHONE] = this.props.center_phone;
+        }
 
         let me = this;
 
@@ -97,7 +108,17 @@ class Register extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.REG_SUCCESS.code) {
 
-                        me.registerCenter(response.data.token);
+                        me.props.displayAlert({
+                            alertTitle: Texts.CREATION_COMPTE_TITRE.text_fr,
+                            alertText: Status.REG_SUCCESS.message_fr
+                        });
+
+                        me.props.resetRegisterInfo();
+
+                        setTimeout(function(){
+                            me.props.dismissAlert();
+                            browserHistory.replace('/auth');
+                        }, 750);
 
                     } else {
 
