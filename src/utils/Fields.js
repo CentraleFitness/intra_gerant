@@ -29,7 +29,8 @@ const Fields = {
     NB_ACTIVITIES: "nb_activities",
     TOTAL_TIME: "total_time",
     AVAILABLE: "available",
-    ACTIVITIES: "activities"
+    ACTIVITIES: "activities",
+    CUSTOM_PROGRAMS: "custom_programs"
 };
 
 export default Fields;

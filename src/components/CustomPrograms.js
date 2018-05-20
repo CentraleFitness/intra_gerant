@@ -15,8 +15,7 @@ import {
     Radio,
     Modal,
     HelpBlock,
-    MenuItem,
-    DropdownButton, ButtonGroup
+    ButtonGroup
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -29,6 +28,7 @@ import {
     addCustomProgram,
     updateCustomProgram,
     updateCustomProgramAvailability,
+    setCustomProgramsAvailabilities,
     resetCustomProgramsAvailabilities,
     deleteCustomProgram,
     displayCustomProgramModal,
@@ -41,8 +41,17 @@ import {
     setCustomProgramModalCurrentActivities,
     setCustomProgramModalCurrentAvailable,
     addToCurrentActivities,
+    deleteToCurrentActivities,
     displayCustomProgramDeleteConfirm,
-    dismissCustomProgramDeleteConfirm
+    dismissCustomProgramDeleteConfirm,
+
+    setFilterCustomProgramKeywords,
+    setFilterCustomProgramNumberActivities,
+    setFilterCustomProgramTotalDuration,
+    setFilterCustomProgramAvailable,
+    setFilterCustomProgramUnavailable,
+    resetFilterCustomProgram
+
 } from "../actions/customProgramsActions";
 
 import {
@@ -59,9 +68,6 @@ import Paths from "../utils/Paths";
 import Validator from "../utils/Validator";
 
 class CustomPrograms extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         if (this.props.custom_programs_activities_is_load === false) {
@@ -70,6 +76,7 @@ class CustomPrograms extends React.Component {
         if (this.props.custom_programs_is_load === false) {
             this.getCustomPrograms();
         }
+        console.log(this.props.filter_keywords);
     }
 
     getCustomProgramsActivities() {
@@ -188,6 +195,8 @@ class CustomPrograms extends React.Component {
                         me.props.deleteCustomProgram(me.props.delete_id);
                         me.props.dismissCustomProgramDeleteConfirm();
 
+                        me.filterKeyWord(me.props.filter_keywords);
+
                         me.forceUpdate();
 
                     } else {
@@ -280,7 +289,7 @@ class CustomPrograms extends React.Component {
 
                         }
 
-                        //me.filterStatus(me.props.filter_status);
+                        me.filterKeyWord(me.props.filter_keywords);
                         me.handleCustomProgramModalDismiss();
 
                     } else {
@@ -306,6 +315,57 @@ class CustomPrograms extends React.Component {
                 }
             },
             function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    updateCustomProgramsAvailabilities(custom_programs) {
+
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.CUSTOM_PROGRAMS] = custom_programs;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.SET_CUSTOM_PROGRAMS_AVAILABILITY, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        me.props.setCustomProgramsAvailabilities(custom_programs);
+                        me.filterKeyWord(me.props.filter_keywords);
+                        me.forceUpdate();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                console.log(error);
                 me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
@@ -357,7 +417,7 @@ class CustomPrograms extends React.Component {
             this.props.current_nb_activities !== this.props.keep_current_nb_activities ||
             this.props.current_total_time !== this.props.keep_current_total_time ||
             this.props.current_available !== this.props.keep_current_available ||
-            JSON.stringify(this.props.current_activities) != JSON.stringify(this.props.keep_current_activities)) {
+            JSON.stringify(this.props.current_activities) !== JSON.stringify(this.props.keep_current_activities)) {
 
             this.createUpdateCustomProgram();
         } else {
@@ -444,7 +504,6 @@ class CustomPrograms extends React.Component {
     }
 
     checkIfAvailabilityHasBeenUpdated(item) {
-        console.log(item);
         if (item !== undefined) {
             let index_a = this.props.initial_custom_programs.findIndex(function (cur) {
                 if (cur === undefined) {
@@ -479,16 +538,173 @@ class CustomPrograms extends React.Component {
         this.props.dismissCustomProgramDeleteConfirm();
     }
 
-    confirmEventDelete() {
+    confirmCustomProgramDelete() {
         this.deleteCustomProgram();
     }
 
     onSaveAvailabilities() {
+        let index;
+        let custom_programs = [];
+        let me = this;
+        this.props.custom_programs.forEach(function (cur) {
+            index = me.props.initial_custom_programs.findIndex(function (itm) {
+                return itm._id === cur._id;
+            });
+            if (cur.available !== me.props.initial_custom_programs[index].available) {
+                custom_programs.push({
+                    _id: cur._id,
+                    available: cur.available
+                });
+            }
+        });
 
+        if (custom_programs.length > 0) {
+            this.updateCustomProgramsAvailabilities(custom_programs);
+        }
     }
 
     onResetAvailabilities() {
         this.props.resetCustomProgramsAvailabilities();
+    }
+
+    keyWordFilterChange(event) {
+        this.props.setFilterCustomProgramKeywords(event.target.value);
+        this.filterKeyWord(event.target.value);
+    }
+
+    filterKeyWord(value) {
+        let me = this;
+        let updatedPrograms = this.props.initial_custom_programs;
+        updatedPrograms = updatedPrograms.filter(function(item){
+            return me.getAvailableBool(me.props.filter_available, item) && me.getKeywordsBool(value, item) &&
+                me.getUnavailableBool(me.props.filter_unavailable, item) &&
+                me.getNumberActivitiesBool(me.props.filter_number_activities, item) &&
+                me.getTotalDurationBool(me.props.filter_total_duration, item);
+        });
+        this.props.setCustomPrograms(JSON.parse(JSON.stringify(updatedPrograms)));
+    }
+
+    getKeywordsBool(value, item) {
+        return (item.name.toLowerCase().search(value.toLowerCase()) !== -1);
+    }
+
+    availableFilterChange(event) {
+        this.props.setFilterCustomProgramUnavailable(false);
+        this.props.setFilterCustomProgramAvailable(true);
+        this.filterAvailable(true, false);
+    }
+
+    filterAvailable(value_available, value_unavailable) {
+        let me = this;
+        let updatedPrograms = this.props.initial_custom_programs;
+        updatedPrograms = updatedPrograms.filter(function(item){
+            return me.getAvailableBool(value_available, item) &&
+                me.getKeywordsBool(me.props.filter_keywords, item) &&
+                me.getUnavailableBool(value_unavailable, item) &&
+                me.getNumberActivitiesBool(me.props.filter_number_activities, item) &&
+                me.getTotalDurationBool(me.props.filter_total_duration, item);
+        });
+        this.props.setCustomPrograms(JSON.parse(JSON.stringify(updatedPrograms)));
+    }
+
+    getAvailableBool(value, item) {
+        return (value === false || (value === true && item.available === true));
+    }
+
+    unavailableFilterChange(event) {
+        this.props.setFilterCustomProgramUnavailable(true);
+        this.props.setFilterCustomProgramAvailable(false);
+        this.filterAvailable(false, true);
+    }
+
+    getUnavailableBool(value, item) {
+        return (value === false || (value === true && item.available === false));
+    }
+
+    numberActivitiesFilterChange(event) {
+        if (event.target.value !== "") {
+            this.props.setFilterCustomProgramNumberActivities(event.target.value);
+            this.filterNumberActivities(event.target.value);
+        } else {
+            this.props.setFilterCustomProgramNumberActivities(0);
+            this.filterNumberActivities(0);
+        }
+    }
+
+    filterNumberActivities(value) {
+        let me = this;
+        let updatedPrograms = this.props.initial_custom_programs;
+        updatedPrograms = updatedPrograms.filter(function(item){
+            return me.getAvailableBool(me.props.filter_available, item) &&
+                me.getKeywordsBool(me.props.filter_keywords, item) &&
+                me.getUnavailableBool(me.props.filter_unavailable, item) &&
+                me.getNumberActivitiesBool(value, item) &&
+                me.getTotalDurationBool(me.props.filter_total_duration, item);
+        });
+        this.props.setCustomPrograms(JSON.parse(JSON.stringify(updatedPrograms)));
+    }
+
+    getNumberActivitiesBool(value, item) {
+        return (item.nb_activities >= value);
+    }
+
+    totalDurationFilterChange(event) {
+        if (event.target.value !== "") {
+            this.props.setFilterCustomProgramTotalDuration(event.target.value);
+            this.filterTotalDuration(event.target.value);
+        } else {
+            this.props.setFilterCustomProgramTotalDuration(0);
+            this.filterTotalDuration(0);
+        }
+    }
+
+    filterTotalDuration(value) {
+        let me = this;
+        let updatedPrograms = this.props.initial_custom_programs;
+        updatedPrograms = updatedPrograms.filter(function(item){
+            return me.getAvailableBool(me.props.filter_available, item) &&
+                me.getKeywordsBool(me.props.filter_keywords, item) &&
+                me.getUnavailableBool(me.props.filter_unavailable, item) &&
+                me.getNumberActivitiesBool(me.props.filter_number_activities, item) &&
+                me.getTotalDurationBool(value, item);
+        });
+        this.props.setCustomPrograms(JSON.parse(JSON.stringify(updatedPrograms)));
+    }
+
+    getTotalDurationBool(value, item) {
+        return (item.total_time >= value);
+    }
+
+    resetFilters() {
+        this.props.resetFilterCustomProgram();
+        this.props.setCustomPrograms(JSON.parse(JSON.stringify(this.props.initial_custom_programs)));
+        this.forceUpdate();
+    }
+
+    setCurrentNbActivitiesAndTime(item, index) {
+        let total_duration = 0;
+        let nb_activities = 0;
+        this.props.current_activities.forEach(function(cur, idx) {
+            if (cur._id !== item._id ||
+                cur.time !== item.time ||
+                idx !== index) {
+                total_duration += cur.time;
+                nb_activities++;
+            }
+        });
+
+        this.props.setCustomProgramModalCurrentNbActivities(nb_activities);
+        this.props.setCustomProgramModalCurrentTotalTime(total_duration);
+    }
+
+    handleDeleteActivity(item, index) {
+        this.props.deleteToCurrentActivities({
+            _id: item._id,
+            time: item.time,
+            index: index
+        });
+        this.setCurrentNbActivitiesAndTime(item, index);
+        this.forceUpdate();
     }
 
     render() {
@@ -506,8 +722,8 @@ class CustomPrograms extends React.Component {
                                             <FormControl
                                                 type="text"
                                                 placeholder={Texts.NOM.text_fr}
-                                                //value={this.props.filter_keywords}
-                                                //onChange={this.keyWordFilterChange.bind(this)}
+                                                value={this.props.filter_keywords}
+                                                onChange={this.keyWordFilterChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
@@ -519,10 +735,10 @@ class CustomPrograms extends React.Component {
 
                                         </Col>
                                         <Col xs={6} sm={6} md={6} lg={6}>
-                                            <Radio name="filterAvailability" inline>
+                                            <Radio name="filterAvailability" inline onChange={this.availableFilterChange.bind(this)} checked={this.props.filter_available}>
                                                 {Texts.DISPONIBLE.text_fr}
                                             </Radio>{' '}
-                                            <Radio name="filterAvailability" inline>
+                                            <Radio name="filterAvailability" inline onChange={this.unavailableFilterChange.bind(this)} checked={this.props.filter_unavailable}>
                                                 {Texts.INDISPONIBLE.text_fr}
                                             </Radio>{' '}
                                         </Col>
@@ -538,22 +754,22 @@ class CustomPrograms extends React.Component {
                                                 type="number"
                                                 min={0}
                                                 placeholder={Texts.NOMBRE_D_ACTIVITES.text_fr}
-                                                //value={this.props.filter_number_subscribers}
-                                                //onChange={this.numberSubscribersFilterChange.bind(this)}
+                                                value={this.props.filter_number_activities}
+                                                onChange={this.numberActivitiesFilterChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup>
                                         <Col componentClass={ControlLabel} xs={5} sm={5} md={5} lg={5}>
-                                            {Texts.PAR_DUREE_TOTALE.text_fr}
+                                            {Texts.PAR_DUREE_TOTALE.text_fr + ' (min)'}
                                         </Col>
                                         <Col xs={7} sm={7} md={7} lg={7}>
                                             <FormControl
                                                 type="number"
                                                 min={0}
                                                 placeholder={Texts.DUREE.text_fr + ' (min)'}
-                                                //value={this.props.filter_number_subscribers}
-                                                //onChange={this.numberSubscribersFilterChange.bind(this)}
+                                                value={this.props.filter_total_duration}
+                                                onChange={this.totalDurationFilterChange.bind(this)}
                                             />
                                         </Col>
                                     </FormGroup>
@@ -561,7 +777,7 @@ class CustomPrograms extends React.Component {
                             </Form>
                         </Panel>
                         <Button
-                            //onClick={this.resetFilters.bind(this)}
+                            onClick={this.resetFilters.bind(this)}
                         >
                             <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_FILTRES.text_fr}
                         </Button>
@@ -607,7 +823,7 @@ class CustomPrograms extends React.Component {
                                     style={{cursor: "pointer"}}
                                 >
                                     <Image
-                                        src={item.picture}
+                                        src={(item.picture && item.picture !== "" ?  item.picture : "/img/program.svg")}
                                     />
                                 </td>
                                 <td onClick={this.onEditCustomProgramClick.bind(this, item)}
@@ -654,15 +870,14 @@ class CustomPrograms extends React.Component {
                     </tbody>
                 </Table>
 
-                <Button onClick={this.onResetAvailabilities.bind(this)}>
-                    <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_DISPONIBILITES.text_fr}
-                </Button>
-
-                &nbsp;
-
-                <Button onClick={this.onSaveAvailabilities.bind(this)}>
-                    <Glyphicon glyph="save" /> {Texts.ENREGISTRER_LES_DISPONIBILITES.text_fr}
-                </Button>
+                <ButtonGroup className={"pull-right"}>
+                    <Button onClick={this.onResetAvailabilities.bind(this)}>
+                        <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_DISPONIBILITES.text_fr}
+                    </Button>
+                    <Button onClick={this.onSaveAvailabilities.bind(this)}>
+                        <Glyphicon glyph="ok" /> {Texts.ENREGISTRER_LES_DISPONIBILITES.text_fr}
+                    </Button>
+                </ButtonGroup>
 
 
                 <Modal show={this.props.showCustomProgramModal} onHide={this.handleCustomProgramModalDismiss.bind(this)} bsSize={"large"}>
@@ -760,6 +975,9 @@ class CustomPrograms extends React.Component {
                                 <th>
                                     <h3>{Texts.DUREE.text_fr}</h3>
                                 </th>
+                                <th>
+                                    <h3>{Texts.ACTION.text_fr}</h3>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -777,6 +995,11 @@ class CustomPrograms extends React.Component {
                                         </td>
                                         <td>
                                             {Dates.formatMinutesDuration(item_ca.time)}
+                                        </td>
+                                        <td style={{ textAlign: "center"}}>
+                                            <Button onClick={this.handleDeleteActivity.bind(this, item_ca, index)}>
+                                                <Glyphicon glyph="remove" />
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))
@@ -827,7 +1050,7 @@ class CustomPrograms extends React.Component {
                         <Button onClick={this.handleDeleteConfirmDismiss.bind(this)}>
                             <Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}
                         </Button>
-                        <Button onClick={this.confirmEventDelete.bind(this)}>
+                        <Button onClick={this.confirmCustomProgramDelete.bind(this)}>
                             <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
                         </Button>
                     </Modal.Footer>
@@ -863,6 +1086,12 @@ function mapStateToProps(state) {
         showDeleteConfirm: state.custom_programs.showDeleteConfirm,
         delete_id: state.custom_programs.delete_id,
 
+        filter_keywords: state.custom_programs.filter_keywords,
+        filter_number_activities: state.custom_programs.filter_number_activities,
+        filter_total_duration: state.custom_programs.filter_total_duration,
+        filter_available: state.custom_programs.filter_available,
+        filter_unavailable: state.custom_programs.filter_unavailable,
+
         custom_programs_activities_is_load: state.global.custom_programs_activities_is_load,
         custom_programs_is_load: state.global.custom_programs_is_load
     };
@@ -877,6 +1106,7 @@ export default connect(mapStateToProps, {
     addCustomProgram,
     updateCustomProgram,
     updateCustomProgramAvailability,
+    setCustomProgramsAvailabilities,
     resetCustomProgramsAvailabilities,
     deleteCustomProgram,
     displayCustomProgramModal,
@@ -889,8 +1119,16 @@ export default connect(mapStateToProps, {
     setCustomProgramModalCurrentActivities,
     setCustomProgramModalCurrentAvailable,
     addToCurrentActivities,
+    deleteToCurrentActivities,
     displayCustomProgramDeleteConfirm,
     dismissCustomProgramDeleteConfirm,
+
+    setFilterCustomProgramKeywords,
+    setFilterCustomProgramNumberActivities,
+    setFilterCustomProgramTotalDuration,
+    setFilterCustomProgramAvailable,
+    setFilterCustomProgramUnavailable,
+    resetFilterCustomProgram,
 
     setCustomProgramsActivitiesIsLoad,
     setCustomProgramsIsLoad

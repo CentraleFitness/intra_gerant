@@ -12,7 +12,8 @@ import {
     Form,
     FormGroup,
     Col,
-    HelpBlock
+    HelpBlock,
+    Image
 } from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import { connect } from 'react-redux';
@@ -239,10 +240,13 @@ class TopBar extends React.Component {
         return (
             <div>
 
-                <Navbar collapseOnSelect className={"topBar"} fixedTop={true} inverse={true}>
+                <Navbar collapseOnSelect className={"topBar"} fixedTop={true}>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="/home">{Texts.CENTRALE_FITNESS.text_fr}</a>
+                            <a href="/home">
+                                <Image src="/img/logo_cf_white.png" />
+                                {Texts.CENTRALE_FITNESS.text_fr}
+                            </a>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>

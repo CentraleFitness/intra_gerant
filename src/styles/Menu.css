@@ -3,3 +3,53 @@
     left: 0;
     margin-left: 5px;
 }
+
+
+.nav-pills>li>a {
+    color: #FFBD68 !important;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    background-color: #FFBD68 !important;
+    color: #FF5889 !important;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #FFBD68 !important;
+    background-image: none !important;
+    border-color: #FF5889 !important;
+    color: #FF5889 !important;
+}
+
+.panel-primary {
+    border-color: #FF5889 !important;
+}
+
+/*
+
+.nav-pills>li>a {
+    color: #FF5889 !important;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+background-color: #FF5889 !important;
+color: #FFBD68 !important;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #FF5889 !important;
+    background-image: none !important;
+    border-color: #FFBD68 !important;
+    color: #FFBD68 !important;
+}
+
+.panel-primary {
+    border-color: #FFBD68 !important;
+}
+
+.navbar-default .navbar-brand {
+    background-color: #FFBD68 !important;
+    color: #FFFFFF !important;
+}
+
+ */

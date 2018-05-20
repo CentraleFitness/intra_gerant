@@ -409,7 +409,7 @@ class Events extends React.Component {
     resetFilters() {
         this.props.resetFilters();
         this.props.setEvents(this.props.initial_events);
-        this.filterStatus(this.props.initial_filter_status);
+        this.filterStatus(this.props.filter_status);
     }
 
     handleEventModalDismiss() {

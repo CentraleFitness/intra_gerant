@@ -43,6 +43,33 @@ import '../styles/Login.css';
 
 class Register extends React.Component {
 
+    componentWillMount() {
+        this.checkAuthToken();
+    }
+
+    checkAuthToken() {
+        let token = localStorage.getItem('token');
+
+        if (token === null) {
+            return;
+        }
+
+        let params = {};
+
+        params[Fields.TOKEN] = token;
+
+        let communication = new Communication('post', Paths.HOST + Paths.AUTHENTICATION_TOKEN, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200 && response.data.code === Status.AUTH_SUCCESS.code) {
+                    browserHistory.replace("/");
+                }
+            },
+            function (error) {
+            }
+        );
+    }
+
     handleRegisterClick() {
 
         if (!Validator.name(this.props.first_name) ||

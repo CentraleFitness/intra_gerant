@@ -8,6 +8,7 @@ import {
     DELETE_CUSTOM_PROGRAM,
     UPDATE_CUSTOM_PROGRAM,
     UPDATE_CUSTOM_PROGRAM_AVAILABILITY,
+    SET_CUSTOM_PROGRAMS_AVAILABILITIES,
     RESET_CUSTOM_PROGRAMS_AVAILABILITIES,
     DISPLAY_CUSTOM_PROGRAM_MODAL,
     DISPLAY_CUSTOM_PROGRAM_EDIT_MODAL,
@@ -18,9 +19,17 @@ import {
     SET_CUSTOM_PROGRAM_MODAL_CURRENT_TOTAL_TIME,
     SET_CUSTOM_PROGRAM_MODAL_CURRENT_ACTIVITIES,
     ADD_TO_CUSTOME_PROGRAMME_MODAL_CURRENT_ACTIVITIES,
+    DELETE_TO_CUSTOME_PROGRAMME_MODAL_CURRENT_ACTIVITIES,
     SET_CUSTOM_PROGRAM_MODAL_CURRENT_AVAILABLE,
     DISPLAY_DELETE_CONFIRM,
-    DISMISS_DELETE_CONFIRM
+    DISMISS_DELETE_CONFIRM,
+
+    SET_FILTER_CUSTOM_PROGRAM_KEYWORDS,
+    SET_FILTER_CUSTOM_PROGRAM_NUMBER_ACTIVITIES,
+    SET_FILTER_CUSTOM_PROGRAM_TOTAL_DURATION,
+    SET_FILTER_CUSTOM_PROGRAM_AVAILABLE,
+    SET_FILTER_CUSTOM_PROGRAM_UNAVAILABLE,
+    RESET_FILTER_CUSTOM_PROGRAM
 } from "../actions/types"
 
 const initialState = {
@@ -45,7 +54,13 @@ const initialState = {
     keep_current_activities: [],
     keep_current_available: false,
     showDeleteConfirm: false,
-    delete_id: ""
+    delete_id: "",
+
+    filter_keywords: "",
+    filter_number_activities: 0,
+    filter_total_duration: 0,
+    filter_available: false,
+    filter_unavailable: false
 };
 
 export default (state = initialState, action) => {
@@ -112,6 +127,19 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 custom_programs: tmp_custom_programs_update_availability
+            };
+        case SET_CUSTOM_PROGRAMS_AVAILABILITIES:
+            let tmp_custom_programs_update_availabilities = state.initial_custom_programs;
+            let index_availabilities;
+            action.payload.forEach(function (cur) {
+                index_availabilities = tmp_custom_programs_update_availabilities.findIndex(function (itm) {
+                    return itm._id === cur._id;
+                });
+                tmp_custom_programs_update_availabilities[index_availabilities].available = cur.available;
+            });
+            return {
+                ...state,
+                initial_custom_programs: tmp_custom_programs_update_availabilities
             };
         case RESET_CUSTOM_PROGRAMS_AVAILABILITIES:
             let tmp_custom_programs_reset = JSON.parse(JSON.stringify(state.initial_custom_programs));
@@ -222,6 +250,20 @@ export default (state = initialState, action) => {
                 ...state,
                 current_activities: tmp_current_activities
             };
+        case DELETE_TO_CUSTOME_PROGRAMME_MODAL_CURRENT_ACTIVITIES:
+            let tmp_current_activities_del = state.current_activities;
+            let new_current_activities = [];
+            tmp_current_activities_del.forEach(function (itm, idx) {
+                if (itm._id !== action.payload._id ||
+                    itm.time !== action.payload.time ||
+                    idx !== action.payload.index) {
+                    new_current_activities.push(itm);
+                }
+            });
+            return {
+                ...state,
+                current_activities: new_current_activities
+            };
         case SET_CUSTOM_PROGRAM_MODAL_CURRENT_AVAILABLE:
             return {
                 ...state,
@@ -238,6 +280,40 @@ export default (state = initialState, action) => {
                 ...state,
                 showDeleteConfirm: false,
                 delete_id: ""
+            };
+        case SET_FILTER_CUSTOM_PROGRAM_KEYWORDS:
+            return {
+                ...state,
+                filter_keywords: action.payload
+            };
+        case SET_FILTER_CUSTOM_PROGRAM_NUMBER_ACTIVITIES:
+            return {
+                ...state,
+                filter_number_activities: action.payload
+            };
+        case SET_FILTER_CUSTOM_PROGRAM_TOTAL_DURATION:
+            return {
+                ...state,
+                filter_total_duration: action.payload
+            };
+        case SET_FILTER_CUSTOM_PROGRAM_AVAILABLE:
+            return {
+                ...state,
+                filter_available: action.payload
+            };
+        case SET_FILTER_CUSTOM_PROGRAM_UNAVAILABLE:
+            return {
+                ...state,
+                filter_unavailable: action.payload
+            };
+        case RESET_FILTER_CUSTOM_PROGRAM:
+            return {
+                ...state,
+                filter_keywords: "",
+                filter_number_activities: 0,
+                filter_total_duration: 0,
+                filter_available: false,
+                filter_unavailable: false
             };
         default:
             return state;

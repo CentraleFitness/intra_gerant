@@ -10,3 +10,40 @@
     /*padding-right: 0px !important;
     padding-left: 0px !important;*/
 }
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+.navbar-brand>img {
+    padding: 7px 14px;
+    width: 75px;
+    height: 60px;
+}
+
+.navbar-default .navbar-brand {
+    color: #FFFFFF;
+}
+
+/*
+
+.navbar-default {
+    background-color: #FFBD68 !important;
+    background-image: none !important;
+}
+
+ */
+
+.navbar-default {
+    background-color: #FF5889 !important;
+    background-image: none !important;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: #FFFFFF;
+
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #FFFFFF !important;
+}
