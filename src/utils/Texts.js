@@ -486,8 +486,19 @@ const Texts = {
     ETES_VOUS_SUR_DE_VOULOIR_SUPPRIMER_CE_PROGRAMME: {
         text_fr: "Etes-vous sûr de vouloir supprimer ce programme personnalisé ?",
         text_en: "Do you really want to delete this custom program ?"
+    },
+    ABONNE: {
+        text_fr: "Abonné",
+        text_en: "Subscriber"
+    },
+    SUIT: {
+        text_fr: "Suit",
+        text_en: "Follow"
+    },
+    SUIVENT: {
+        text_fr: "Suivent",
+        text_en: "Follow"
     }
-
 };
 
 export default Texts;

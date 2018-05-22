@@ -242,10 +242,10 @@ class ProfileSocial extends React.Component {
                                 {this.props.manager_email}
                             </FormControl.Static>
                             <FormControl.Static>
-                                <Glyphicon glyph="heart" /> <strong>{this.props.center_nb_subscribers}</strong> Abonnés
+                                <Glyphicon glyph="heart" /> <strong>{this.props.center_nb_subscribers}</strong>{" " + Texts.ABONNE.text_fr + (this.props.center_nb_subscribers <= 1 ? "" : "s")}
                             </FormControl.Static>
                             <FormControl.Static>
-                                <Glyphicon glyph="star" /> <strong>{this.props.center_nb_followers}</strong> Suivent
+                                <Glyphicon glyph="star" /> <strong>{this.props.center_nb_followers}</strong>{" " + (this.props.center_nb_subscribers <= 1 ? Texts.SUIT.text_fr : Texts.SUIVENT.text_fr)}
                             </FormControl.Static>
                         </FormGroup>
                     </Col>
