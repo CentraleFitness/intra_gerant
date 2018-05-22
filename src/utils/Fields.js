@@ -30,7 +30,8 @@ const Fields = {
     TOTAL_TIME: "total_time",
     AVAILABLE: "available",
     ACTIVITIES: "activities",
-    CUSTOM_PROGRAMS: "custom_programs"
+    CUSTOM_PROGRAMS: "custom_programs",
+    NB_SUBSCRIBERS: "nb_subscribers"
 };
 
 export default Fields;

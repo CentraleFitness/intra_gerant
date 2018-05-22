@@ -135,7 +135,8 @@ class Profile extends React.Component {
                             center_zip_code: response.data[Fields.ZIP_CODE],
                             center_city: response.data[Fields.CITY],
                             center_phone: response.data[Fields.PHONE],
-                            center_description: response.data[Fields.DESCRIPTION]
+                            center_description: response.data[Fields.DESCRIPTION],
+                            center_nb_subscribers: response.data[Fields.NB_SUBSCRIBERS]
                         });
 
                         me.props.setCenterKeepInfo();

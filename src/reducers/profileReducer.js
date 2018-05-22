@@ -60,8 +60,8 @@ const initialState = {
     center_city: "",
     center_phone: "",
     center_description: "",
-    center_nb_subscribers: "",
-    center_nb_followers: "",
+    center_nb_subscribers: 0,
+    center_nb_followers: 0,
     manager_keep_first_name: "",
     manager_keep_last_name: "",
     manager_keep_email: "",
@@ -155,7 +155,8 @@ export default (state = initialState, action) => {
                 center_address2: action.payload.center_address2,
                 center_zip_code: action.payload.center_zip_code,
                 center_city: action.payload.center_city,
-                center_phone: action.payload.center_phone
+                center_phone: action.payload.center_phone,
+                center_nb_subscribers: action.payload.center_nb_subscribers
             };
         case RESET_MANAGER_CENTER_INFO:
             return {
