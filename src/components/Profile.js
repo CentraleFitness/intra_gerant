@@ -74,15 +74,19 @@ class Profile extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setManagerInfo({
-                            manager_first_name: response.data[Fields.FIRSTNAME],
-                            manager_last_name: response.data[Fields.LASTNAME],
-                            manager_email: response.data[Fields.EMAIL],
-                            manager_phone: response.data[Fields.PHONE]
-                        });
+                        if (me !== undefined) {
+                            me.props.setManagerInfo({
+                                manager_first_name: response.data[Fields.FIRSTNAME],
+                                manager_last_name: response.data[Fields.LASTNAME],
+                                manager_email: response.data[Fields.EMAIL],
+                                manager_phone: response.data[Fields.PHONE]
+                            });
+                        }
 
-                        me.props.setManagerKeepInfo();
-                        me.props.setManagerProfileIsLoad();
+                        if (me !== undefined)
+                            me.props.setManagerKeepInfo();
+                        if (me !== undefined)
+                            me.props.setManagerProfileIsLoad();
 
                     } else {
 
@@ -94,23 +98,29 @@ class Profile extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }
@@ -128,19 +138,23 @@ class Profile extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setCenterInfo({
-                            center_name: response.data[Fields.NAME],
-                            center_address: response.data[Fields.ADDRESS],
-                            center_address2: (response.data[Fields.ADDRESS_SECOND] === null ? "" : response.data[Fields.ADDRESS_SECOND]),
-                            center_zip_code: response.data[Fields.ZIP_CODE],
-                            center_city: response.data[Fields.CITY],
-                            center_phone: (response.data[Fields.PHONE] === null ? "" : response.data[Fields.PHONE]),
-                            center_description: response.data[Fields.DESCRIPTION],
-                            center_nb_subscribers: response.data[Fields.NB_SUBSCRIBERS]
-                        });
+                        if (me !== undefined) {
+                            me.props.setCenterInfo({
+                                center_name: response.data[Fields.NAME],
+                                center_address: response.data[Fields.ADDRESS],
+                                center_address2: (response.data[Fields.ADDRESS_SECOND] === null ? "" : response.data[Fields.ADDRESS_SECOND]),
+                                center_zip_code: response.data[Fields.ZIP_CODE],
+                                center_city: response.data[Fields.CITY],
+                                center_phone: (response.data[Fields.PHONE] === null ? "" : response.data[Fields.PHONE]),
+                                center_description: response.data[Fields.DESCRIPTION],
+                                center_nb_subscribers: response.data[Fields.NB_SUBSCRIBERS]
+                            });
+                        }
 
-                        me.props.setCenterKeepInfo();
-                        me.props.setCenterProfileIsLoad();
+                        if (me !== undefined)
+                            me.props.setCenterKeepInfo();
+                        if (me !== undefined)
+                            me.props.setCenterProfileIsLoad();
 
                     } else {
 
@@ -152,23 +166,29 @@ class Profile extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }
@@ -186,8 +206,10 @@ class Profile extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setCenterPicture(response.data[Fields.PICTURE]);
-                        me.props.setCenterPictureIsLoad();
+                        if (me !== undefined)
+                            me.props.setCenterPicture(response.data[Fields.PICTURE]);
+                        if (me !== undefined)
+                            me.props.setCenterPictureIsLoad();
 
                     } else {
 
@@ -199,24 +221,29 @@ class Profile extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
-                    console.log('ICI');
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

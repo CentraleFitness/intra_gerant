@@ -206,9 +206,12 @@ class Contact extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         let rev_feedbacks = response.data.feedbacks;//.reverse();
-                        me.props.setFeedbacks(rev_feedbacks);
-                        me.props.setInitialFeedbacks(rev_feedbacks);
-                        me.props.setFeedbacksIsLoad();
+                        if (me !== undefined)
+                            me.props.setFeedbacks(rev_feedbacks);
+                        if (me !== undefined)
+                            me.props.setInitialFeedbacks(rev_feedbacks);
+                        if (me !== undefined)
+                            me.props.setFeedbacksIsLoad();
 
                     } else {
 
@@ -220,23 +223,29 @@ class Contact extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

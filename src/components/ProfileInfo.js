@@ -324,8 +324,10 @@ class ProfileInfo extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setManagerPicture(response.data[Fields.PICTURE]);
-                        me.props.setManagerPictureIsLoad();
+                        if (me !== undefined)
+                            me.props.setManagerPicture(response.data[Fields.PICTURE]);
+                        if (me !== undefined)
+                            me.props.setManagerPictureIsLoad();
 
                     } else {
 
@@ -337,24 +339,29 @@ class ProfileInfo extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
-                    console.log('ICI2');
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

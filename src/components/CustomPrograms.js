@@ -92,8 +92,10 @@ class CustomPrograms extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setActivities(response.data.activities);
-                        me.props.setCustomProgramsActivitiesIsLoad();
+                        if (me !== undefined)
+                            me.props.setActivities(response.data.activities);
+                        if (me !== undefined)
+                            me.props.setCustomProgramsActivitiesIsLoad();
 
                     } else {
 
@@ -105,24 +107,29 @@ class CustomPrograms extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                console.log(error);
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }
@@ -141,9 +148,12 @@ class CustomPrograms extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setCustomPrograms(JSON.parse(JSON.stringify(response.data.custom_programs)));
-                        me.props.setInitialCustomPrograms(JSON.parse(JSON.stringify(response.data.custom_programs)));
-                        me.props.setCustomProgramsIsLoad();
+                        if (me !== undefined)
+                            me.props.setCustomPrograms(JSON.parse(JSON.stringify(response.data.custom_programs)));
+                        if (me !== undefined)
+                            me.props.setInitialCustomPrograms(JSON.parse(JSON.stringify(response.data.custom_programs)));
+                        if (me !== undefined)
+                            me.props.setCustomProgramsIsLoad();
 
                     } else {
 
@@ -155,24 +165,29 @@ class CustomPrograms extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                console.log(error);
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

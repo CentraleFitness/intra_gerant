@@ -89,8 +89,10 @@ class ProfilePhotos extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.setPhotos(response.data.album);
-                        me.props.setAlbumIsLoad();
+                        if (me !== undefined)
+                            me.props.setPhotos(response.data.album);
+                        if (me !== undefined)
+                            me.props.setAlbumIsLoad();
 
                     } else {
 
@@ -102,23 +104,29 @@ class ProfilePhotos extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

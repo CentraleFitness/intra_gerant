@@ -87,10 +87,14 @@ class Events extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         let rev_events = response.data.events.reverse();
-                        me.props.setEvents(rev_events);
-                        me.props.setInitialEvents(rev_events);
-                        me.filterStatus(me.props.filter_status);
-                        me.props.setEventsIsLoad();
+                        if (me !== undefined)
+                            me.props.setEvents(rev_events);
+                        if (me !== undefined)
+                            me.props.setInitialEvents(rev_events);
+                        if (me !== undefined)
+                            me.filterStatus(me.props.filter_status);
+                        if (me !== undefined)
+                            me.props.setEventsIsLoad();
 
                     } else {
 
@@ -102,23 +106,29 @@ class Events extends React.Component {
                             }
                         }
 
-                        me.props.displayAlert({
-                            alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
-                        });
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
                     }
                 } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.props.displayAlert({
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }

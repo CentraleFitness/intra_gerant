@@ -36,9 +36,11 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.setState({
-                            fitness_center_id: response.data.fitness_center_id
-                        });
+                        if (me !== undefined) {
+                            me.setState({
+                                fitness_center_id: response.data.fitness_center_id
+                            });
+                        }
 
                     } else {
 
@@ -50,26 +52,32 @@ class Home extends React.Component {
                             }
                         }
 
+                        if (me !== undefined) {
+                            me.setState({
+                                showAlert: true,
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
                         me.setState({
                             showAlert: true,
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
-                            alertText: message
+                            alertText: Texts.ERR_RESEAU.text_fr
                         });
                     }
-                } else {
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
                     me.setState({
                         showAlert: true,
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
                 }
-            },
-            function (error) {
-                me.setState({
-                    showAlert: true,
-                    alertTitle: Texts.ERREUR_TITRE.text_fr,
-                    alertText: Texts.ERR_RESEAU.text_fr
-                });
             }
         );
     }
