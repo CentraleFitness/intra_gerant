@@ -230,7 +230,7 @@ export default (state = initialState, action) => {
         case SET_ADDRESS_SECOND:
             return {
                 ...state,
-                center_address_second: action.payload
+                center_address2: action.payload
             };
         case SET_ZIP_CODE:
             return {

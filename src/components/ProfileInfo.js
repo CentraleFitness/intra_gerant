@@ -166,7 +166,7 @@ class ProfileInfo extends React.Component {
             !Validator.description(this.props.center_description) ||
             !Validator.name(this.props.center_city) ||
             !Validator.address(this.props.center_address) ||
-            (this.props.address_second !== "" && !Validator.address(this.props.address_second)) ||
+            (this.props.center_address2 !== "" && !Validator.address(this.props.center_address2)) ||
             !Validator.phoneNumber(this.props.manager_phone) ||
             (this.props.center_phone !== "" && !Validator.phoneNumber(this.props.center_phone)) ||
             !Validator.zipCode(this.props.center_zip_code) ||
@@ -256,8 +256,8 @@ class ProfileInfo extends React.Component {
         params[Fields.NAME] = this.props.center_name;
         params[Fields.DESCRIPTION] = this.props.center_description;
         params[Fields.ADDRESS] = this.props.center_address;
-        if (this.props.center_address_second !== "" && this.props.center_address_second !== null) {
-            params[Fields.ADDRESS_SECOND] = this.props.center_address_second;
+        if (this.props.center_address2 !== "" && this.props.center_address2 !== null) {
+            params[Fields.ADDRESS_SECOND] = this.props.center_address2;
         }
         params[Fields.ZIP_CODE] = this.props.center_zip_code;
         params[Fields.CITY] = this.props.center_city;
@@ -479,7 +479,7 @@ class ProfileInfo extends React.Component {
                 value = this.props.center_address;
                 break;
             case "center_address_second":
-                value = this.props.center_address_second;
+                value = this.props.center_address2;
                 break;
             case "center_zip_code":
                 value = this.props.center_zip_code;
