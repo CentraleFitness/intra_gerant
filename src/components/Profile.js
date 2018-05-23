@@ -131,10 +131,10 @@ class Profile extends React.Component {
                         me.props.setCenterInfo({
                             center_name: response.data[Fields.NAME],
                             center_address: response.data[Fields.ADDRESS],
-                            center_address2: response.data[Fields.ADDRESS_SECOND],
+                            center_address2: (response.data[Fields.ADDRESS_SECOND] === null ? "" : response.data[Fields.ADDRESS_SECOND]),
                             center_zip_code: response.data[Fields.ZIP_CODE],
                             center_city: response.data[Fields.CITY],
-                            center_phone: response.data[Fields.PHONE],
+                            center_phone: (response.data[Fields.PHONE] === null ? "" : response.data[Fields.PHONE]),
                             center_description: response.data[Fields.DESCRIPTION],
                             center_nb_subscribers: response.data[Fields.NB_SUBSCRIBERS]
                         });
