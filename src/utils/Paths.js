@@ -34,6 +34,7 @@ const Paths = {
     GET_EVENTS: "/center/get/events",
     UPDATE_EVENT: "/center/update/event",
     DELETE_EVENT: "/center/delete/event",
+    POST_EVENT: "/center/post/event",
 
     SET_CUSTOM_PROGRAMS_AVAILABILITY: "/center/set/customprogramavailability",
     ADD_CUSTOM_PROGRAM: "/center/add/customprogram",

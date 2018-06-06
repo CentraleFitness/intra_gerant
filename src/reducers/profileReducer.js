@@ -282,7 +282,9 @@ export default (state = initialState, action) => {
         case DELETE_PUBLICATION:
             let tmp_publications_delete = state.publications;
             let index_publications_delete = tmp_publications_delete.findIndex(function (item) {
-                return item._id === action.payload;
+                if (item !== undefined) {
+                    return item._id === action.payload;
+                }
             });
             delete tmp_publications_delete[index_publications_delete];
             return {
@@ -382,7 +384,9 @@ export default (state = initialState, action) => {
         case DELETE_PHOTO:
             let tmp_photos_delete = state.photos;
             let index_delete = tmp_photos_delete.findIndex(function (item) {
-                return item.picture_id === action.payload;
+                if (item !== undefined) {
+                    return item.picture_id === action.payload;
+                }
             });
             delete tmp_photos_delete[index_delete];
             return {

@@ -126,8 +126,9 @@ class ProfileSocial extends React.Component {
 
                         let now = new Date();
                         me.props.addPublication({
-                            text: me.props.current_publication,
-                            creation_date: now.getTime()
+                            _id: response.data.publication_id,
+                            content: me.props.current_publication,
+                            date: now.getTime()
                         });
                         me.props.setCurrentPublication("");
 
@@ -287,11 +288,44 @@ class ProfileSocial extends React.Component {
                 <Panel className={"commentsZone"}>
                     {
                         this.props.publications.map((item) => (
-                            <div key={item.creation_date}>
-                                <em>{Dates.format(item.creation_date)}</em>
-                                <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
-                                <Well className={"showNewLine"}>{item.text}</Well>
-                            </div>
+                            item.type === "PHOTO" ?
+                                (<div key={item._id}>
+                                    <em>{Dates.format(item.date)}</em>
+                                    <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                    <Well className={"showNewLine"}>
+                                        <h4 style={{textAlign: "center"}}>{Texts.PHOTO.text_fr + " " + item.title}</h4>
+                                        <Image
+                                            alt={item.title}
+                                            src={item.picture}
+                                            className={"center-block profileImage"}
+                                        />
+                                        {item.content}
+                                    </Well>
+                                </div>)
+                                :
+                                (item.type === "EVENT" ?
+                                    (<div key={item._id}>
+                                        <em>{Dates.format(item.date)}</em>
+                                        <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                        <Well className={"showNewLine"}>
+                                            <h4 style={{textAlign: "center"}}>{Texts.EVENEMENT.text_fr + " " + item.title}</h4>
+                                            <h5 style={{textAlign: "center"}}>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
+                                            <Image
+                                                alt={item.title}
+                                                src={item.picture}
+                                                className={"center-block profileImage"}
+                                            />
+                                            {item.content}
+                                        </Well>
+                                    </div>)
+                                    :
+                                    (<div key={item._id}>
+                                        <em>{Dates.format(item.date)}</em>
+                                        <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                        <Well className={"showNewLine"}>{item.content}</Well>
+                                    </div>)
+                                )
+
                         ))
                     }
                 </Panel>

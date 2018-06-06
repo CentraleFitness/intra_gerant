@@ -1,0 +1,30 @@
+.stat-item {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 50px;
+    margin: 1em;
+    border: groove rgb(255, 88, 137) 1px;
+}
+
+.stat-item-empty {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 50px;
+    margin: 1em;
+    border: groove rgb(255, 88, 137) 1px;
+}
+
+.chart-row {
+    height: 300px;
+}
+
+.stat-col {
+    height: 100px;
+    width: 100px;
+}
+
+html, body {
+    overflow-x: hidden;
+}

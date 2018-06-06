@@ -274,6 +274,52 @@ class Events extends React.Component {
         );
     }
 
+    postEvent(event_id) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.EVENT_ID] = event_id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.POST_EVENT, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
     handleAlertDismiss() {
         this.props.dismissAlert();
     }
@@ -589,6 +635,11 @@ class Events extends React.Component {
         this.props.setDeletionCause(event.target.value);
     }
 
+    postEventClick(item) {
+        console.log(item);
+        this.postEvent(item._id);
+    }
+
     render() {
 
         const inferieur_a = Texts.INFERIEUR_A.text_fr;
@@ -727,6 +778,11 @@ class Events extends React.Component {
                                             >
                                                 <Glyphicon glyph="pencil" /> {Texts.EDITER.text_fr}
                                             </Button>&nbsp;
+                                            <Button
+                                                onClick={this.postEventClick.bind(this, item)}
+                                            >
+                                                <Glyphicon glyph="pushpin" /> {Texts.PUBLIER.text_fr}
+                                            </Button>
                                             <Button
                                                 bsStyle="danger"
                                                 onClick={this.deleteEventClick.bind(this, item)}

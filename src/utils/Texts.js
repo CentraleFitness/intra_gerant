@@ -498,6 +498,10 @@ const Texts = {
     SUIVENT: {
         text_fr: "Suivent",
         text_en: "Follow"
+    },
+    PHOTO: {
+        text_fr: "Photo",
+        text_en: "Photo"
     }
 };
 
