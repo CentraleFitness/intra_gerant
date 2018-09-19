@@ -4,6 +4,7 @@ import {
     DISPLAY_DELETE_CONFIRM,
     DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
+    SET_SELECTED_EVENTS,
     ADD_EVENT,
     DELETE_EVENT,
     UPDATE_EVENT,
@@ -23,7 +24,8 @@ import {
     SET_EVENT_MODAL_CURRENT_START_DATE,
     SET_EVENT_MODAL_CURRENT_END_DATE,
     SET_EVENT_MODAL_CURRENT_PICTURE,
-    SET_DELETION_CAUSE
+    SET_DELETION_CAUSE,
+    SET_EVENT_LAST_POST
 } from "../actions/types"
 
 const initialState = {
@@ -94,6 +96,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 events: action.payload
+            };
+        case SET_SELECTED_EVENTS:
+            let tmp_selected_events_update = state.initial_events;
+            let index_selected = state.initial_events.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_selected_events_update[index_selected].selected = action.payload.checked;
+            return {
+                ...state,
+                initial_events: tmp_selected_events_update
             };
         case SET_INITIAL_EVENTS:
             return {
@@ -258,6 +270,23 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 deletion_cause: action.payload
+            };
+        case SET_EVENT_LAST_POST:
+            let tmp_events_last_post_initial = state.initial_events;
+            let index_last_post_initial = tmp_events_last_post_initial.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_events_last_post_initial[index_last_post_initial].last_post = action.payload.last_post;
+
+            let tmp_events_last_post = state.events;
+            let index_last_post = tmp_events_last_post.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_events_last_post[index_last_post].last_post = action.payload.last_post;
+            return {
+                ...state,
+                events: tmp_events_last_post,
+                initial_events: tmp_events_last_post_initial
             };
         default:
             return state;

@@ -76,7 +76,6 @@ class CustomPrograms extends React.Component {
         if (this.props.custom_programs_is_load === false) {
             this.getCustomPrograms();
         }
-        console.log(this.props.filter_keywords);
     }
 
     getCustomProgramsActivities() {
@@ -485,9 +484,12 @@ class CustomPrograms extends React.Component {
     onAddActivityClick() {
         const activity = ReactDOM.findDOMNode(this.selectActivityInputRef).value;
         const duration = ReactDOM.findDOMNode(this.selectActivityDurationInputRef).value;
+        const duration_sec = ReactDOM.findDOMNode(this.selectActivityDurationSecInputRef).value;
 
         if (activity === "" || activity === null ||
-            duration === "" || duration === null || duration === 0) {
+            duration === "" || duration === null ||
+            duration_sec === "" || duration_sec === null ||
+            (duration === 0 && duration_sec === 0)) {
 
             return;
         }
@@ -503,7 +505,7 @@ class CustomPrograms extends React.Component {
         this.props.addToCurrentActivities({
             _id: this.props.activities[idx]._id,
             name: this.props.activities[idx].name,
-            time: parseInt(duration),
+            time: ((parseInt(duration) * 60) + parseInt(duration_sec)),
             icon: this.props.activities[idx].icon
         });
 
@@ -957,7 +959,7 @@ class CustomPrograms extends React.Component {
                                 <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
                                     {Texts.AJOUTER_UNE_ACTIVITE.text_fr}
                                 </Col>
-                                <Col xs={3} sm={3} md={3} lg={3}>
+                                <Col xs={2} sm={2} md={2} lg={2}>
                                     <FormControl componentClass="select" inputRef={ ref => this.selectActivityInputRef = ref }>
                                         {
                                             this.props.activities.map((activity_b, index) => (
@@ -968,8 +970,11 @@ class CustomPrograms extends React.Component {
                                         }
                                     </FormControl>
                                 </Col>
-                                <Col xs={3} sm={3} md={3} lg={3}>
-                                    <FormControl type="number" placeholder={Texts.DUREE.text_fr + " (minutes)"} inputRef={ ref => this.selectActivityDurationInputRef = ref }/>
+                                <Col xs={2} sm={2} md={2} lg={2}>
+                                    <FormControl type="number" placeholder={Texts.DUREE.text_fr + " (min)"} inputRef={ ref => this.selectActivityDurationInputRef = ref }/>
+                                </Col>
+                                <Col xs={2} sm={2} md={2} lg={2}>
+                                    <FormControl type="number" placeholder={Texts.DUREE.text_fr + " (sec)"} inputRef={ ref => this.selectActivityDurationSecInputRef = ref }/>
                                 </Col>
                                 <Col xs={1} sm={1} md={1} lg={1}>
                                     <Button onClick={this.onAddActivityClick.bind(this)}>

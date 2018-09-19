@@ -241,7 +241,7 @@ class Login extends React.Component {
                                 </Col>
                             </FormGroup>
 
-                            <FormGroup>
+                            <FormGroup hidden={true}>
                                 <Col smOffset={2} sm={10}>
                                     <Checkbox
                                         value={this.props.remember}

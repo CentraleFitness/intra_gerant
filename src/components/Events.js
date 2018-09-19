@@ -47,7 +47,8 @@ import {
     setEventModalCurrentStartDate,
     setEventModalCurrentEndDate,
     setEventModalCurrentPicture,
-    setDeletionCause
+    setDeletionCause,
+    setEventLastPost
 } from "../actions/eventsActions";
 
 import {
@@ -70,6 +71,8 @@ class Events extends React.Component {
     componentDidMount() {
         if (this.props.events_is_load === false) {
             this.getEvents();
+        } else {
+            this.filterStatus(this.props.filter_status);
         }
     }
 
@@ -288,6 +291,11 @@ class Events extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
+                        me.props.setEventLastPost({
+                            _id: event_id,
+                            last_post: new Date().getTime()
+                        });
+                        me.forceUpdate();
 
                     } else {
 
@@ -770,6 +778,12 @@ class Events extends React.Component {
                                         <p>
                                             {Texts.NOMBRE_D_INSCRIT.text_fr + " : "}<Badge>{item.nb_subscribers}</Badge>
                                         </p>
+                                        <p>
+                                            {Texts.DERNIERE_PUBLICATION.text_fr + " : "}
+                                            <Badge>
+                                                {(item.last_post === 0 ? (Texts.JAMAIS_PUBLIE.text_fr) : (Dates.format(item.last_post)))}
+                                            </Badge>
+                                        </p>
                                         <div>
                                             <Button
 
@@ -1014,6 +1028,7 @@ export default connect(mapStateToProps, {
     setEventModalCurrentEndDate,
     setEventModalCurrentPicture,
     setDeletionCause,
+    setEventLastPost,
 
     setEventsIsLoad
 })(Events);

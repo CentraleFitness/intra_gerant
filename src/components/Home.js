@@ -1,45 +1,63 @@
 import React from 'react';
-import { Panel, Glyphicon, Modal, FormControl, Button } from 'react-bootstrap';
+import {
+    Panel,
+    Glyphicon,
+    Modal,
+    FormControl,
+    Button,
+    Grid,
+    Col,
+    Row,
+    Thumbnail
+} from 'react-bootstrap';
 import QRCode from 'qrcode.react';
+import { connect } from 'react-redux';
+
+import {
+    setHomeSummaryIsLoad
+} from "../actions/globalActions";
+
+import {
+    displayAlert,
+    dismissAlert,
+    setHomeSummary
+} from "../actions/homeActions";
 
 import Texts from "../utils/Texts";
 import Communication from "../utils/Communication";
 import Status from "../utils/Status";
 import Fields from "../utils/Fields";
 import Paths from "../utils/Paths";
+import Dates from "../utils/Dates";
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            fitness_center_id: "",
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        };
-    }
 
     componentWillMount() {
-        this.getCustomProgramsActivities();
+        if (this.props.home_summary_is_load === false) {
+            this.getHomeSummary();
+        }
     }
 
-    getCustomProgramsActivities() {
+    getHomeSummary() {
         let params = {};
 
         params[Fields.TOKEN] = localStorage.getItem("token");
 
         let me = this;
 
-        let communication = new Communication('post', Paths.HOST + Paths.GET_FITNESS_CENTER_ID, params);
+        let communication = new Communication('post', Paths.HOST + Paths.GET_HOME_SUMMARY, params);
         communication.sendRequest(
             function (response) {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         if (me !== undefined) {
-                            me.setState({
-                                fitness_center_id: response.data.fitness_center_id
+                            me.props.setHomeSummary({
+                                fitness_center_id: response.data.fitness_center_id,
+                                nb_subscribers: response.data.nb_subscribers,
+                                events: response.data.events
                             });
+                            me.props.setHomeSummaryIsLoad();
                         }
 
                     } else {
@@ -53,8 +71,7 @@ class Home extends React.Component {
                         }
 
                         if (me !== undefined) {
-                            me.setState({
-                                showAlert: true,
+                            me.props.displayAlert({
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
@@ -62,8 +79,7 @@ class Home extends React.Component {
                     }
                 } else {
                     if (me !== undefined) {
-                        me.setState({
-                            showAlert: true,
+                        me.props.displayAlert({
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: Texts.ERR_RESEAU.text_fr
                         });
@@ -72,8 +88,7 @@ class Home extends React.Component {
             },
             function (error) {
                 if (me !== undefined) {
-                    me.setState({
-                        showAlert: true,
+                    me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
                         alertText: Texts.ERR_RESEAU.text_fr
                     });
@@ -83,36 +98,79 @@ class Home extends React.Component {
     }
 
     handleAlertDismiss() {
-        this.setState({
-            showAlert: false,
-            alertTitle: "",
-            alertText: ""
-        });
+        this.dismissAlert();
     }
 
     render() {
         return (
             <Panel header={<div><Glyphicon glyph="home" /> {Texts.ACCUEIL.text_fr}</div>} bsStyle="primary">
-                <div style={{textAlign: "center"}}>
-                    <QRCode size={255} value={this.state.fitness_center_id} />
-                    <h1>Affiliation à la salle !</h1>
-                </div>
-                <Modal show={this.state.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
+
+                <Col xs={4} sm={4} md={4} lg={4}>
+
+                </Col>
+
+
+
+                <Col xs={4} sm={4} md={4} lg={4} componentClass={Thumbnail} style={{textAlign: "center"}}>
+                    <h4>{this.props.nb_subscribers + " " + Texts.ABONNE.text_fr}</h4>
+                </Col>
+
+                {
+                    this.props.events.map((item) => (
+                        (
+                        <Col xs={4} sm={4} md={4} lg={4} componentClass={Thumbnail} style={{textAlign: "center"}}>
+                            <h4>{item.title}</h4>
+                            <p>
+                                <span>{Dates.formatDateOnly(item.start_date)}</span> {" - "}
+                                <span>{Dates.formatDateOnly(item.end_date)}</span>
+                            </p>
+                            <p>
+                                <span>{Texts.NOMBRE_D_INSCRIT.text_fr + " : " + item.nb_subscribers}</span>
+                            </p>
+                        </Col>
+                        )
+                    ))
+                }
+
+                <Modal show={this.props.showAlert} bsSize={"small"} onHide={this.handleAlertDismiss.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.state.alertTitle}</Modal.Title>
+                        <Modal.Title>{this.props.alertTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <FormControl.Static>
-                            {this.state.alertText}
+                            {this.props.alertText}
                         </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleAlertDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
                     </Modal.Footer>
                 </Modal>
+
             </Panel>
         );
     }
 }
 
-export default Home;
+function mapStateToProps(state) {
+    return {
+        fitness_center_id: state.home.fitness_center_id,
+        nb_subscribers: state.home.nb_subscribers,
+        events: state.home.events,
+        showAlert: state.home.showAlert,
+        alertTitle: state.home.alertTitle,
+        alertText: state.home.alertText,
+
+        //Global
+        home_summary_is_load: state.global.home_summary_is_load
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    setHomeSummary,
+
+    //global
+    setHomeSummaryIsLoad
+
+})(Home);

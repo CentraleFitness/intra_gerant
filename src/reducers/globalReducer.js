@@ -1,5 +1,9 @@
 import {
+    SET_DISPLAY_CONFIGURATION_IS_LOAD,
+    SET_HOME_SUMMARY_IS_LOAD,
     SET_CUSTOM_PROGRAMS_IS_LOAD,
+    SET_MODULES_IS_LOAD,
+    SET_MODULE_STATES_IS_LOAD,
     SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_LOAD,
     SET_FEEDBACKS_IS_LOAD,
     SET_FEEDBACKS_STATUS_IS_LOAD,
@@ -11,7 +15,11 @@ import {
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
 
+    SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD,
+    SET_HOME_SUMMARY_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_IS_NOT_LOAD,
+    SET_MODULES_IS_NOT_LOAD,
+    SET_MODULE_STATES_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_NOT_LOAD,
     SET_FEEDBACKS_IS_NOT_LOAD,
     SET_FEEDBACKS_STATUS_IS_NOT_LOAD,
@@ -25,7 +33,11 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    display_configuration_is_load: false,
+    home_summary_is_load: false,
     custom_programs_is_load: false,
+    modules_is_load: false,
+    module_states_is_load: false,
     custom_programs_activities_is_load: false,
     feedbacks_is_load: false,
     feedbacks_status_is_load: false,
@@ -40,10 +52,30 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case SET_DISPLAY_CONFIGURATION_IS_LOAD:
+            return {
+                ...state,
+                display_configuration_is_load: true
+            };
+        case SET_HOME_SUMMARY_IS_LOAD:
+            return {
+                ...state,
+                home_summary_is_load: true
+            };
         case SET_CUSTOM_PROGRAMS_IS_LOAD:
             return {
                 ...state,
                 custom_programs_is_load: true
+            };
+        case SET_MODULES_IS_LOAD:
+            return {
+                ...state,
+                modules_is_load: true
+            };
+        case SET_MODULE_STATES_IS_LOAD:
+            return {
+                ...state,
+                module_states_is_load: true
             };
         case SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_LOAD:
             return {
@@ -95,10 +127,30 @@ export default (state = initialState, action) => {
                 ...state,
                 album_is_load: true
             };
+        case SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD:
+            return {
+                ...state,
+                display_configuration_is_load: false
+            };
+        case SET_HOME_SUMMARY_IS_NOT_LOAD:
+            return {
+                ...state,
+                home_summary_is_load: false
+            };
         case SET_CUSTOM_PROGRAMS_IS_NOT_LOAD:
             return {
                 ...state,
                 custom_programs_is_load: false
+            };
+        case SET_MODULES_IS_NOT_LOAD:
+            return {
+                ...state,
+                modules_is_load: false
+            };
+        case SET_MODULE_STATES_IS_NOT_LOAD:
+            return {
+                ...state,
+                module_states_is_load: false
             };
         case SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_NOT_LOAD:
             return {

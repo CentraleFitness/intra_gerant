@@ -15,7 +15,7 @@ import {
 } from "../actions/types"
 
 const initialState = {
-    centrale_fitness_email: "support@centralefitness.fr",
+    centrale_fitness_email: "centrale-fitness@outlook.fr",
     centrale_fitness_phone: "+33 6 18 31 60 87",
     feedbacks: [],
     initial_feedbacks: [],

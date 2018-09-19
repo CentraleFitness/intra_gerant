@@ -44,6 +44,16 @@ class Menu extends React.Component {
                             <Glyphicon glyph="time" />&nbsp;&nbsp;{Texts.PROGRAMMES.text_fr}
                         </NavItem>
                     </LinkContainer>
+                    <LinkContainer to={"/display"}>
+                        <NavItem eventKey={"display"}>
+                            <Glyphicon glyph="blackboard" />&nbsp;&nbsp;{Texts.AFFICHAGE.text_fr}
+                        </NavItem>
+                    </LinkContainer>
+                    <LinkContainer to={"/equipment"}>
+                        <NavItem eventKey={"equipment"}>
+                            <Glyphicon glyph="eye-open" />&nbsp;&nbsp;{Texts.EQUIPEMENTS.text_fr}
+                        </NavItem>
+                    </LinkContainer>
                     <LinkContainer to={"/contact"}>
                         <NavItem eventKey={"contact"}>
                             <Glyphicon glyph="envelope" />&nbsp;&nbsp;{Texts.CONTACT.text_fr}

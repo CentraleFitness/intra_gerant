@@ -184,12 +184,59 @@ class Contact extends React.Component {
     }
 
     getStatus() {
-        this.props.setStatus([
-            {code: 1, text_fr: "En attente"},
-            {code: 2, text_fr: "En cours"},
-            {code: 3, text_fr: "Résolue"}
-        ]);
-        this.props.setFeedbacksStatusIsLoad();
+
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.GET_FEEDBACK_STATES, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        if (me !== undefined)
+                            me.props.setStatus(response.data.feedback_states);
+                        if (me !== undefined)
+                            me.props.setFeedbacksStatusIsLoad();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            }
+        );
     }
 
     getFeedbacks() {
@@ -348,7 +395,7 @@ class Contact extends React.Component {
                                         >
                                             <ToggleButton value={0}>{Texts.TOUS.text_fr}</ToggleButton>
                                             {
-                                                this.props.status.map((item) => (
+                                                this.props.status && this.props.status.map((item) => (
                                                     <ToggleButton
                                                         key={item.code}
                                                         bsStyle={this.getStatusStyle(item.code)}

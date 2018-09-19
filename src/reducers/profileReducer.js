@@ -285,6 +285,7 @@ export default (state = initialState, action) => {
                 if (item !== undefined) {
                     return item._id === action.payload;
                 }
+                return false;
             });
             delete tmp_publications_delete[index_publications_delete];
             return {
@@ -387,6 +388,7 @@ export default (state = initialState, action) => {
                 if (item !== undefined) {
                     return item.picture_id === action.payload;
                 }
+                return false;
             });
             delete tmp_photos_delete[index_delete];
             return {

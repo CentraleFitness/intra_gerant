@@ -4,6 +4,7 @@ import {
     DISPLAY_DELETE_CONFIRM,
     DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
+    SET_SELECTED_EVENTS,
     ADD_EVENT,
     DELETE_EVENT,
     UPDATE_EVENT,
@@ -23,7 +24,8 @@ import {
     SET_EVENT_MODAL_CURRENT_START_DATE,
     SET_EVENT_MODAL_CURRENT_END_DATE,
     SET_EVENT_MODAL_CURRENT_PICTURE,
-    SET_DELETION_CAUSE
+    SET_DELETION_CAUSE,
+    SET_EVENT_LAST_POST
 } from "./types"
 
 export const displayAlert = (alertInfo) => {
@@ -55,6 +57,13 @@ export const dismissDeleteConfirm = () => {
 export const setEvents = (events) => {
     return {
         type: SET_EVENTS,
+        payload: events
+    };
+};
+
+export const setSelectedEvents = (events) => {
+    return {
+        type: SET_SELECTED_EVENTS,
         payload: events
     };
 };
@@ -193,5 +202,12 @@ export const setDeletionCause = (value) => {
     return {
         type: SET_DELETION_CAUSE,
         payload: value
+    };
+};
+
+export const setEventLastPost = (item) => {
+    return {
+        type: SET_EVENT_LAST_POST,
+        payload: item
     };
 };

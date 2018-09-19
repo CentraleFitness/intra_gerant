@@ -502,6 +502,84 @@ const Texts = {
     PHOTO: {
         text_fr: "Photo",
         text_en: "Photo"
+    },
+    DERNIERE_PUBLICATION: {
+        text_fr: "Dernière publication",
+        text_en: "Last publication"
+    },
+    JAMAIS_PUBLIE: {
+        text_fr: "Jamais publié",
+        text_en: "Never published"
+    },
+    AFFICHAGE: {
+        text_fr: "Affichage",
+        text_en: "Display"
+    },
+    CONFIGURATION_DE_L_AFFICHAGE: {
+        text_fr: "Configuration de l'affichage",
+        text_en: "Display configuration"
+    },
+    EXPLICATIONS_CONFIGURATION_DE_L_AFFICHAGE: {
+        text_fr: {
+            part1: "Vous pouvez ici activer ou désactiver des options de l'affichage dynamique de votre salle.",
+            part2: "Ces options vous permettent de personnaliser ce que vous souhaitez afficher pour motiver vos abonnés !"
+        },
+        text_en: {
+            part1: "You can here enable or disable options related to the dynamic display of your club.",
+            part2: "Those options allow you to customize what you want to display to motivate your subscribers !"
+        }
+    },
+    AFFICHER_LES_EVENEMENTS: {
+        text_fr: "Afficher les évènements",
+        text_en: "Display events"
+    },
+    AFFICHER_LES_ACTUALITES: {
+        text_fr: "Afficher les actualités",
+        text_en: "Display news"
+    },
+    AFFICHER_LES_PERFORMANCES_GLOBALES: {
+        text_fr: "Afficher les performances globales ( somme de tous les sportifs ) par activités",
+        text_en: "Display global performances ( sum of all users ) by activities"
+    },
+    AFFICHER_LES_CLASSEMENTS_PAR_ACTIVITE: {
+        text_fr: "Afficher les classements des sportif par activités",
+        text_en: "Display ranking of users by activities"
+    },
+    AFFICHER_LE_CLASSEMENT_GLOBAL: {
+        text_fr: "Afficher le classement général des meilleurs sportifs de la salle",
+        text_en: "Display global ranking of best users of the club"
+    },
+    AFFICHER_LE_RANG_NATIONAL_DE_PRODUCTION: {
+        text_fr: "Afficher le rang national de la salle en production d'energie",
+        text_en: "Display national rank of the club on energy production"
+    },
+    EQUIPEMENTS: {
+        text_fr: "Equipements",
+        text_en: "Equipment"
+    },
+    TYPE_D_ACTUALITE: {
+        text_fr: "Type d'actualité",
+        text_en: "News type"
+    },
+    TYPE_D_ACTIVITE: {
+        text_fr: "Type d'activité",
+        text_en: "Activity type"
+    },
+    TYPE_DE_MACHINE: {
+        text_fr: "Type de machine",
+        text_en: "Machine type"
+    },
+    ETAT: {
+        text_fr: "Etat",
+        text_en: "State"
+    },
+    EXPLICATION_EQUIPEMENT: {
+        text_fr: "Vous pouvez ici suivre en temps réel l'activité des modules de votre salle, depuis la livraison jusqu'à leur utilisation.",
+        text_en: "You can here follow in real time the activiti of the modules of your club, from the shipping to the usage."
+    },
+    CONFIGURATION_MISE_A_JOUR: {
+        text_fr: "Configuration mise à jour",
+        text_en: "Configuration updated"
     }
 };
 

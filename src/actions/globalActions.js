@@ -1,5 +1,9 @@
 import {
+    SET_DISPLAY_CONFIGURATION_IS_LOAD,
+    SET_HOME_SUMMARY_IS_LOAD,
     SET_CUSTOM_PROGRAMS_IS_LOAD,
+    SET_MODULES_IS_LOAD,
+    SET_MODULE_STATES_IS_LOAD,
     SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_LOAD,
     SET_FEEDBACKS_IS_LOAD,
     SET_FEEDBACKS_STATUS_IS_LOAD,
@@ -11,7 +15,11 @@ import {
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
 
+    SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD,
+    SET_HOME_SUMMARY_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_IS_NOT_LOAD,
+    SET_MODULES_IS_NOT_LOAD,
+    SET_MODULE_STATES_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_ACTIVITIES_IS_NOT_LOAD,
     SET_FEEDBACKS_IS_NOT_LOAD,
     SET_FEEDBACKS_STATUS_IS_NOT_LOAD,
@@ -24,9 +32,35 @@ import {
     SET_ALBUM_IS_NOT_LOAD
 } from "./types"
 
+export const setDisplayConfigurationIsLoad = () => {
+    return {
+        type: SET_DISPLAY_CONFIGURATION_IS_LOAD
+    };
+};
+
+
+export const setHomeSummaryIsLoad = () => {
+    return {
+        type: SET_HOME_SUMMARY_IS_LOAD
+    };
+};
+
+
 export const setCustomProgramsIsLoad = () => {
     return {
         type: SET_CUSTOM_PROGRAMS_IS_LOAD
+    };
+};
+
+export const setModulesIsLoad = () => {
+    return {
+        type: SET_MODULES_IS_LOAD
+    };
+};
+
+export const setModuleStatesIsLoad = () => {
+    return {
+        type: SET_MODULE_STATES_IS_LOAD
     };
 };
 
@@ -91,9 +125,33 @@ export const setAlbumIsLoad = () => {
     };
 };
 
+export const setDisplayConfigurationIsNotLoad = () => {
+    return {
+        type: SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD
+    };
+};
+
+export const setHomeSummaryIsNotLoad = () => {
+    return {
+        type: SET_HOME_SUMMARY_IS_NOT_LOAD
+    };
+};
+
 export const setCustomProgramsIsNotLoad = () => {
     return {
         type: SET_CUSTOM_PROGRAMS_IS_NOT_LOAD
+    };
+};
+
+export const setModulesIsNotLoad = () => {
+    return {
+        type: SET_MODULES_IS_NOT_LOAD
+    };
+};
+
+export const setModuleStatesIsNotLoad = () => {
+    return {
+        type: SET_MODULE_STATES_IS_NOT_LOAD
     };
 };
 

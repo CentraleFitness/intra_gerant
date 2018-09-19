@@ -5,6 +5,8 @@ import Dashboard from './Dashboard';
 import Home from './Home';
 import Events from './Events';
 import CustomPrograms from './CustomPrograms';
+import Display from './Display';
+import Equipment from './Equipment';
 import Contact from './Contact';
 import Statistics from "./Statistics";
 import Profile from "./Profile";
@@ -28,6 +30,8 @@ class App extends React.Component {
                         <Route path={"statistics"} component={Statistics}/>
                         <Route path={"events"} component={Events}/>
                         <Route path={"customprograms"} component={CustomPrograms}/>
+                        <Route path={"display"} component={Display}/>
+                        <Route path={"equipment"} component={Equipment}/>
                         <Route path={"contact"} component={Contact}/>
                     </Route>
                 </Route>

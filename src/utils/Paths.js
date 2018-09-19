@@ -43,7 +43,13 @@ const Paths = {
     DELETE_CUSTOM_PROGRAM: "/center/delete/customprogram",
     GET_ACTIVITIES: "/center/get/activities",
 
-    GET_FITNESS_CENTER_ID: "/center/get/id",
+    GET_HOME_SUMMARY: "/center/get/homesummary",
+
+    GET_DISPLAY_CONFIGURATION: "/center/get/displayconfiguration",
+    UPDATE_DISPLAY_CONFIGURATION: "/center/update/displayconfiguration",
+
+    GET_MODULES: "/center/get/modules",
+    GET_MODULE_STATES: "/center/get/modulestates"
 };
 
 export default Paths;
