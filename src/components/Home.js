@@ -8,7 +8,7 @@ import {
     Grid,
     Col,
     Row,
-    Thumbnail
+    Thumbnail, FormGroup
 } from 'react-bootstrap';
 import QRCode from 'qrcode.react';
 import { connect } from 'react-redux';
@@ -105,20 +105,24 @@ class Home extends React.Component {
         return (
             <Panel header={<div><Glyphicon glyph="home" /> {Texts.ACCUEIL.text_fr}</div>} bsStyle="primary">
 
-                <Col xs={4} sm={4} md={4} lg={4}>
-
-                </Col>
-
-
-
-                <Col xs={4} sm={4} md={4} lg={4} componentClass={Thumbnail} style={{textAlign: "center"}}>
-                    <h4>{this.props.nb_subscribers + " " + Texts.ABONNE.text_fr}</h4>
-                </Col>
-
+                <div style={{textAlign: "center"}}>
+                    <QRCode size={255} value={this.props.fitness_center_id} />
+                    <h1>Affiliation à la salle !</h1>
+                </div>
+                <Thumbnail style={{textAlign: "center"}} >
+                    <h4>{this.props.nb_subscribers + " " + Texts.ABONNE.text_fr + (this.props.nb_subscribers > 0 ? "s" : "")}</h4>
+                </Thumbnail>
+                <form>
+                    <FormGroup>
+                        <FormControl.Static style={{textAlign: "center", fontSize: 19}}>
+                            <Glyphicon glyph="arrow-down" /> {Texts.EVENEMENTS_A_VENIR.text_fr} <Glyphicon glyph="arrow-down" />
+                        </FormControl.Static>
+                    </FormGroup>
+                </form>
                 {
                     this.props.events.map((item) => (
                         (
-                        <Col xs={4} sm={4} md={4} lg={4} componentClass={Thumbnail} style={{textAlign: "center"}}>
+                        <Thumbnail style={{textAlign: "center"}} key={item._id}>
                             <h4>{item.title}</h4>
                             <p>
                                 <span>{Dates.formatDateOnly(item.start_date)}</span> {" - "}
@@ -127,7 +131,7 @@ class Home extends React.Component {
                             <p>
                                 <span>{Texts.NOMBRE_D_INSCRIT.text_fr + " : " + item.nb_subscribers}</span>
                             </p>
-                        </Col>
+                        </Thumbnail>
                         )
                     ))
                 }

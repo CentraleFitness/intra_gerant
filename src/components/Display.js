@@ -315,7 +315,7 @@ class Display extends React.Component {
 
         if (this.props.show_events !== this.props.keep_show_events ||
             (this.props.show_news !== this.props.keep_show_news) ||
-            this.props.news_type !== this.props.news_type ||
+            this.props.news_type !== this.props.keep_news_type ||
             this.props.show_global_performances !== this.props.keep_show_global_performances ||
             this.props.performances_type !== this.props.keep_performances_type ||
             this.props.show_ranking_discipline !== this.props.keep_show_ranking_discipline ||

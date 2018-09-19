@@ -6,7 +6,7 @@ import {
     FormControl,
     Button,
     FormGroup,
-    Checkbox, Table
+    Table
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 

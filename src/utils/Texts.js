@@ -580,6 +580,10 @@ const Texts = {
     CONFIGURATION_MISE_A_JOUR: {
         text_fr: "Configuration mise à jour",
         text_en: "Configuration updated"
+    },
+    EVENEMENTS_A_VENIR: {
+        text_fr: "Evènements à venir",
+        text_en: "Upcoming events"
     }
 };
 

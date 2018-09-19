@@ -505,7 +505,7 @@ class CustomPrograms extends React.Component {
         this.props.addToCurrentActivities({
             _id: this.props.activities[idx]._id,
             name: this.props.activities[idx].name,
-            time: ((parseInt(duration) * 60) + parseInt(duration_sec)),
+            time: ((parseInt(duration, 10) * 60) + parseInt(duration_sec, 10)),
             icon: this.props.activities[idx].icon
         });
 

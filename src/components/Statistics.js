@@ -1,11 +1,7 @@
 import React from 'react';
 import {
     Panel,
-    Glyphicon,
-    Grid,
-    Row,
-    Col,
-    Thumbnail
+    Glyphicon
 } from 'react-bootstrap';
 
 import Texts from "../utils/Texts";
