@@ -5,9 +5,6 @@ import {
     Modal,
     FormControl,
     Button,
-    Grid,
-    Col,
-    Row,
     Thumbnail, FormGroup
 } from 'react-bootstrap';
 import QRCode from 'qrcode.react';
@@ -122,16 +119,18 @@ class Home extends React.Component {
                 {
                     this.props.events.map((item) => (
                         (
-                        <Thumbnail style={{textAlign: "center"}} key={item._id}>
-                            <h4>{item.title}</h4>
-                            <p>
-                                <span>{Dates.formatDateOnly(item.start_date)}</span> {" - "}
-                                <span>{Dates.formatDateOnly(item.end_date)}</span>
-                            </p>
-                            <p>
-                                <span>{Texts.NOMBRE_D_INSCRIT.text_fr + " : " + item.nb_subscribers}</span>
-                            </p>
-                        </Thumbnail>
+                            <div key={item._id}>
+                            <Thumbnail style={{textAlign: "center"}}>
+                                <h4>{item.title}</h4>
+                                <p>
+                                    <span>{Dates.formatDateOnly(item.start_date)}</span> {" - "}
+                                    <span>{Dates.formatDateOnly(item.end_date)}</span>
+                                </p>
+                                <p>
+                                    <span>{Texts.NOMBRE_D_INSCRIT.text_fr + " : " + item.nb_subscribers}</span>
+                                </p>
+                            </Thumbnail>
+                            </div>
                         )
                     ))
                 }

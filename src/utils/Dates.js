@@ -37,9 +37,9 @@ class Dates {
     }
 
     static formatMinutesDuration(duration) {
-        let hours = parseInt(duration / 3600);
-        let minutes = parseInt(duration / 60 % 60);
-        let secondes = parseInt(duration % 60);
+        let hours = parseInt(duration / 3600, 10);
+        let minutes = parseInt(duration / 60 % 60, 10);
+        let secondes = parseInt(duration % 60, 10);
 
         return (hours === 0 ? "" : (hours + " h ")) +
             (minutes === 0 ? "" : ((minutes < 10 ? minutes : minutes) + " min ")) +
