@@ -67,6 +67,8 @@ import Fields from "../utils/Fields";
 import Paths from "../utils/Paths";
 import Validator from "../utils/Validator";
 
+import "../styles/CustomPrograms.css";
+
 class CustomPrograms extends React.Component {
 
     componentDidMount() {
@@ -487,8 +489,7 @@ class CustomPrograms extends React.Component {
         const duration_sec = ReactDOM.findDOMNode(this.selectActivityDurationSecInputRef).value;
 
         if (activity === "" || activity === null ||
-            duration === "" || duration === null ||
-            duration_sec === "" || duration_sec === null ||
+            ((duration === "" || duration === null) && (duration_sec === "" || duration_sec === null)) ||
             (duration === 0 && duration_sec === 0)) {
 
             return;
@@ -505,7 +506,7 @@ class CustomPrograms extends React.Component {
         this.props.addToCurrentActivities({
             _id: this.props.activities[idx]._id,
             name: this.props.activities[idx].name,
-            time: ((parseInt(duration, 10) * 60) + parseInt(duration_sec, 10)),
+            time: ((parseInt((duration === "" || duration === null) ? 0 : duration, 10) * 60) + parseInt((duration_sec === "" || duration_sec === null) ? 0 : duration_sec, 10)),
             icon: this.props.activities[idx].icon
         });
 
@@ -841,6 +842,7 @@ class CustomPrograms extends React.Component {
                                 >
                                     <Image
                                         src={(item.picture && item.picture !== "" ?  item.picture : "/img/program.svg")}
+                                        className={"programImage center-block"}
                                     />
                                 </td>
                                 <td onClick={this.onEditCustomProgramClick.bind(this, item)}

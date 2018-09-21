@@ -166,9 +166,9 @@ class ProfileInfo extends React.Component {
             !Validator.description(this.props.center_description) ||
             !Validator.name(this.props.center_city) ||
             !Validator.address(this.props.center_address) ||
-            (this.props.center_address2 !== "" && !Validator.address(this.props.center_address2)) ||
+            (this.props.center_address2 !== "" && this.props.center_address2 !== null && !Validator.address(this.props.center_address2)) ||
             !Validator.phoneNumber(this.props.manager_phone) ||
-            (this.props.center_phone !== "" && !Validator.phoneNumber(this.props.center_phone)) ||
+            (this.props.center_phone !== "" && this.props.center_phone === null && !Validator.phoneNumber(this.props.center_phone)) ||
             !Validator.zipCode(this.props.center_zip_code) ||
             !Validator.email(this.props.manager_email)) {
 
