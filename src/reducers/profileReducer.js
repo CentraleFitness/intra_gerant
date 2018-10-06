@@ -248,14 +248,20 @@ export default (state = initialState, action) => {
                 center_phone: action.payload
             };
         case SET_MANAGER_PICTURE_PREVIEW:
+            let tmp_manager = action.payload;
+            if (tmp_manager === "" || tmp_manager === null)
+                tmp_manager = initialState.manager_picture_preview;
             return {
                 ...state,
-                manager_picture_preview: action.payload
+                manager_picture_preview: tmp_manager
             };
         case SET_CENTER_PICTURE_PREVIEW:
+            let tmp_center = action.payload;
+            if (tmp_center === "" || tmp_center === null)
+                tmp_center = initialState.center_picture_preview;
             return {
                 ...state,
-                center_picture_preview: action.payload
+                center_picture_preview: tmp_center
             };
         case SET_MANAGER_PICTURE:
             return {
@@ -406,9 +412,12 @@ export default (state = initialState, action) => {
                 picture_description: action.payload
             };
         case SET_PICTURE_PREVIEW:
+            let tmp_picture_preview = action.payload;
+            if (tmp_picture_preview === "" || tmp_picture_preview === null)
+                tmp_picture_preview = initialState.picture_preview;
             return {
                 ...state,
-                picture_preview: action.payload
+                picture_preview: tmp_picture_preview
             };
         case DISPLAY_DELETE_PICTURE_CONFIRM:
             return {

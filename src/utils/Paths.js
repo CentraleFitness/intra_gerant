@@ -49,7 +49,11 @@ const Paths = {
     UPDATE_DISPLAY_CONFIGURATION: "/center/update/displayconfiguration",
 
     GET_MODULES: "/center/get/modules",
-    GET_MODULE_STATES: "/center/get/modulestates"
+    GET_MODULE_STATES: "/center/get/modulestates",
+
+    GET_STATISTICS: "/center/get/statistics",
+
+    GET_FITNESS_CENTER_ID: "/center/get/id"
 };
 
 export default Paths;

@@ -1,4 +1,5 @@
 import {
+    SET_STATISTICS_IS_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_LOAD,
     SET_HOME_SUMMARY_IS_LOAD,
     SET_CUSTOM_PROGRAMS_IS_LOAD,
@@ -15,6 +16,7 @@ import {
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
 
+    SET_STATISTICS_IS_NOT_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD,
     SET_HOME_SUMMARY_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_IS_NOT_LOAD,
@@ -31,6 +33,12 @@ import {
     SET_PUBLICATIONS_IS_NOT_LOAD,
     SET_ALBUM_IS_NOT_LOAD
 } from "./types"
+
+export const setStatisticsIsLoad = () => {
+    return {
+        type: SET_STATISTICS_IS_LOAD
+    };
+};
 
 export const setDisplayConfigurationIsLoad = () => {
     return {
@@ -122,6 +130,12 @@ export const setPublicationsIsLoad = () => {
 export const setAlbumIsLoad = () => {
     return {
         type: SET_ALBUM_IS_LOAD
+    };
+};
+
+export const setStatisticsIsNotLoad = () => {
+    return {
+        type: SET_STATISTICS_IS_NOT_LOAD
     };
 };
 

@@ -157,7 +157,7 @@ class ProfilePhotos extends React.Component {
                         });
                         me.props.setPictureTitle("");
                         me.props.setPictureDescription("");
-                        me.props.setPicturePreview("/img/folder.svg");
+                        me.props.setPicturePreview("");
                         me.centerAddPictureRef.value = "";
 
                     } else {
@@ -259,6 +259,8 @@ class ProfilePhotos extends React.Component {
             reader.addEventListener("load", function () {
                 me.props.setPicturePreview(reader.result);
             }, false);
+        } else {
+            me.props.setPicturePreview("");
         }
     }
 

@@ -4,54 +4,126 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 
+import { connect } from 'react-redux';
+
+import {
+    displayAlert,
+    dismissAlert,
+    setStatistics
+} from "../actions/statisticsActions";
+
+import {
+    setStatisticsIsLoad
+} from "../actions/globalActions";
+
 import Texts from "../utils/Texts";
 
 import '../styles/Statistics.css';
+import Status from "../utils/Status";
+import Paths from "../utils/Paths";
+import Communication from "../utils/Communication";
+import Fields from "../utils/Fields";
 
 class Statistics extends React.Component {
-    constructor(props) {
-        super(props);
-        let data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }
-            ]
-        };
 
-        this.state = {
-            data: data,
-            options: {}
-        };
+    componentDidMount() {
+        if (this.props.statistics_is_load === false) {
+            this.getStatistics();
+        }
+    }
+
+    getStatistics() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.GET_STATISTICS, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        if (me !== undefined) {
+                            me.props.setStatistics({
+                                production_day: response.data.production_day,
+                                production_month: response.data.production_month,
+                                frequentation_day: response.data.frequentation_day,
+                                frequentation_month: response.data.frequentation_month
+                            });
+                            me.props.setStatisticsIsLoad();
+                        }
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                if (me !== undefined) {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            }
+        );
     }
 
     render() {
         return (
             <Panel header={<div><Glyphicon glyph="stats" /> {Texts.STATISTIQUES_SALLE.text_fr}</div>} bsStyle="primary">
                 <div>
-
+                    {"Production / jour " + this.props.production_day + " Watt" + (this.props.production_day > 1 ? "s" : "")}<br />
+                    {"Production / mois " + this.props.production_month + " Watt" + (this.props.production_month > 1 ? "s" : "")}<br />
+                    {"Frequentation / jour " + this.props.frequentation_day + " Utilisateur" + (this.props.frequentation_day > 1 ? "s" : "")}<br />
+                    {"Frequentation / mois " + this.props.frequentation_month + " Utilisateur" + (this.props.frequentation_month > 1 ? "s" : "")}
                 </div>
             </Panel>
         );
     }
 }
 
-export default Statistics;
+function mapStateToProps(state) {
+    return {
+        showAlert: state.statistics.showAlert,
+        alertTitle: state.statistics.alertTitle,
+        alertText: state.statistics.alertText,
+        production_day: state.statistics.production_day,
+        production_month: state.statistics.production_month,
+        frequentation_day: state.statistics.frequentation_day,
+        frequentation_month: state.statistics.frequentation_month,
+
+        statistics_is_load: state.global.statistics_is_load
+    };
+}
+
+export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+    setStatistics,
+
+    setStatisticsIsLoad
+})(Statistics);

@@ -3,6 +3,7 @@ import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 
 import Dashboard from './Dashboard';
 import Home from './Home';
+import Subscription from './Subscription';
 import Events from './Events';
 import CustomPrograms from './CustomPrograms';
 import Display from './Display';
@@ -26,6 +27,7 @@ class App extends React.Component {
                     <Route path={"/"} component={Dashboard}>
                         <IndexRedirect to="/home" />
                         <Route path={"home"} component={Home}/>
+                        <Route path={"subscription"} component={Subscription}/>
                         <Route path={"profile"} component={Profile}/>
                         <Route path={"statistics"} component={Statistics}/>
                         <Route path={"events"} component={Events}/>

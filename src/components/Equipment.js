@@ -111,7 +111,6 @@ class Equipment extends React.Component {
                             me.props.setModuleStates(response.data.module_states);
                         if (me !== undefined)
                             me.props.setModuleStatesIsLoad();
-                        me.forceUpdate();
 
                     } else {
 
@@ -187,7 +186,7 @@ class Equipment extends React.Component {
 
         return (
             <div>
-                <Panel header={<div><Glyphicon glyph="eye-open" /> {Texts.EQUIPEMENTS.text_fr}</div>} bsStyle="primary">
+                <Panel header={<div><Glyphicon glyph="list" /> {Texts.EQUIPEMENTS.text_fr}</div>} bsStyle="primary">
                     <form>
                         <FormGroup>
                             <FormControl.Static style={{textAlign: "center", fontSize: 17}}>

@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 
 import { resetProfileInfo } from "../actions/profileActions";
 import {
+    setStatisticsIsNotLoad,
     setDisplayConfigurationIsNotLoad,
     setHomeSummaryIsNotLoad,
     setCustomProgramsActivitiesIsNotLoad,
@@ -65,6 +66,7 @@ class TopBar extends React.Component {
         localStorage.removeItem("token");
         this.props.resetProfileInfo();
 
+        this.props.setStatisticsIsNotLoad();
         this.props.setDisplayConfigurationIsNotLoad();
         this.props.setHomeSummaryIsNotLoad();
         this.props.setCustomProgramsIsNotLoad();
@@ -358,6 +360,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+    setStatisticsIsNotLoad,
     setDisplayConfigurationIsNotLoad,
     setHomeSummaryIsNotLoad,
     setCustomProgramsActivitiesIsNotLoad,

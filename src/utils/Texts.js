@@ -584,6 +584,34 @@ const Texts = {
     EVENEMENTS_A_VENIR: {
         text_fr: "Evènements à venir",
         text_en: "Upcoming events"
+    },
+    MODIFIE: {
+        text_fr: "Modifié",
+        text_en: "Updated"
+    },
+    ADRESSE_COMP_FACULTATIVE: {
+        text_fr: "Adresse complément ( facultative )",
+        text_en: "Complementary address ( facultative )"
+    },
+    TELEPHONE_SALLE_FACULTATIF: {
+        text_fr: "Téléphone de la salle ( facultatif )",
+        text_en: "Center's phone ( facultative )"
+    },
+    AFFILIATION: {
+        text_fr: "Affiliation",
+        text_en: "Subscription"
+    },
+    MODULES: {
+        text_fr: "Modules",
+        text_en: "Modules"
+    },
+    PRODUIT_AUJOURDHUI: {
+        text_fr: "produits aujourd'hui",
+        text_en: "producted today"
+    },
+    UTILISATEURS_AUJOURDHUI: {
+        text_fr: "utilisateurs aujourd'hui",
+        text_en: "users today"
     }
 };
 

@@ -146,6 +146,7 @@ class Display extends React.Component {
                                 show_global_ranking: response.data.show_global_ranking,
                                 show_national_production_rank: response.data.show_national_production_rank
                             });
+                            me.props.setDisplayConfigurationIsLoad();
                         }
 
                     } else {
@@ -376,7 +377,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_events} onChange={this.handleShowEventsChange.bind(this)}>
                                     {Texts.AFFICHER_LES_EVENEMENTS.text_fr}
-                                    <span hidden={this.props.show_events === this.props.keep_show_events} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_events === this.props.keep_show_events} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                             <Panel hidden={!this.props.show_events}>
@@ -396,7 +397,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_news} onChange={this.handleShowNewsChange.bind(this)}>
                                     {Texts.AFFICHER_LES_ACTUALITES.text_fr}
-                                    <span hidden={this.props.show_news === this.props.keep_show_news && this.props.news_type === this.props.keep_news_type} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_news === this.props.keep_show_news && this.props.news_type === this.props.keep_news_type} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                             <Panel hidden={!this.props.show_news}>
@@ -414,7 +415,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_global_performances} onChange={this.handleShowGlobalPerformancesChange.bind(this)}>
                                     {Texts.AFFICHER_LES_PERFORMANCES_GLOBALES.text_fr}
-                                    <span hidden={this.props.show_global_performances === this.props.keep_show_global_performances && this.props.performances_type === this.props.keep_performances_type} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_global_performances === this.props.keep_show_global_performances && this.props.performances_type === this.props.keep_performances_type} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                             <Panel hidden={!this.props.show_global_performances}>
@@ -432,7 +433,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_ranking_discipline} onChange={this.handleShowRankingDisciplineChange.bind(this)}>
                                     {Texts.AFFICHER_LES_CLASSEMENTS_PAR_ACTIVITE.text_fr}
-                                    <span hidden={this.props.show_ranking_discipline === this.props.keep_show_ranking_discipline && this.props.ranking_discipline_type === this.props.keep_ranking_discipline_type} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_ranking_discipline === this.props.keep_show_ranking_discipline && this.props.ranking_discipline_type === this.props.keep_ranking_discipline_type} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                             <Panel hidden={!this.props.show_ranking_discipline}>
@@ -450,7 +451,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_global_ranking} onChange={this.handleShowGlobalRankingChange.bind(this)}>
                                     {Texts.AFFICHER_LE_CLASSEMENT_GLOBAL.text_fr}
-                                    <span hidden={this.props.show_global_ranking === this.props.keep_show_global_ranking} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_global_ranking === this.props.keep_show_global_ranking} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                         </FormGroup>
@@ -459,7 +460,7 @@ class Display extends React.Component {
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_national_production_rank} onChange={this.handleShowNationalProductionRankChange.bind(this)}>
                                     {Texts.AFFICHER_LE_RANG_NATIONAL_DE_PRODUCTION.text_fr}
-                                    <span hidden={this.props.show_national_production_rank === this.props.keep_show_national_production_rank} style={{color: "red"}}> *</span>
+                                    <span hidden={this.props.show_national_production_rank === this.props.keep_show_national_production_rank} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
                         </FormGroup>

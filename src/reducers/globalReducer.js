@@ -1,4 +1,5 @@
 import {
+    SET_STATISTICS_IS_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_LOAD,
     SET_HOME_SUMMARY_IS_LOAD,
     SET_CUSTOM_PROGRAMS_IS_LOAD,
@@ -15,6 +16,7 @@ import {
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
 
+    SET_STATISTICS_IS_NOT_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD,
     SET_HOME_SUMMARY_IS_NOT_LOAD,
     SET_CUSTOM_PROGRAMS_IS_NOT_LOAD,
@@ -33,6 +35,7 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    statistics_is_load: false,
     display_configuration_is_load: false,
     home_summary_is_load: false,
     custom_programs_is_load: false,
@@ -52,6 +55,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case SET_STATISTICS_IS_LOAD:
+            return {
+                ...state,
+                statistics_is_load: true
+            };
         case SET_DISPLAY_CONFIGURATION_IS_LOAD:
             return {
                 ...state,
@@ -126,6 +134,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 album_is_load: true
+            };
+        case SET_STATISTICS_IS_NOT_LOAD:
+            return {
+                ...state,
+                statistics_is_load: false
             };
         case SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD:
             return {

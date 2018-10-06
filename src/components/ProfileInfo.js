@@ -80,6 +80,8 @@ class ProfileInfo extends React.Component {
             reader.addEventListener("load", function () {
                 me.props.setManagerPicturePreview(reader.result);
             }, false);
+        } else {
+            me.props.setManagerPicturePreview("");
         }
     }
 
@@ -98,7 +100,7 @@ class ProfileInfo extends React.Component {
     }
 
     onUpdateManagerImageCloseClick() {
-        this.props.setManagerPicturePreview("/img/folder.svg");
+        this.props.setManagerPicturePreview("");
         this.props.dismissManagerPictureModal();
     }
 
@@ -115,6 +117,8 @@ class ProfileInfo extends React.Component {
                 me.props.setCenterPicturePreview(reader.result);
 
             }, false);
+        } else {
+            me.props.setCenterPicturePreview("");
         }
     }
 
@@ -133,7 +137,7 @@ class ProfileInfo extends React.Component {
     }
 
     onUpdateCenterImageCloseClick() {
-        this.props.setCenterPicturePreview("/img/folder.svg");
+        this.props.setCenterPicturePreview("");
         this.props.dismissCenterPictureModal();
     }
 
@@ -579,14 +583,6 @@ class ProfileInfo extends React.Component {
         this.props.setCenterPhone(event.target.value);
     }
 
-    handleManagerPictureFileChange(event) {
-        this.props.setManagerPictureFile(event.target.value);
-    }
-
-    handleCenterPictureFileChange(event) {
-        this.props.setCenterPictureFile(event.target.value);
-    }
-
     render() {
 
         const popoverPhone = (
@@ -754,7 +750,7 @@ class ProfileInfo extends React.Component {
                                         <Col sm={8}>
                                             <FormControl
                                                 type="text"
-                                                placeholder={Texts.ADRESSE_COMP.text_fr}
+                                                placeholder={Texts.ADRESSE_COMP_FACULTATIVE.text_fr}
                                                 value={this.props.center_address2}
                                                 onChange={this.handleAddressSecondChange.bind(this)}
                                             />
@@ -793,7 +789,7 @@ class ProfileInfo extends React.Component {
                                         <Col sm={8}>
                                             <FormControl
                                                 type="text"
-                                                placeholder={Texts.TELEPHONE_SALLE.text_fr}
+                                                placeholder={Texts.TELEPHONE_SALLE_FACULTATIF.text_fr}
                                                 value={this.props.center_phone}
                                                 onChange={this.handleCenterPhoneChange.bind(this)}
                                             />

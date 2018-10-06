@@ -304,7 +304,7 @@ class Contact extends React.Component {
             });
             return obj.text_fr;
         }
-        return "danger";
+        return "";
     }
 
     getStatusStyle(feedback_state) {

@@ -875,7 +875,7 @@ class CustomPrograms extends React.Component {
                                 </td>
                                 <td>
                                     <Checkbox checked={item.available} onChange={this.onItemAvailabilityChange.bind(this, item)}>
-                                        <span hidden={!this.checkIfAvailabilityHasBeenUpdated(item)} style={{color: "red", fontSize: 30 + "px"}}>*</span>
+                                        <span hidden={!this.checkIfAvailabilityHasBeenUpdated(item)} style={{color: "red", fontSize: 14}}>{"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                     </Checkbox>
                                 </td>
                                 <td>

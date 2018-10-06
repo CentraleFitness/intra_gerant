@@ -9,6 +9,7 @@ import DisplayReducer from './displayReducer';
 import EventsReducer from './eventsReducer';
 import CustomPrograms from './customProgramsReducer';
 import Equipment from './equipmentReducer';
+import Statistics from './statisticsReducer';
 
 export default combineReducers({
     login: LoginReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
     events: EventsReducer,
     custom_programs: CustomPrograms,
     equipment: Equipment,
+    statistics: Statistics,
     global: GlobalReducer
 });

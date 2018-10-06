@@ -140,10 +140,16 @@ class Events extends React.Component {
         let params = {};
 
         params[Fields.TOKEN] = localStorage.getItem("token");
-        if (this.props.current_id !== "") {
+        if (this.props.current_id !== "" &&
+            this.props.current_id !== null &&
+            this.props.current_id !== undefined) {
+
             params[Fields.EVENT_ID] = this.props.current_id;
         }
-        if (this.eventPictureRef.value !== "") {
+        if (this.props.current_picture !== "" &&
+            this.props.current_picture !== null &&
+            this.props.current_picture !== undefined) {
+
             params[Fields.PICTURE] = this.props.current_picture;
         }
         params[Fields.TITLE] = this.props.current_title;
@@ -173,7 +179,8 @@ class Events extends React.Component {
                                 end_date: me.props.current_end_date,
                                 creation_date: now.getTime(),
                                 update_date: now.getTime(),
-                                nb_subscribers: 0
+                                nb_subscribers: 0,
+                                last_post: 0
                             });
 
                             //UPDATE
@@ -681,7 +688,6 @@ class Events extends React.Component {
                                         <FormControl
                                             type="date"
                                             format={"dd/mm/YYYY"}
-                                            min={"2018-02-02"}
                                             value={Dates.formatYYYYmmDD(this.props.filter_start_date)}
                                             onChange={this.filterStartDateChange.bind(this)}
                                         />
@@ -693,7 +699,6 @@ class Events extends React.Component {
                                         <FormControl
                                             type="date"
                                             format={"dd/mm/YYYY"}
-                                            min={"2018-02-02"}
                                             value={Dates.formatYYYYmmDD(this.props.filter_end_date)}
                                             onChange={this.filterEndDateChange.bind(this)}
                                         />

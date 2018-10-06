@@ -1,16 +1,17 @@
 import {
     DISPLAY_ALERT,
     DISMISS_ALERT,
-    SET_MODULES,
-    SET_MODULE_STATES
+    SET_STATISTICS
 } from "../actions/types"
 
 const initialState = {
     showAlert: false,
     alertTitle: "",
     alertText: "",
-    modules: [],
-    module_states: []
+    production_day: 0,
+    production_month: 0,
+    frequentation_day: 0,
+    frequentation_month: 0
 };
 
 export default (state = initialState, action) => {
@@ -29,15 +30,13 @@ export default (state = initialState, action) => {
                 alertTitle: "",
                 alertText: ""
             };
-        case SET_MODULES:
+        case SET_STATISTICS:
             return {
                 ...state,
-                modules: action.payload
-            };
-        case SET_MODULE_STATES:
-            return {
-                ...state,
-                module_states: action.payload
+                production_day: action.payload.production_day,
+                production_month: action.payload.production_month,
+                frequentation_day: action.payload.frequentation_day,
+                frequentation_month: action.payload.frequentation_month
             };
         default:
             return state;

@@ -24,6 +24,13 @@ class Menu extends React.Component {
                             <Glyphicon glyph="home" />&nbsp;&nbsp;{Texts.ACCUEIL.text_fr}
                         </NavItem>
                     </LinkContainer>
+
+                    <LinkContainer to={"/subscription"}>
+                        <NavItem eventKey={"subscription"}>
+                            <Glyphicon glyph="qrcode" />&nbsp;&nbsp;{Texts.AFFILIATION.text_fr}
+                        </NavItem>
+                    </LinkContainer>
+
                     <LinkContainer to={"/profile"}>
                         <NavItem eventKey={"profile"}>
                             <Glyphicon glyph="user" />&nbsp;&nbsp;{Texts.PROFIL.text_fr}
@@ -51,7 +58,7 @@ class Menu extends React.Component {
                     </LinkContainer>
                     <LinkContainer to={"/equipment"}>
                         <NavItem eventKey={"equipment"}>
-                            <Glyphicon glyph="eye-open" />&nbsp;&nbsp;{Texts.EQUIPEMENTS.text_fr}
+                            <Glyphicon glyph="list" />&nbsp;&nbsp;{Texts.EQUIPEMENTS.text_fr}
                         </NavItem>
                     </LinkContainer>
                     <LinkContainer to={"/contact"}>
