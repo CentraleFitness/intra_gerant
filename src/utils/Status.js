@@ -6,8 +6,8 @@ const Status = {
     },
     REG_SUCCESS: {
         code: "101",
-        message_fr: "Création du compte réussie.",
-        message_en: "Registration successful."
+        message_fr: "Création du compte réussie. Merci pour votre confiance ! Votre inscription va être vérifiée et validée dans les plus bref délais. Vous recevrez un mail à ce moment là.",
+        message_en: "Registration successful. Thanks for your confidence ! Your subscription will be checked and validated as soon as possible. You will receive an email at this moment."
     },
     REG_ERROR_EMAIL_TAKEN: {
         code: "301",
@@ -43,6 +43,16 @@ const Status = {
         code: "202",
         message_fr: "Echec lors de l'authentification, mauvais token.",
         message_en: "Authentication failed, bad token."
+    },
+    AUTH_ERROR_ACCOUNT_INACTIVE: {
+        code: "203",
+        message_fr: "Echec lors de l'authentification, votre compte a été passé en inactif",
+        message_en: "Authentication failed, your account has been set to inactive"
+    },
+    AUTH_ERROR_ACCOUNT_NOT_YET_VALIDATED: {
+        code: "204",
+        message_fr: "Echec lors de l'authentification, votre compte pas encore été validé",
+        message_en: "Authentication failed, your account has not been validated yet"
     },
     AUTH_ERROR_CREDENTIALS: {
         code: "501",
@@ -103,6 +113,11 @@ const Status = {
         code: "807",
         message_fr: "La salle de sport existe déja.",
         message_en: "Center already exists."
+    },
+    CTR_ERROR_ERROR_SIRET: {
+        code: "808",
+        message_fr: "Le numéro de SIRET de la salle est manquant",
+        message_en: "Center's SIRET number is missing."
     },
     MISC_ERROR: {
         code: "401",

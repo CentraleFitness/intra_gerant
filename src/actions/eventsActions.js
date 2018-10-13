@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     DISPLAY_DELETE_CONFIRM,
     DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
@@ -27,19 +25,6 @@ import {
     SET_DELETION_CAUSE,
     SET_EVENT_LAST_POST
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const displayDeleteConfirm = (id) => {
     return {

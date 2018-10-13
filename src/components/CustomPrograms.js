@@ -18,10 +18,9 @@ import {
     ButtonGroup
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     setActivities,
     setCustomPrograms,
     setInitialCustomPrograms,
@@ -55,6 +54,8 @@ import {
 } from "../actions/customProgramsActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setCustomProgramsActivitiesIsLoad,
     setCustomProgramsIsLoad
 } from "../actions/globalActions";
@@ -113,6 +114,11 @@ class CustomPrograms extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -171,6 +177,11 @@ class CustomPrograms extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -229,6 +240,11 @@ class CustomPrograms extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -322,6 +338,11 @@ class CustomPrograms extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -372,6 +393,11 @@ class CustomPrograms extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -1087,9 +1113,6 @@ function mapStateToProps(state) {
         activities: state.custom_programs.activities,
         custom_programs: state.custom_programs.custom_programs,
         initial_custom_programs: state.custom_programs.initial_custom_programs,
-        showAlert: state.custom_programs.showAlert,
-        alertTitle: state.custom_programs.alertTitle,
-        alertText: state.custom_programs.alertText,
         showCustomProgramModal: state.custom_programs.showCustomProgramModal,
         current_id: state.custom_programs.current_id,
         current_name: state.custom_programs.current_name,
@@ -1113,6 +1136,10 @@ function mapStateToProps(state) {
         filter_total_duration: state.custom_programs.filter_total_duration,
         filter_available: state.custom_programs.filter_available,
         filter_unavailable: state.custom_programs.filter_unavailable,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         custom_programs_activities_is_load: state.global.custom_programs_activities_is_load,
         custom_programs_is_load: state.global.custom_programs_is_load

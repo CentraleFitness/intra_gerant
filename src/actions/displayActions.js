@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_DISPLAY_CONFIGURATION,
     SET_UPDATE_KEEP_DISPLAY_CONFIGURATION,
     SET_KEEP_EVENTS,
@@ -15,19 +13,6 @@ import {
     SET_SHOW_GLOBAL_RANKING,
     SET_NATIONAL_PRODUCTION_RANK
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const setDisplayConfiguration = (value) => {
     return {

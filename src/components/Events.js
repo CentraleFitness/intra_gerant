@@ -21,10 +21,9 @@ import {
 } from 'react-bootstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     displayDeleteConfirm,
     dismissDeleteConfirm,
     setEvents,
@@ -52,6 +51,8 @@ import {
 } from "../actions/eventsActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setEventsIsLoad
 } from "../actions/globalActions";
 
@@ -114,6 +115,11 @@ class Events extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -217,6 +223,11 @@ class Events extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -267,6 +278,11 @@ class Events extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -318,6 +334,11 @@ class Events extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -971,9 +992,6 @@ class Events extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        showAlert: state.events.showAlert,
-        alertTitle: state.events.alertTitle,
-        alertText: state.events.alertText,
         events: state.events.events,
         initial_events: state.events.initial_events,
         filter_keywords: state.events.filter_keywords,
@@ -1002,6 +1020,10 @@ function mapStateToProps(state) {
         keep_current_description: state.events.keep_current_description,
         keep_current_start_date: state.events.keep_current_start_date,
         keep_current_end_date: state.events.keep_current_end_date,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         events_is_load: state.global.events_is_load
     };

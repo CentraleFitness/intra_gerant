@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     DISPLAY_MANAGER_PICTURE_MODAL,
     DISMISS_MANAGER_PICTURE_MODAL,
     DISPLAY_CENTER_PICTURE_MODAL,
@@ -15,6 +13,7 @@ import {
     SET_PHONE,
     SET_EMAIL,
     SET_NAME,
+    SET_SIRET,
     SET_DESCRIPTION,
     SET_ADDRESS,
     SET_ADDRESS_SECOND,
@@ -47,19 +46,6 @@ import {
     SET_PICTURE_DESCRIPTION,
     SET_PICTURE_PREVIEW
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const displayManagerPictureModal = () => {
     return {
@@ -148,6 +134,13 @@ export const setEmail = (value) => {
 export const setName = (value) => {
     return {
         type: SET_NAME,
+        payload: value
+    };
+};
+
+export const setSiret = (value) => {
+    return {
+        type: SET_SIRET,
         payload: value
     };
 };

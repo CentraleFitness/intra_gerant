@@ -5,14 +5,15 @@ import {
 } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     setStatistics
 } from "../actions/statisticsActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setStatisticsIsLoad
 } from "../actions/globalActions";
 
@@ -70,6 +71,11 @@ class Statistics extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -108,13 +114,15 @@ class Statistics extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        showAlert: state.statistics.showAlert,
-        alertTitle: state.statistics.alertTitle,
-        alertText: state.statistics.alertText,
+
         production_day: state.statistics.production_day,
         production_month: state.statistics.production_month,
         frequentation_day: state.statistics.frequentation_day,
         frequentation_month: state.statistics.frequentation_month,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         statistics_is_load: state.global.statistics_is_load
     };

@@ -12,18 +12,20 @@ import {
     Modal
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
     setCurrentPublication,
     setPublications,
     addPublication,
-    displayAlert,
     deletePublication,
     displayPublicationDeleteConfirm,
     dismissPublicationDeleteConfirm
 } from "../actions/profileActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setPublicationsIsLoad
 } from "../actions/globalActions";
 
@@ -79,6 +81,11 @@ class ProfileSocial extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -146,6 +153,11 @@ class ProfileSocial extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -195,6 +207,11 @@ class ProfileSocial extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -368,15 +385,21 @@ function mapStateToProps(state) {
         showDeletePublicationConfirm: state.profile.showDeletePublicationConfirm,
         delete_publication_id: state.profile.delete_publication_id,
 
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
+
         publications_is_load: state.global.publications_is_load
     };
 }
 
 export default connect(mapStateToProps, {
+    displayAlert,
+    dismissAlert,
+
     setCurrentPublication,
     setPublications,
     addPublication,
-    displayAlert,
     deletePublication,
     displayPublicationDeleteConfirm,
     dismissPublicationDeleteConfirm,

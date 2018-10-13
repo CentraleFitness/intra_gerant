@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_ACTIVITIES,
     SET_CUSTOM_PROGRAMS,
     SET_INITIAL_CUSTOM_PROGRAMS,
@@ -36,9 +34,6 @@ const initialState = {
     activities: [],
     custom_programs: [],
     initial_custom_programs: [],
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
     showCustomProgramModal: false,
     current_id: "",
     current_name: "",
@@ -65,20 +60,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case SET_ACTIVITIES:
             return {
                 ...state,

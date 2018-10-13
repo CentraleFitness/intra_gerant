@@ -17,10 +17,9 @@ import {
     HelpBlock
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     displayManagerPictureModal,
     dismissManagerPictureModal,
     displayCenterPictureModal,
@@ -35,6 +34,7 @@ import {
     setPhone,
     setEmail,
     setName,
+    setSiret,
     setDescription,
     setAddress,
     setAddressSecond,
@@ -48,6 +48,8 @@ import {
 } from "../actions/profileActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setManagerPictureIsLoad
 } from "../actions/globalActions";
 
@@ -236,6 +238,11 @@ class ProfileInfo extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -298,6 +305,11 @@ class ProfileInfo extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -348,6 +360,11 @@ class ProfileInfo extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -400,6 +417,11 @@ class ProfileInfo extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -447,6 +469,11 @@ class ProfileInfo extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -482,6 +509,9 @@ class ProfileInfo extends React.Component {
                 break;
             case "center_name":
                 value = this.props.center_name;
+                break;
+            case "center_siret":
+                value = this.props.center_siret;
                 break;
             case "center_description":
                 value = this.props.center_description;
@@ -534,6 +564,10 @@ class ProfileInfo extends React.Component {
 
             if (Validator.email(value))
                 return "success";
+        } else if (field === "center_siret") {
+
+            if (Validator.siret(value))
+                return "success";
         }
         return "warning";
     }
@@ -556,7 +590,10 @@ class ProfileInfo extends React.Component {
 
     handleNameChange(event) {
         this.props.setName(event.target.value);
-        console.log(this.props);
+    }
+
+    handleSiretChange(event) {
+        this.props.setSiret(event.target.value);
     }
 
     handleDescriptionChange(event) {
@@ -729,6 +766,21 @@ class ProfileInfo extends React.Component {
                                         </Col>
                                     </FormGroup>
 
+                                    <FormGroup controlId="formHorizontalSiret" validationState={this.getValidationState('center_siret')}>
+                                        <Col componentClass={ControlLabel} sm={2}>
+                                            {Texts.NUMERO_DE_SIRET.text_fr}
+                                        </Col>
+                                        <Col sm={8}>
+                                            <FormControl
+                                                readOnly
+                                                type="text"
+                                                placeholder={Texts.NUMERO_DE_SIRET.text_fr}
+                                                value={this.props.center_siret}
+                                                onChange={this.handleSiretChange.bind(this)}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+
                                     <FormGroup controlId="formHorizontalAddress" validationState={this.getValidationState('center_address')}>
                                         <Col componentClass={ControlLabel} sm={2}>
                                             {Texts.ADRESSE.text_fr}
@@ -896,6 +948,7 @@ function mapStateToProps(state) {
         manager_phone: state.profile.manager_phone,
 
         center_name: state.profile.center_name,
+        center_siret: state.profile.center_siret,
         center_address: state.profile.center_address,
         center_address2: state.profile.center_address2,
         center_zip_code: state.profile.center_zip_code,
@@ -911,6 +964,7 @@ function mapStateToProps(state) {
         manager_keep_phone: state.profile.manager_keep_phone,
 
         center_keep_name: state.profile.center_keep_name,
+        center_keep_siret: state.profile.center_keep_siret,
         center_keep_address: state.profile.center_keep_address,
         center_keep_address2: state.profile.center_keep_address2,
         center_keep_zip_code: state.profile.center_keep_zip_code,
@@ -918,9 +972,6 @@ function mapStateToProps(state) {
         center_keep_phone: state.profile.center_keep_phone,
         center_keep_description: state.profile.center_keep_description,
 
-        showAlert: state.profile.showAlert,
-        alertTitle: state.profile.alertTitle,
-        alertText: state.profile.alertText,
         showManagerPictureModal: state.profile.showManagerPictureModal,
         showCenterPictureModal: state.profile.showCenterPictureModal,
 
@@ -929,6 +980,10 @@ function mapStateToProps(state) {
 
         manager_picture: state.profile.manager_picture,
         center_picture: state.profile.center_picture,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         manager_picture_is_load: state.global.manager_picture_is_load
     };
@@ -951,6 +1006,7 @@ export default connect(mapStateToProps, {
     setPhone,
     setEmail,
     setName,
+    setSiret,
     setDescription,
     setAddress,
     setAddressSecond,

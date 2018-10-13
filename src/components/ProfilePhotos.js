@@ -17,10 +17,9 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     displayPhotoModal,
     dismissPhotoModal,
     setPhotos,
@@ -34,6 +33,8 @@ import {
 } from "../actions/profileActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setAlbumIsLoad
 } from "../actions/globalActions";
 
@@ -109,6 +110,11 @@ class ProfilePhotos extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -174,6 +180,11 @@ class ProfilePhotos extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -222,6 +233,11 @@ class ProfilePhotos extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -417,6 +433,10 @@ function mapStateToProps(state) {
 
         delete_picture_id: state.profile.delete_picture_id,
         showDeletePictureConfirm: state.profile.showDeletePictureConfirm,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         album_is_load: state.global.album_is_load
     };

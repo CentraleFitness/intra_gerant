@@ -1,23 +1,8 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_EMAIL,
     SET_PASSWORD,
     SET_REMEMBER
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const setEmail = (value) => {
     return {

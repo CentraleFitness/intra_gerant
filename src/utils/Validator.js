@@ -33,12 +33,25 @@ class Validator {
 
     static password(text) {
         /* Essayer de rajouter d'autre char comme - _ ( ) { } [ ] ... */
-        let regex = new RegExp('^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$','g');
+        //let regex = new RegExp('^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$','g');
+        let regex = new RegExp('^(?=.*\\d)(?=.*[!@#\\$%_\\-\\(\\)\\{\\}\\[\\];,/&\\*\\+\\?\\.:])(?=.*[a-z])(?=.*[A-Z]).{8,}$','g');
         return regex.test(text);
     }
 
     static date(date) {
         return (date !== "");
+    }
+
+    static siret(siret) {
+        let nb = 0;
+        for (let i = 0; i < siret.length; ++i) {
+            if (siret[i] !== ' ' && !isNaN(siret[i])) {
+                ++nb;
+            } else if (siret[i] !== ' ') {
+                return false;
+            }
+        }
+        return nb === 14;
     }
 }
 

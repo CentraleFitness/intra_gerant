@@ -15,8 +15,8 @@ import {
     HelpBlock,
     Image
 } from 'react-bootstrap';
-import {browserHistory} from 'react-router';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import { resetProfileInfo } from "../actions/profileActions";
 import {
@@ -186,6 +186,11 @@ class TopBar extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.setState({

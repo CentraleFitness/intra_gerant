@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_DISPLAY_CONFIGURATION,
     SET_UPDATE_KEEP_DISPLAY_CONFIGURATION,
     SET_KEEP_EVENTS,
@@ -16,9 +14,6 @@ import {
 } from "../actions/types"
 
 const initialState = {
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
 
     news_type_store: [
         {value: 'sport', label: "Sport"},
@@ -82,20 +77,6 @@ export default (state = initialState, action) => {
     );
 
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case SET_DISPLAY_CONFIGURATION:
             return {
                 ...state,

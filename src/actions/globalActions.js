@@ -1,4 +1,7 @@
 import {
+    DISPLAY_ALERT,
+    DISMISS_ALERT,
+
     SET_STATISTICS_IS_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_LOAD,
     SET_HOME_SUMMARY_IS_LOAD,
@@ -33,6 +36,20 @@ import {
     SET_PUBLICATIONS_IS_NOT_LOAD,
     SET_ALBUM_IS_NOT_LOAD
 } from "./types"
+
+export const displayAlert = (alertInfo) => {
+    return {
+        type: DISPLAY_ALERT,
+        payload: alertInfo
+    };
+};
+
+export const dismissAlert = () => {
+    return {
+        type: DISMISS_ALERT
+    };
+};
+
 
 export const setStatisticsIsLoad = () => {
     return {

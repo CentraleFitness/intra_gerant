@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_FIRST_NAME,
     SET_LAST_NAME,
     SET_PHONE,
@@ -8,6 +6,7 @@ import {
     SET_PASSWORD,
     SET_CONFIRM_PASSWORD,
     SET_NAME,
+    SET_SIRET,
     SET_DESCRIPTION,
     SET_ADDRESS,
     SET_ADDRESS_SECOND,
@@ -16,19 +15,6 @@ import {
     SET_CENTER_PHONE,
     RESET_REGISTER_INFO
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const setFirstName = (value) => {
     return {
@@ -75,6 +61,13 @@ export const setConfirmPassword = (value) => {
 export const setName = (value) => {
     return {
         type: SET_NAME,
+        payload: value
+    };
+};
+
+export const setSiret = (value) => {
+    return {
+        type: SET_SIRET,
         payload: value
     };
 };

@@ -15,14 +15,18 @@ import {browserHistory} from 'react-router';
 import { connect } from 'react-redux';
 
 import {
-    displayAlert,
-    dismissAlert,
     setEmail,
     setPassword,
     setRemember
 } from "../actions/loginActions";
 
+import {
+    displayAlert,
+    dismissAlert,
+} from "../actions/globalActions"
+
 import Communication from '../utils/Communication';
+import Constants from '../utils/Constants';
 import Paths from '../utils/Paths';
 import Fields from '../utils/Fields';
 import Status from '../utils/Status';
@@ -112,7 +116,7 @@ class Login extends React.Component {
                         setTimeout(function() {
                             me.props.dismissAlert();
                             browserHistory.replace('/');
-                        }, 750);
+                        }, Constants.LOGIN_SET_TIMEOUT_VALUE);
                     } else {
 
                         let message = "";
@@ -291,9 +295,10 @@ function mapStateToProps(state) {
         email: state.login.email,
         password: state.login.password,
         remember: state.login.remember,
-        showAlert: state.login.showAlert,
-        alertText: state.login.alertText,
-        alertTitle: state.login.alertTitle
+
+        showAlert: state.global.showAlert,
+        alertText: state.global.alertText,
+        alertTitle: state.global.alertTitle
     };
 }
 

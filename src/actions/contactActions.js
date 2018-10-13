@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_FEEDBACKS,
     SET_INITIAL_FEEDBACKS,
     ADD_FEEDBACK,
@@ -13,19 +11,6 @@ import {
     DISMISS_FEEDBACK_MODAL,
     DISPLAY_FEEDBACK_EDIT_MODAL
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const setFeedbacks = (feedbacks) => {
     return {

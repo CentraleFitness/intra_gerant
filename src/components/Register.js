@@ -14,8 +14,6 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 import {
-    displayAlert,
-    dismissAlert,
     setFirstName,
     setLastName,
     setPhone,
@@ -23,6 +21,7 @@ import {
     setPassword,
     setConfirmPassword,
     setName,
+    setSiret,
     setDescription,
     setAddress,
     setAddressSecond,
@@ -31,6 +30,11 @@ import {
     setCenterPhone,
     resetRegisterInfo
 } from "../actions/registerActions";
+
+import {
+    displayAlert,
+    dismissAlert
+} from "../actions/globalActions"
 
 import Fields from "../utils/Fields";
 import Status from "../utils/Status";
@@ -75,6 +79,7 @@ class Register extends React.Component {
         if (!Validator.name(this.props.first_name) ||
             !Validator.name(this.props.last_name) ||
             !Validator.description(this.props.name) ||
+            !Validator.siret(this.props.siret) ||
             !Validator.description(this.props.description) ||
             !Validator.name(this.props.city) ||
             !Validator.address(this.props.address) ||
@@ -116,6 +121,7 @@ class Register extends React.Component {
         params[Fields.EMAIL] = this.props.email;
         params[Fields.PASSWORD] = this.props.password;
         params[Fields.NAME] = this.props.name;
+        params[Fields.SIRET] = this.props.siret;
         params[Fields.DESCRIPTION] = this.props.description;
         params[Fields.ADDRESS] = this.props.address;
         if (this.props.address_second !== "" && this.props.address_second !== null) {
@@ -141,11 +147,6 @@ class Register extends React.Component {
                         });
 
                         me.props.resetRegisterInfo();
-
-                        setTimeout(function(){
-                            me.props.dismissAlert();
-                            browserHistory.replace('/auth');
-                        }, 750);
 
                     } else {
 
@@ -183,6 +184,7 @@ class Register extends React.Component {
 
         params[Fields.TOKEN] = token;
         params[Fields.NAME] = this.props.name;
+        params[Fields.SIRET] = this.props.siret;
         params[Fields.DESCRIPTION] = this.props.description;
         params[Fields.ADDRESS] = this.props.address;
         if (this.props.address_second !== "" && this.props.address_second !== null) {
@@ -279,6 +281,9 @@ class Register extends React.Component {
             case "name":
                 value = this.props.name;
                 break;
+            case "siret":
+                value = this.props.siret;
+                break;
             case "description":
                 value = this.props.description;
                 break;
@@ -335,7 +340,12 @@ class Register extends React.Component {
 
             if (Validator.email(value))
                 return "success";
+
+        } else if (field === "siret") {
+            if (Validator.siret(value))
+                return "success";
         }
+
         return "warning";
     }
 
@@ -367,6 +377,10 @@ class Register extends React.Component {
         this.props.setName(event.target.value);
     }
 
+    handleSiretChange(event) {
+        this.props.setSiret(event.target.value);
+    }
+
     handleDescriptionChange(event) {
         this.props.setDescription(event.target.value);
     }
@@ -392,6 +406,9 @@ class Register extends React.Component {
     }
 
     handleAlertDismiss() {
+        if (this.props.alertText === Status.REG_SUCCESS.message_fr) {
+            browserHistory.replace('/auth');
+        }
         this.props.dismissAlert();
     }
 
@@ -517,6 +534,21 @@ class Register extends React.Component {
                                         onKeyPress={this.handleKeyPressed.bind(this)}
                                         type="text"
                                         placeholder={Texts.NOM_SALLE.text_fr}
+                                    />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup controlId="formHorizontalSiret" validationState={this.getValidationState('siret')}>
+                                <Col componentClass={ControlLabel} sm={4}>
+                                    {Texts.NUMERO_DE_SIRET.text_fr + " *"}
+                                </Col>
+                                <Col sm={7}>
+                                    <FormControl
+                                        value={this.props.siret}
+                                        onChange={this.handleSiretChange.bind(this)}
+                                        onKeyPress={this.handleKeyPressed.bind(this)}
+                                        type="text"
+                                        placeholder={Texts.NUMERO_DE_SIRET.text_fr}
                                     />
                                 </Col>
                             </FormGroup>
@@ -648,15 +680,17 @@ function mapStateToProps(state) {
         password: state.register.password,
         confirm_password: state.register.confirm_password,
         name: state.register.name,
+        siret: state.register.siret,
         description: state.register.description,
         address: state.register.address,
         address_second: state.register.address_second,
         zip_code: state.register.zip_code,
         city: state.register.city,
         center_phone: state.register.center_phone,
-        showAlert: state.register.showAlert,
-        alertText: state.register.alertText,
-        alertTitle: state.register.alertTitle,
+
+        showAlert: state.global.showAlert,
+        alertText: state.global.alertText,
+        alertTitle: state.global.alertTitle
     };
 }
 
@@ -670,6 +704,7 @@ export default connect(mapStateToProps, {
     setPassword,
     setConfirmPassword,
     setName,
+    setSiret,
     setDescription,
     setAddress,
     setAddressSecond,

@@ -1,13 +1,8 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_STATISTICS
 } from "../actions/types"
 
 const initialState = {
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
     production_day: 0,
     production_month: 0,
     frequentation_day: 0,
@@ -16,20 +11,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case SET_STATISTICS:
             return {
                 ...state,

@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_FEEDBACKS,
     SET_INITIAL_FEEDBACKS,
     ADD_FEEDBACK,
@@ -27,9 +25,6 @@ const initialState = {
     feedback_state_code: -1,
     feedback_description: "",
     feedback_update_date: -1,
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
     feedback_modal_title_enabled: true,
     feedback_modal_description_enabled: true,
     feedback_modal_confirm_button_enabled: true
@@ -37,20 +32,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case SET_FEEDBACKS:
             return {
                 ...state,

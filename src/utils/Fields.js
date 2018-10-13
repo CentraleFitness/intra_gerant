@@ -31,7 +31,8 @@ const Fields = {
     AVAILABLE: "available",
     ACTIVITIES: "activities",
     CUSTOM_PROGRAMS: "custom_programs",
-    NB_SUBSCRIBERS: "nb_subscribers"
+    NB_SUBSCRIBERS: "nb_subscribers",
+    SIRET: "siret"
 };
 
 export default Fields;

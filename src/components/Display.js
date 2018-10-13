@@ -10,10 +10,9 @@ import {
 } from 'react-bootstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     setDisplayConfiguration,
     setUpdateKeepDisplayConfiguration,
     setShowEvents,
@@ -35,6 +34,8 @@ import {
 } from "../actions/eventsActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setDisplayConfigurationIsLoad,
     setEventsIsLoad
 } from "../actions/globalActions";
@@ -97,6 +98,11 @@ class Display extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -164,6 +170,11 @@ class Display extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -193,7 +204,9 @@ class Display extends React.Component {
         this.props.events.map(function(item) {
             if (item.selected === true) {
                 selected.push(item._id);
+                return item;
             }
+            return null;
         });
 
         params[Fields.TOKEN] = localStorage.getItem("token");
@@ -245,6 +258,11 @@ class Display extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -296,7 +314,9 @@ class Display extends React.Component {
         this.props.events.map(function (item) {
             if (item.selected === true) {
                 one_selected_event = true;
+                return item;
             }
+            return null;
         });
 
         if ((this.props.show_events === true && !one_selected_event) ||
@@ -496,10 +516,6 @@ class Display extends React.Component {
 function mapStateToProps(state) {
     return {
 
-        showAlert: state.display.showAlert,
-        alertTitle: state.display.alertTitle,
-        alertText: state.display.alertText,
-
         news_type_store: state.display.news_type_store,
         ranking_discipline_type_store: state.display.ranking_discipline_type_store,
 
@@ -530,6 +546,11 @@ function mapStateToProps(state) {
         keep_show_national_production_rank: state.display.keep_show_national_production_rank,
 
         //Global
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
+
         display_configuration_is_load: state.global.display_configuration_is_load,
         events_is_load: state.global.events_is_load
     };

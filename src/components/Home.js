@@ -6,15 +6,16 @@ import {
     FormControl,
     Button,
     Thumbnail,
-    Grid,
-    Row,
     Col,
     ListGroup,
     ListGroupItem
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
+    displayAlert,
+    dismissAlert,
     setHomeSummaryIsLoad,
     setStatisticsIsLoad,
     setModulesIsLoad,
@@ -22,8 +23,6 @@ import {
 } from "../actions/globalActions";
 
 import {
-    displayAlert,
-    dismissAlert,
     setHomeSummary
 } from "../actions/homeActions";
 
@@ -99,6 +98,11 @@ class Home extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -159,6 +163,11 @@ class Home extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -214,6 +223,11 @@ class Home extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -269,6 +283,11 @@ class Home extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -418,9 +437,6 @@ function mapStateToProps(state) {
         manager_last_name: state.home.manager_last_name,
         nb_subscribers: state.home.nb_subscribers,
         events: state.home.events,
-        showAlert: state.home.showAlert,
-        alertTitle: state.home.alertTitle,
-        alertText: state.home.alertText,
 
         //Statistics
         production_day: state.statistics.production_day,
@@ -433,6 +449,10 @@ function mapStateToProps(state) {
         module_states: state.equipment.module_states,
 
         //Global
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
+
         home_summary_is_load: state.global.home_summary_is_load,
         statistics_is_load: state.global.statistics_is_load,
         modules_is_load: state.global.modules_is_load,

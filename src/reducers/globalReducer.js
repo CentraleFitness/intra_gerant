@@ -1,4 +1,7 @@
 import {
+    DISPLAY_ALERT,
+    DISMISS_ALERT,
+
     SET_STATISTICS_IS_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_LOAD,
     SET_HOME_SUMMARY_IS_LOAD,
@@ -35,6 +38,10 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    showAlert: false,
+    alertTitle: "",
+    alertText: "",
+
     statistics_is_load: false,
     display_configuration_is_load: false,
     home_summary_is_load: false,
@@ -55,6 +62,21 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case DISPLAY_ALERT:
+            return {
+                ...state,
+                showAlert: true,
+                alertTitle: action.payload.alertTitle,
+                alertText: action.payload.alertText
+            };
+        case DISMISS_ALERT:
+            return {
+                ...state,
+                showAlert: false,
+                alertTitle: "",
+                alertText: ""
+            };
+
         case SET_STATISTICS_IS_LOAD:
             return {
                 ...state,

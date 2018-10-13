@@ -9,15 +9,16 @@ import {
     Table
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     setModules,
     setModuleStates
 } from "../actions/equipmentActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setModulesIsLoad,
     setModuleStatesIsLoad
 } from "../actions/globalActions";
@@ -72,6 +73,11 @@ class Equipment extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -127,6 +133,11 @@ class Equipment extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -158,7 +169,9 @@ class Equipment extends React.Component {
         this.props.module_states.map(function (item) {
             if (item._id === id) {
                 text = item.text_fr.toUpperCase();
+                return item;
             }
+            return null;
         });
         return text;
     }
@@ -176,8 +189,10 @@ class Equipment extends React.Component {
         this.props.module_states.map(function (item) {
             if (item._id === id) {
                 idx = i;
+                return item;
             }
             ++i;
+            return null;
         });
         return colors[idx];
     }
@@ -238,11 +253,12 @@ class Equipment extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        showAlert: state.equipment.showAlert,
-        alertTitle: state.equipment.alertTitle,
-        alertText: state.equipment.alertText,
         modules: state.equipment.modules,
         module_states: state.equipment.module_states,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         modules_is_load: state.global.modules_is_load,
         module_states_is_load: state.global.module_states_is_load

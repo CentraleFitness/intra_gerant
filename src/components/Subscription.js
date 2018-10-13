@@ -6,6 +6,7 @@ import {
     Button,
     Modal
 } from 'react-bootstrap';
+import {browserHistory} from 'react-router';
 
 import QRCode from 'qrcode.react';
 
@@ -66,6 +67,11 @@ class Subscription extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.setState({

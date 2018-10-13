@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     SET_ACTIVITIES,
     SET_CUSTOM_PROGRAMS,
     SET_INITIAL_CUSTOM_PROGRAMS,
@@ -31,19 +29,6 @@ import {
     SET_FILTER_CUSTOM_PROGRAM_UNAVAILABLE,
     RESET_FILTER_CUSTOM_PROGRAM
 } from "./types"
-
-export const displayAlert = (alertInfo) => {
-    return {
-        type: DISPLAY_ALERT,
-        payload: alertInfo
-    };
-};
-
-export const dismissAlert = () => {
-    return {
-        type: DISMISS_ALERT
-    };
-};
 
 export const setActivities = (activities) => {
     return {

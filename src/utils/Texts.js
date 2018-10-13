@@ -76,8 +76,8 @@ const Texts = {
         text_en: "Close"
     },
     REGLE_MDP: {
-        text_fr: "Le mot de pass doit contenir 8 caractères et au moins une majuscule, une minuscule, un charactère spécial et un chiffre.",
-        text_en: "The password must contain 8 characters and at least one up case, one low case, one special character and one digit."
+        text_fr: "Le mot de pass doit contenir 8 caractères et au moins une majuscule, une minuscule, un charactère spécial ( ! @ # $ % _ - ( ) { } [ ] ; , / & * + ? . : ) et un chiffre.",
+        text_en: "The password must contain 8 characters and at least one up case, one low case, one special character ( ! @ # $ % _ - ( ) { } [ ] ; , / & * + ? . : ) and one digit."
     },
     MDP_ACTUEL: {
         text_fr: "Mot de passe actuel",
@@ -612,6 +612,10 @@ const Texts = {
     UTILISATEURS_AUJOURDHUI: {
         text_fr: "utilisateurs aujourd'hui",
         text_en: "users today"
+    },
+    NUMERO_DE_SIRET: {
+        text_fr: "Numéro de SIRET",
+        text_en: "SIRET number"
     }
 };
 

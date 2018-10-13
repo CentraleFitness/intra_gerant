@@ -1,6 +1,5 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
+
     DISPLAY_MANAGER_PICTURE_MODAL,
     DISMISS_MANAGER_PICTURE_MODAL,
     DISPLAY_CENTER_PICTURE_MODAL,
@@ -15,6 +14,7 @@ import {
     SET_PHONE,
     SET_EMAIL,
     SET_NAME,
+    SET_SIRET,
     SET_DESCRIPTION,
     SET_ADDRESS,
     SET_ADDRESS_SECOND,
@@ -54,6 +54,7 @@ const initialState = {
     manager_email: "",
     manager_phone: "",
     center_name: "",
+    center_siret: "",
     center_address: "",
     center_address2: "",
     center_zip_code: "",
@@ -67,15 +68,13 @@ const initialState = {
     manager_keep_email: "",
     manager_keep_phone: "",
     center_keep_name: "",
+    center_keep_siret: "",
     center_keep_address: "",
     center_keep_address2: "",
     center_keep_zip_code: "",
     center_keep_city: "",
     center_keep_phone: "",
     center_keep_description: "",
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
     showManagerPictureModal: false,
     showCenterPictureModal: false,
     manager_picture_preview: "/img/folder.svg",
@@ -104,20 +103,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case DISPLAY_MANAGER_PICTURE_MODAL:
             return {
                 ...state,
@@ -150,6 +135,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 center_name: action.payload.center_name,
+                center_siret: action.payload.center_siret,
                 center_description: action.payload.center_description,
                 center_address: action.payload.center_address,
                 center_address2: action.payload.center_address2,
@@ -166,6 +152,7 @@ export default (state = initialState, action) => {
                 manager_email: state.manager_keep_email,
                 manager_phone: state.manager_keep_phone,
                 center_name: state.center_keep_name,
+                center_siret: state.center_keep_siret,
                 center_address: state.center_keep_address,
                 center_address2: state.center_keep_address2,
                 center_zip_code: state.center_keep_zip_code,
@@ -185,6 +172,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 center_keep_name: state.center_name,
+                center_keep_siret: state.center_siret,
                 center_keep_address: state.center_address,
                 center_keep_address2: state.center_address2,
                 center_keep_zip_code: state.center_zip_code,
@@ -216,6 +204,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 center_name: action.payload
+            };
+        case SET_SIRET:
+            return {
+                ...state,
+                center_siret: action.payload
             };
         case SET_DESCRIPTION:
             return {

@@ -16,15 +16,16 @@ import {
     Label
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
+    displayAlert,
+    dismissAlert,
     setFeedbacksIsLoad,
     setFeedbacksStatusIsLoad
 } from "../actions/globalActions";
 
 import {
-    displayAlert,
-    dismissAlert,
     setFeedbacks,
     setInitialFeedbacks,
     addFeedback,
@@ -166,6 +167,11 @@ class Contact extends React.Component {
                             alertTitle: Texts.ERREUR_TITRE.text_fr,
                             alertText: message
                         });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
                     }
                 } else {
                     me.props.displayAlert({
@@ -217,6 +223,11 @@ class Contact extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -275,6 +286,11 @@ class Contact extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -543,14 +559,15 @@ function mapStateToProps(state) {
         showFeedbackModal: state.contact.showFeedbackModal,
         feedback_title: state.contact.feedback_title,
         feedback_description: state.contact.feedback_description,
-        showAlert: state.contact.showAlert,
-        alertTitle: state.contact.alertTitle,
-        alertText: state.contact.alertText,
         feedback_modal_title_enabled: state.contact.feedback_modal_title_enabled,
         feedback_modal_description_enabled: state.contact.feedback_modal_description_enabled,
         feedback_modal_confirm_button_enabled: state.contact.feedback_modal_confirm_button_enabled,
         feedback_update_date: state.contact.feedback_update_date,
         feedback_state_code: state.contact.feedback_state_code,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         feedbacks_is_load: state.global.feedbacks_is_load,
         feedbacks_status_is_load: state.global.feedbacks_status_is_load

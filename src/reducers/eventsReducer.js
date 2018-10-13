@@ -1,6 +1,4 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
     DISPLAY_DELETE_CONFIRM,
     DISMISS_DELETE_CONFIRM,
     SET_EVENTS,
@@ -38,9 +36,6 @@ const initialState = {
     initial_filter_status: [1, 2],
     filter_subscribers_select: "superieur",
     filter_number_subscribers: 0,
-    showAlert: false,
-    alertTitle: "",
-    alertText: "",
     showEventModal: false,
 
     showDeleteConfirm: false,
@@ -64,20 +59,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case DISPLAY_DELETE_CONFIRM:
             return {
                 ...state,

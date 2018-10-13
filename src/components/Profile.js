@@ -8,10 +8,9 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import {
-    displayAlert,
-    dismissAlert,
     setManagerInfo,
     setCenterInfo,
     resetManagerCenterInfo,
@@ -21,6 +20,7 @@ import {
     setLastName,
     setPhone,
     setEmail,
+    setSiret,
     setName,
     setDescription,
     setAddress,
@@ -32,6 +32,8 @@ import {
 } from "../actions/profileActions";
 
 import {
+    displayAlert,
+    dismissAlert,
     setManagerProfileIsLoad,
     setCenterProfileIsLoad,
     setCenterPictureIsLoad
@@ -103,6 +105,11 @@ class Profile extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -141,6 +148,7 @@ class Profile extends React.Component {
                         if (me !== undefined) {
                             me.props.setCenterInfo({
                                 center_name: response.data[Fields.NAME],
+                                center_siret: response.data[Fields.SIRET],
                                 center_address: response.data[Fields.ADDRESS],
                                 center_address2: (response.data[Fields.ADDRESS_SECOND] === null ? "" : response.data[Fields.ADDRESS_SECOND]),
                                 center_zip_code: response.data[Fields.ZIP_CODE],
@@ -171,6 +179,11 @@ class Profile extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -226,6 +239,11 @@ class Profile extends React.Component {
                                 alertTitle: Texts.ERREUR_TITRE.text_fr,
                                 alertText: message
                             });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
                         }
                     }
                 } else {
@@ -302,6 +320,7 @@ function mapStateToProps(state) {
         manager_email: state.profile.manager_email,
         manager_phone: state.profile.manager_phone,
         center_name: state.profile.center_name,
+        center_siret: state.profile.center_siret,
         center_address: state.profile.center_address,
         center_address2: state.profile.center_address2,
         center_zip_code: state.profile.center_zip_code,
@@ -310,9 +329,10 @@ function mapStateToProps(state) {
         center_description: state.profile.center_description,
         center_nb_subscribers: state.profile.center_nb_subscribers,
         center_nb_followers: state.profile.center_nb_followers,
-        showAlert: state.profile.showAlert,
-        alertTitle: state.profile.alertTitle,
-        alertText: state.profile.alertText,
+
+        showAlert: state.global.showAlert,
+        alertTitle: state.global.alertTitle,
+        alertText: state.global.alertText,
 
         manager_profile_is_load: state.global.manager_profile_is_load,
         center_profile_is_load: state.global.center_profile_is_load,
@@ -333,6 +353,7 @@ export default connect(mapStateToProps, {
     setPhone,
     setEmail,
     setName,
+    setSiret,
     setDescription,
     setAddress,
     setAddressSecond,

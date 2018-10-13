@@ -1,6 +1,5 @@
 import {
-    DISPLAY_ALERT,
-    DISMISS_ALERT,
+
     SET_FIRST_NAME,
     SET_LAST_NAME,
     SET_PHONE,
@@ -8,6 +7,7 @@ import {
     SET_PASSWORD,
     SET_CONFIRM_PASSWORD,
     SET_NAME,
+    SET_SIRET,
     SET_DESCRIPTION,
     SET_ADDRESS,
     SET_ADDRESS_SECOND,
@@ -25,33 +25,17 @@ const initialState = {
     password: "",
     confirm_password: "",
     name: "",
+    siret: "",
     description: "",
     address: "",
     address_second: "",
     zip_code: "",
     city: "",
-    center_phone: "",
-    showAlert: false,
-    alertText: "",
-    alertTitle: ""
+    center_phone: ""
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case DISPLAY_ALERT:
-            return {
-                ...state,
-                showAlert: true,
-                alertTitle: action.payload.alertTitle,
-                alertText: action.payload.alertText
-            };
-        case DISMISS_ALERT:
-            return {
-                ...state,
-                showAlert: false,
-                alertTitle: "",
-                alertText: ""
-            };
         case SET_FIRST_NAME:
             return {
                 ...state,
@@ -86,6 +70,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 name: action.payload
+            };
+        case SET_SIRET:
+            return {
+                ...state,
+                siret: action.payload
             };
         case SET_DESCRIPTION:
             return {
