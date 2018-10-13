@@ -10,12 +10,6 @@ npm install
 ```
 
 
-## Running the tests
-
-```
-npm test
-```
-
 
 ## Deployment
 
