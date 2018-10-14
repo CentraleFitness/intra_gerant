@@ -116,6 +116,7 @@ export default (state = initialState, action) => {
                 password: "",
                 confirm_password: "",
                 name: "",
+                siret: "",
                 description: "",
                 address: "",
                 address_second: "",

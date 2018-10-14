@@ -1,7 +1,7 @@
 class Validator {
 
     static name(text) {
-        let regex = new RegExp('^[a-z ,.\'-]+$','i');
+        let regex = new RegExp('^[a-z éàèïëäêâî,.\'-]+$','i');
         return regex.test(text);
     }
 
