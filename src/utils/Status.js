@@ -54,6 +54,11 @@ const Status = {
         message_fr: "Echec lors de l'authentification, votre compte pas encore été validé",
         message_en: "Authentication failed, your account has not been validated yet"
     },
+    AUTH_ERROR_ACCOUNT_REFUSED: {
+        code: "205",
+        message_fr: "Echec lors de l'authentification, votre compte a été refusé",
+        message_en: "Authentication failed, your account has been refused"
+},
     AUTH_ERROR_CREDENTIALS: {
         code: "501",
         message_fr: "Echec lors de l'authentification, mauvais identifiants.",

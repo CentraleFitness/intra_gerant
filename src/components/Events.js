@@ -422,7 +422,7 @@ class Events extends React.Component {
 
     subscribersFilterSelectChange(selected) {
         this.props.setFilterEventsSubscribersSelect(selected.value);
-        this.filterSubscribersSelect(selected.value);
+        this.filterSubscribersSelect(selected === undefined ? "" : selected.value);
     }
 
     filterSubscribersSelect(value) {
@@ -487,7 +487,8 @@ class Events extends React.Component {
     }
 
     getNbSubscribersBool(value_select, value, item) {
-        return ((value_select === "inferieur" && item.nb_subscribers <= value) ||
+        return (value_select === "" ||
+            (value_select === "inferieur" && item.nb_subscribers <= value) ||
             (value_select === "egal" && item.nb_subscribers === value) ||
             (value_select === "superieur" && item.nb_subscribers >= value));
     }
@@ -501,7 +502,6 @@ class Events extends React.Component {
     resetFilters() {
         this.props.resetFilters();
         this.props.setEvents(this.props.initial_events);
-        this.filterStatus(this.props.filter_status);
     }
 
     handleEventModalDismiss() {
