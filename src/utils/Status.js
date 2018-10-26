@@ -84,6 +84,11 @@ const Status = {
         message_fr: "Le gérant n'a aucune salle de sport associée.",
         message_en: "Manager do not have associated center."
     },
+    MGR_ERROR_NOT_PRINCIPAL: {
+        code: "705",
+        message_fr: "Vous n'avez pas l'autorisation d'effectuer cette action.",
+        message_en: "You are not authorized to do this action."
+    },
     CTR_REG_SUCCESS: {
         code: "801",
         message_fr: "OK.",
@@ -123,6 +128,11 @@ const Status = {
         code: "808",
         message_fr: "Le numéro de SIRET de la salle est manquant",
         message_en: "Center's SIRET number is missing."
+    },
+    CTR_ERROR_DOESNT_EXIST: {
+        code: "808",
+        message_fr: "La numéro de SIRET ne correspond à aucune salle de sport",
+        message_en: ""
     },
     MISC_ERROR: {
         code: "401",

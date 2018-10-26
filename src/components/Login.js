@@ -23,6 +23,7 @@ import {
 import {
     displayAlert,
     dismissAlert,
+    setIsPrincipal
 } from "../actions/globalActions"
 
 import Communication from '../utils/Communication';
@@ -52,10 +53,12 @@ class Login extends React.Component {
 
         params[Fields.TOKEN] = token;
 
+        let me = this;
         let communication = new Communication('post', Paths.HOST + Paths.AUTHENTICATION_TOKEN, params);
         communication.sendRequest(
             function (response) {
                 if (response.status === 200 && response.data.code === Status.AUTH_SUCCESS.code) {
+                    me.props.setIsPrincipal(response.data.is_principal);
                     browserHistory.replace("/");
                 }
             },
@@ -105,6 +108,8 @@ class Login extends React.Component {
             function (response) {
                 if (response.status === 200) {
                     if (response.data.code === Status.AUTH_SUCCESS.code) {
+
+                        me.props.setIsPrincipal(response.data.is_principal);
 
                         me.props.displayAlert({
                             alertTitle: Texts.CONNEXION_TITRE.text_fr,
@@ -305,6 +310,9 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     displayAlert,
     dismissAlert,
+
+    setIsPrincipal,
+
     setEmail,
     setPassword,
     setRemember

@@ -1,10 +1,15 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
+import { connect } from 'react-redux';
 
 import Communication from '../utils/Communication';
 import Paths from '../utils/Paths';
 import Status from '../utils/Status';
 import Fields from '../utils/Fields';
+
+import {
+    setIsPrincipal
+} from '../actions/globalActions'
 
 class EnsureLoggedInContainer extends React.Component {
 
@@ -38,6 +43,7 @@ class EnsureLoggedInContainer extends React.Component {
             function (response) {
                 if (response.status === 200 && response.data.code === Status.AUTH_SUCCESS.code) {
 
+                    me.props.setIsPrincipal(response.data.is_principal);
                     me.setState({
                         isAuthenticate: true
                     });
@@ -61,4 +67,12 @@ class EnsureLoggedInContainer extends React.Component {
     }
 }
 
-export default EnsureLoggedInContainer;
+function mapStateToProps(state) {
+    return {
+
+    };
+}
+
+export default connect(mapStateToProps, {
+    setIsPrincipal
+})(EnsureLoggedInContainer);

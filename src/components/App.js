@@ -9,11 +9,13 @@ import CustomPrograms from './CustomPrograms';
 import Display from './Display';
 import Equipment from './Equipment';
 import Contact from './Contact';
+import Validation from './Validation';
 import Statistics from "./Statistics";
 import Profile from "./Profile";
 import Login from "./Login";
 import EnsureLoggedInContainer from "./EnsureLoggedInContainer";
 import Register from "./Register";
+import EnsureIsPrincipalContainer from "./EnsureIsPrincipalContainer";
 
 class App extends React.Component {
 
@@ -35,6 +37,9 @@ class App extends React.Component {
                         <Route path={"display"} component={Display}/>
                         <Route path={"equipment"} component={Equipment}/>
                         <Route path={"contact"} component={Contact}/>
+                        <Route component={EnsureIsPrincipalContainer}>
+                            <Route path={"validation"} component={Validation}/>
+                        </Route>
                     </Route>
                 </Route>
             </Router>

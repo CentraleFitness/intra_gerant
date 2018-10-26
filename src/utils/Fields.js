@@ -32,7 +32,11 @@ const Fields = {
     ACTIVITIES: "activities",
     CUSTOM_PROGRAMS: "custom_programs",
     NB_SUBSCRIBERS: "nb_subscribers",
-    SIRET: "siret"
+    SIRET: "siret",
+    IS_VALIDATED: "is_validated",
+    IS_ACTIVE: "is_active",
+    FITNESS_CENTER_MANAGER_ID: "fitness_center_manager_id"
+
 };
 
 export default Fields;

@@ -2,6 +2,8 @@ import {
     DISPLAY_ALERT,
     DISMISS_ALERT,
 
+    SET_IS_PRINCIPAL,
+
     SET_STATISTICS_IS_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_LOAD,
     SET_HOME_SUMMARY_IS_LOAD,
@@ -18,6 +20,7 @@ import {
     SET_MANAGER_PICTURE_IS_LOAD,
     SET_PUBLICATIONS_IS_LOAD,
     SET_ALBUM_IS_LOAD,
+    SET_SECONDARY_MANAGERS_IS_LOAD,
 
     SET_STATISTICS_IS_NOT_LOAD,
     SET_DISPLAY_CONFIGURATION_IS_NOT_LOAD,
@@ -34,13 +37,17 @@ import {
     SET_CENTER_PICTURE_IS_NOT_LOAD,
     SET_MANAGER_PICTURE_IS_NOT_LOAD,
     SET_PUBLICATIONS_IS_NOT_LOAD,
-    SET_ALBUM_IS_NOT_LOAD
+    SET_ALBUM_IS_NOT_LOAD,
+    SET_SECONDARY_MANAGERS_IS_NOT_LOAD
+
 } from "../actions/types"
 
 const initialState = {
     showAlert: false,
     alertTitle: "",
     alertText: "",
+
+    is_principal: false,
 
     statistics_is_load: false,
     display_configuration_is_load: false,
@@ -57,7 +64,8 @@ const initialState = {
     center_picture_is_load: false,
     manager_picture_is_load: false,
     publications_is_load: false,
-    album_is_load: false
+    album_is_load: false,
+    secondary_managers_is_load: false
 };
 
 export default (state = initialState, action) => {
@@ -157,6 +165,11 @@ export default (state = initialState, action) => {
                 ...state,
                 album_is_load: true
             };
+        case SET_SECONDARY_MANAGERS_IS_LOAD:
+            return {
+                ...state,
+                secondary_managers_is_load: true
+            };
         case SET_STATISTICS_IS_NOT_LOAD:
             return {
                 ...state,
@@ -236,6 +249,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 album_is_load: false
+            };
+        case SET_SECONDARY_MANAGERS_IS_NOT_LOAD:
+            return {
+                ...state,
+                secondary_managers_is_load: false
+            };
+        case SET_IS_PRINCIPAL:
+            return {
+                ...state,
+                is_principal: action.payload
             };
         default:
             return state;

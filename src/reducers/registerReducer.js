@@ -1,5 +1,4 @@
 import {
-
     SET_FIRST_NAME,
     SET_LAST_NAME,
     SET_PHONE,
@@ -14,7 +13,8 @@ import {
     SET_ZIP_CODE,
     SET_CITY,
     SET_CENTER_PHONE,
-    RESET_REGISTER_INFO
+    RESET_REGISTER_INFO,
+    SET_CREATE_FITNESS_CENTER
 } from "../actions/types"
 
 const initialState = {
@@ -24,6 +24,7 @@ const initialState = {
     email: "",
     password: "",
     confirm_password: "",
+    create_fitness_center: false,
     name: "",
     siret: "",
     description: "",
@@ -106,6 +107,11 @@ export default (state = initialState, action) => {
                 ...state,
                 center_phone: action.payload
             };
+        case SET_CREATE_FITNESS_CENTER:
+            return {
+                ...state,
+                create_fitness_center: action.payload
+            };
         case RESET_REGISTER_INFO:
             return {
                 ...state,
@@ -115,6 +121,7 @@ export default (state = initialState, action) => {
                 email: "",
                 password: "",
                 confirm_password: "",
+                create_fitness_center: false,
                 name: "",
                 siret: "",
                 description: "",

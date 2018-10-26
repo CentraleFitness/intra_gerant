@@ -3,8 +3,13 @@ const Paths = {
 
     REGISTRATION: "/registration",
 
+    MANAGER_REGISTRATION: "/manager/registration",
+
     AUTHENTICATION: "/authentication",
     AUTHENTICATION_TOKEN: "/authentication/token",
+
+    MANAGER_ACTIVITY: "/manager/set/activity",
+    MANAGER_VALIDATION: "/manager/set/validation",
 
     MANAGER_GET_PROFILE: "/manager/get/profile",
     MANAGER_GET_PICTURE: "/manager/get/picture",
@@ -53,7 +58,9 @@ const Paths = {
 
     GET_STATISTICS: "/center/get/statistics",
 
-    GET_FITNESS_CENTER_ID: "/center/get/id"
+    GET_FITNESS_CENTER_ID: "/center/get/id",
+
+    GET_SECONDARY_MANAGERS: "/center/get/secondarymanagers"
 };
 
 export default Paths;

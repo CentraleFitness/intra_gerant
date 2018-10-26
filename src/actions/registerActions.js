@@ -13,7 +13,8 @@ import {
     SET_ZIP_CODE,
     SET_CITY,
     SET_CENTER_PHONE,
-    RESET_REGISTER_INFO
+    RESET_REGISTER_INFO,
+    SET_CREATE_FITNESS_CENTER
 } from "./types"
 
 export const setFirstName = (value) => {
@@ -110,6 +111,13 @@ export const setCity = (value) => {
 export const setCenterPhone = (value) => {
     return {
         type: SET_CENTER_PHONE,
+        payload: value
+    };
+};
+
+export const setCreateFitnessCenter = (value) => {
+    return {
+        type: SET_CREATE_FITNESS_CENTER,
         payload: value
     };
 };

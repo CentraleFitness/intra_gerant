@@ -616,6 +616,122 @@ const Texts = {
     NUMERO_DE_SIRET: {
         text_fr: "Numéro de SIRET",
         text_en: "SIRET number"
+    },
+    VALIDATION: {
+        text_fr: "Validation",
+        text_en: "Validation"
+    },
+    DATE_DE_CREATION: {
+        text_fr: "Date de création",
+        text_en: "Creation date"
+    },
+    ACTIVITE: {
+        text_fr: "Activité",
+        text_en: "Activity"
+    },
+    RENDRE_INACTIF: {
+        text_fr: "Rendre inactif",
+        text_en: "Set inactive"
+    },
+    RENDRE_ACTIF: {
+        text_fr: "Rendre actif",
+        text_en: "Set active"
+    },
+    VALIDER: {
+        text_fr: "Valider",
+        text_en: "Validate"
+    },
+    VALIDE: {
+        text_fr: "Validé",
+        text_en: "Validated"
+    },
+    REFUSER: {
+        text_fr: "Refuser",
+        text_en: "Refuse"
+    },
+    REFUSE: {
+        text_fr: "Refusé",
+        text_en: "Refused"
+    },
+    VALIDER_LE_COMPTE: {
+        text_fr: "Valider le compte",
+        text_en: "Validate account"
+    },
+    REFUSER_LE_COMPTE: {
+        text_fr: "Refuser le compte",
+        text_en: "Refuse account"
+    },
+    VALIDER_CE_COMPTE: {
+        text_fr: "Valider ce compte",
+        text_en: "Validate this account"
+    },
+    REFUSER_CE_COMPTE: {
+        text_fr: "Refuser ce compte",
+        text_en: "Refuse this account"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_REFUSER_CE_COMPTE: {
+        text_fr: "Voulez vous vraiment refuser le compte de cet utilisateur",
+        text_en: "Do you really want to refuse the account of this user"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_VALIDER_CE_COMPTE: {
+        text_fr: "Voulez vous vraiment valider le compte de cet utilisateur",
+        text_en: "Do you really want to validate the account of this user"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_RENDRE_INACTIF_CE_COMPTE: {
+        text_fr: "Voulez vous vraiment rendre inactif le compte de cet utilisateur",
+        text_en: "Do you really want to set active the account of this user"
+    },
+    RENDRE_ACTIF_CE_COMPTE: {
+        text_fr: "Rendre actif ce compte",
+        text_en: "Set active this account"
+    },
+    RENDRE_INACTIF_CE_COMPTE: {
+        text_fr: "Rendre inactif ce compte",
+        text_en: "Set inactive this account"
+    },
+    ETES_VOUS_SUR_DE_VOULOIR_RENDRE_ACTIF_CE_COMPTE: {
+        text_fr: "Voulez vous vraiment rendre actif le compte de cet utilisateur",
+        text_en: "Do you really want to set active the account of this user"
+    },
+    PAR: {
+        text_fr: "par",
+        text_en: "by"
+    },
+    LE: {
+        text_fr: "le",
+        text_en: "the"
+    },
+    LE_COMPTE_A_ETE_VALIDE_LE: {
+        text_fr: "Le compte a été validé le",
+        text_en: "The account has been validated the"
+    },
+    LE_COMPTE_A_ETE_REFUSE_LE: {
+        text_fr: "Le compte a été refusé le",
+        text_en: "The account has been refused the"
+    },
+    RENDU_INACTIF_PAR: {
+        text_fr: "Rendu inactif par",
+        text_en: "Setted inactive by"
+    },
+    RENDU_ACTIF_PAR: {
+        text_fr: "Rendu actif par",
+        text_en: "Setted active by"
+    },
+    CREER_UNE_SALLE_DE_SPORT: {
+        text_fr: "Créer une salle de sport",
+        text_en: "Create a fitness center"
+    },
+    NUMERO_DE_SIRET_DE_LA_SALLE_EXISTANTE: {
+        text_fr: "Numéro de SIRET de votre salle existante",
+        text_en: "SIRET number of your fitness club"
+    },
+    EXPLICATION_VALIDATION: {
+        text_fr: "Vous pouvez ici valider et gérer les comptes créer par vos collaborateurs.",
+        text_en: "You can here validate and manage the accounts of your collaborators."
+    },
+    ADMIN: {
+        text_fr: "Admin",
+        text_en: "Admin"
     }
 };
 

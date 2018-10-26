@@ -10,6 +10,7 @@ import EventsReducer from './eventsReducer';
 import CustomPrograms from './customProgramsReducer';
 import Equipment from './equipmentReducer';
 import Statistics from './statisticsReducer';
+import Validation from './validationReducer';
 
 export default combineReducers({
     login: LoginReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     custom_programs: CustomPrograms,
     equipment: Equipment,
     statistics: Statistics,
+    validation: Validation,
     global: GlobalReducer
 });

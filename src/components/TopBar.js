@@ -35,7 +35,10 @@ import {
     setCenterPictureIsNotLoad,
     setCenterProfileIsNotLoad,
     setManagerProfileIsNotLoad,
-    setEventsIsNotLoad
+    setEventsIsNotLoad,
+    setSecondaryManagersIsNotLoad,
+
+    setIsPrincipal
 } from "../actions/globalActions";
 
 import '../styles/TopBar.css';
@@ -82,6 +85,9 @@ class TopBar extends React.Component {
         this.props.setCenterProfileIsNotLoad();
         this.props.setManagerProfileIsNotLoad();
         this.props.setEventsIsNotLoad();
+        this.props.setSecondaryManagersIsNotLoad();
+
+        this.props.setIsPrincipal(false);
 
         browserHistory.replace("/auth");
     }
@@ -381,6 +387,9 @@ export default connect(mapStateToProps, {
     setCenterProfileIsNotLoad,
     setManagerProfileIsNotLoad,
     setEventsIsNotLoad,
+    setSecondaryManagersIsNotLoad,
 
-    resetProfileInfo
+    resetProfileInfo,
+
+    setIsPrincipal
 })(TopBar);
