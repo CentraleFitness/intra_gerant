@@ -1,5 +1,5 @@
 const Paths = {
-    HOST: "http://localhost:5445",
+    HOST: "http://91.121.155.83:5446",
 
     REGISTRATION: "/registration",
 
