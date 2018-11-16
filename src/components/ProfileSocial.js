@@ -308,7 +308,13 @@ class ProfileSocial extends React.Component {
                             item.type === "PHOTO" ?
                                 (<div key={item._id}>
                                     <em>{Dates.format(item.date)}</em>
-                                    <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                    {
+                                        item.isMine === true &&
+
+                                        <a style={{cursor: "pointer"}}
+                                           onClick={this.onPublicationDelete.bind(this, item)}
+                                           className={"pull-right cross-background"}><Glyphicon glyph="remove"/></a>
+                                    }
                                     <Well className={"showNewLine"}>
                                         <h4 style={{textAlign: "center"}}>{item.title}</h4>
                                         <Image
@@ -332,7 +338,13 @@ class ProfileSocial extends React.Component {
                                 (item.type === "EVENT" ?
                                     (<div key={item._id}>
                                         <em>{Dates.format(item.date)}</em>
-                                        <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                        {
+                                            item.isMine === true &&
+
+                                            <a style={{cursor: "pointer"}}
+                                               onClick={this.onPublicationDelete.bind(this, item)}
+                                               className={"pull-right cross-background"}><Glyphicon glyph="remove"/></a>
+                                        }
                                         <Well className={"showNewLine"}>
                                             <h4 style={{textAlign: "center"}}>{Texts.EVENEMENT.text_fr + " " + item.title}</h4>
                                             <h5 style={{textAlign: "center"}}>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
@@ -356,7 +368,11 @@ class ProfileSocial extends React.Component {
                                     :
                                     (<div key={item._id}>
                                         <em>{Dates.format(item.date)}</em>
-                                        <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                        {
+                                            item.isMine === true &&
+
+                                            <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
+                                        }
                                         <Well className={"showNewLine"}>
                                             {item.content}
                                             <div style={{textAlign: "center"}}>
