@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Grid,
     Panel,
     Col,
     Image,
@@ -9,7 +8,6 @@ import {
     FormControl,
     Glyphicon,
     Button,
-    Well,
     Modal
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
