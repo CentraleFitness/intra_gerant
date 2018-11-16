@@ -310,13 +310,22 @@ class ProfileSocial extends React.Component {
                                     <em>{Dates.format(item.date)}</em>
                                     <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
                                     <Well className={"showNewLine"}>
-                                        <h4 style={{textAlign: "center"}}>{Texts.PHOTO.text_fr + " " + item.title}</h4>
+                                        <h4 style={{textAlign: "center"}}>{item.title}</h4>
                                         <Image
                                             alt={item.title}
                                             src={item.picture}
                                             className={"center-block profileImage"}
                                         />
                                         {item.content}
+                                        <div style={{textAlign: "center"}}>
+                                            <span style={{textAlign: "left"}}>
+                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
+                                            </span>
+                                            &nbsp;
+                                            <span style={{textAlign: "right"}}>
+                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
+                                            </span>
+                                        </div>
                                     </Well>
                                 </div>)
                                 :
@@ -333,16 +342,35 @@ class ProfileSocial extends React.Component {
                                                 className={"center-block profileImage"}
                                             />
                                             {item.content}
+                                            <div style={{textAlign: "center"}}>
+                                            <span style={{textAlign: "left"}}>
+                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
+                                            </span>
+                                                &nbsp;
+                                                <span style={{textAlign: "right"}}>
+                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
+                                            </span>
+                                            </div>
                                         </Well>
                                     </div>)
                                     :
                                     (<div key={item._id}>
                                         <em>{Dates.format(item.date)}</em>
                                         <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
-                                        <Well className={"showNewLine"}>{item.content}</Well>
+                                        <Well className={"showNewLine"}>
+                                            {item.content}
+                                            <div style={{textAlign: "center"}}>
+                                            <span style={{textAlign: "left"}}>
+                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
+                                            </span>
+                                                &nbsp;
+                                                <span style={{textAlign: "right"}}>
+                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
+                                            </span>
+                                            </div>
+                                        </Well>
                                     </div>)
                                 )
-
                         ))
                     }
                 </Panel>
