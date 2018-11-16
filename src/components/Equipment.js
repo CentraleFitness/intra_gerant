@@ -168,7 +168,7 @@ class Equipment extends React.Component {
         let text = "EN COURS D'ENVOI";
         this.props.module_states.map(function (item) {
             if (item._id === id) {
-                text = item.text_fr.toUpperCase();
+                text = item.text_fr;
                 return item;
             }
             return null;
@@ -176,25 +176,30 @@ class Equipment extends React.Component {
         return text;
     }
 
-    getStateColor(id) {
-        let idx = 0;
-        let i = 0;
-        let colors = [];
-        colors[0] = "#FFB122";
-        colors[1] = "#0000C8";
-        colors[2] = "#0000C8";
-        colors[3] = "#4DBD26";
-        colors[4] = "#FF0000";
-
-        this.props.module_states.map(function (item) {
-            if (item._id === id) {
-                idx = i;
-                return item;
-            }
-            ++i;
-            return null;
-        });
-        return colors[idx];
+    getModuleStateGlyph(code) {
+        let glyph = "";
+        let color = "";
+        if (code === 0) {
+            glyph = "send";
+            color = "#5491f2";
+        } else if (code === 1) {
+            glyph = "gift";
+            color = "#5491f2";
+        } else if (code === 2) {
+            glyph = "ok";
+            color = "green";
+        } else if (code === 3) {
+            glyph = "flash";
+            color = "#f2dd2b";
+        } else if (code === 4) {
+            glyph = "remove";
+            color = "red";
+        }
+        return (
+            <span style={{color: color}}>
+                <Glyphicon glyph={glyph} />&nbsp;
+            </span>
+        );
     }
 
     render() {
@@ -224,7 +229,8 @@ class Equipment extends React.Component {
                                     <td style={{textAlign: "center"}}>{item.UUID}</td>
                                     <td style={{textAlign: "center"}}>{item.machine_type}</td>
                                     <td style={{textAlign: "center"}}>
-                                        <span style={{color: this.getStateColor(item.module_state_id)}}>{this.getStateLabel(item.module_state_id)}</span>
+                                        {this.getModuleStateGlyph(item.code)}
+                                        {this.getStateLabel(item.module_state_id)}
                                     </td>
                                 </tr>
                             ))
