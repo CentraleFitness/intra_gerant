@@ -69,7 +69,7 @@ import "../styles/Events.css";
 
 class Events extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.events_is_load === false) {
             this.getEvents();
         } else {

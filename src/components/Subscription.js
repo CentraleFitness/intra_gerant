@@ -31,7 +31,7 @@ class Subscription extends React.Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getFitnessCenterId();
     }
 

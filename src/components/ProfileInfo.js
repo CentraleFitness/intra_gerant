@@ -64,7 +64,7 @@ import "../styles/Profile.css";
 
 class ProfileInfo extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.manager_picture_is_load === false) {
             this.getManagerPicture();
         }

@@ -51,7 +51,7 @@ import "../styles/Contact.css"
 
 class Contact extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.feedbacks_status_is_load === false) {
             this.getStatus();
         }

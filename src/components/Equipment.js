@@ -31,7 +31,7 @@ import Texts from '../utils/Texts';
 
 class Equipment extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.module_states_is_load === false) {
             this.getModuleStates();
         }

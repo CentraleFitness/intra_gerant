@@ -43,7 +43,7 @@ import '../styles/Profile.css';
 
 class ProfileSocial extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.publications_is_load === false) {
             this.getPublications();
         }

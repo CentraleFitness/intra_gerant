@@ -50,7 +50,7 @@ import '../styles/ProfilePhotos.css';
 
 class ProfilePhotos extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.album_is_load === false) {
             this.getAlbum();
         }

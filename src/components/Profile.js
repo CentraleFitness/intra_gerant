@@ -51,7 +51,7 @@ import Texts from '../utils/Texts';
 
 class Profile extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.manager_profile_is_load === false) {
             this.getManagerProfile();
         }

@@ -27,7 +27,7 @@ import Fields from "../utils/Fields";
 
 class Statistics extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.statistics_is_load === false) {
             this.getStatistics();
         }

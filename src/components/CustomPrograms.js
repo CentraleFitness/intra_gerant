@@ -72,7 +72,7 @@ import "../styles/CustomPrograms.css";
 
 class CustomPrograms extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.custom_programs_activities_is_load === false) {
             this.getCustomProgramsActivities();
         }
