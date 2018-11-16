@@ -229,7 +229,7 @@ class Equipment extends React.Component {
                                     <td style={{textAlign: "center"}}>{item.UUID}</td>
                                     <td style={{textAlign: "center"}}>{item.machine_type}</td>
                                     <td style={{textAlign: "center"}}>
-                                        {this.getModuleStateGlyph(item.code)}
+                                        {this.getModuleStateGlyph(item.module_state_code)}
                                         {this.getStateLabel(item.module_state_id)}
                                     </td>
                                 </tr>
