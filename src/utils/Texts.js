@@ -56,8 +56,8 @@ const Texts = {
         text_en: "By status"
     },
     FAIRE_UN_RETOUR_DINFORMATION: {
-        text_fr: "Faire un retour d'information",
-        text_en: "Post a feedback"
+        text_fr: "Ouvrir un ticket",
+        text_en: "Open a ticket"
     },
     MOTS_CLEFS: {
         text_fr: "Mots clefs",
@@ -272,8 +272,8 @@ const Texts = {
         text_en: "Last update"
     },
     RETOUR_DINFORMATION: {
-        text_fr: "Retour d'information",
-        text_en: "Feedback"
+        text_fr: "Ticket",
+        text_en: "Ticket"
     },
     TOUS: {
         text_fr: "Tous",
