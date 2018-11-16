@@ -732,6 +732,18 @@ const Texts = {
     ADMIN: {
         text_fr: "Admin",
         text_en: "Admin"
+    },
+    COMMENTER: {
+        text_fr: "Commenter",
+        text_en: "Comment"
+    },
+    JAIME: {
+        text_fr: "J'aime",
+        text_en: "Like"
+    },
+    JE_NAIME_PAS: {
+        text_fr: "Je n'aime pas",
+        text_en: "I don't like"
     }
 };
 

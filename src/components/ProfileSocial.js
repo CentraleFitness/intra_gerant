@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Grid,
     Panel,
     Col,
     Image,
@@ -135,7 +136,11 @@ class ProfileSocial extends React.Component {
                         me.props.addPublication({
                             _id: response.data.publication_id,
                             content: me.props.current_publication,
-                            date: now.getTime()
+                            date: now.getTime(),
+                            comments: [],
+                            nb_comments: 0,
+                            nb_likes: 0,
+                            isMine: true
                         });
                         me.props.setCurrentPublication("");
 
@@ -230,8 +235,6 @@ class ProfileSocial extends React.Component {
     }
 
     handleCurrentCommentChange(event) {
-        console.log(event.target.value);
-        console.log(this.props.current_publication);
         this.props.setCurrentPublication(event.target.value);
     }
 
@@ -245,6 +248,135 @@ class ProfileSocial extends React.Component {
 
     confirmPublicationDelete() {
         this.deletePublication();
+    }
+
+    displayPost(item, isPost = true) {
+
+        return (
+            <div key={item._id}>
+
+                <div className={"showNewLine post"}>
+
+                    <h5>
+                        <Image
+                            className={"post-image"}
+                            src={
+                                (item.is_center === true ?
+                                    (item.posterPicture === "" ? "/img/store.svg" : item.posterPicture)
+                                    :
+                                    (item.posterPicture === "" ? "/img/user.svg" : item.posterPicture))
+
+                            }
+                        />
+                        &nbsp;{item.posterName} <em>{" ( " + Dates.format(item.date) + " ) "}</em>
+                    </h5>
+
+                    {
+                        item.type === "EVENT" &&
+
+                        <div>
+                            <h4>{Texts.EVENEMENT.text_fr + " : " + item.title}</h4>
+                            <h5>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
+                        </div>
+                    }
+                    {
+                        item.type === "PHOTO" &&
+
+                        <h4>{item.title}</h4>
+                    }
+
+                    <p>{item.content}</p>
+
+                    {
+                        (item.type === "PHOTO" ||
+                            item.type === "EVENT") &&
+
+                        <div>
+                            <Image
+                                alt={item.title}
+                                src={item.picture}
+                                className={"profileImage"}
+                            />
+                        </div>
+                    }
+
+                    {
+                        isPost === true &&
+
+                        <div style={{textAlign: "center", fontSize: "16px", verticalAlign: "text-top"}}>
+
+                            <div>
+                                <span>
+                                    <Glyphicon glyph="heart"/>
+                                    &nbsp;
+                                    {item.nb_likes}
+                                    &nbsp;
+                                    &nbsp;
+                                </span>
+                                <span>
+                                    <Glyphicon glyph="comment"/>
+                                    &nbsp;
+                                    {item.nb_comments}
+                                    &nbsp;
+                                </span>
+                            </div>
+
+                            <div>
+
+                                <a className={"post-button"}>
+                                    {
+                                        item.likedByMe === true ?
+
+                                            <span>
+                                                <Glyphicon glyph="heart"/>
+                                                &nbsp;
+                                                {Texts.JE_NAIME_PAS.text_fr}
+                                            </span>
+
+                                            :
+
+                                            <span>
+                                                <Glyphicon glyph="heart-empty"/>
+                                                &nbsp;
+                                                {Texts.JAIME.text_fr}
+                                            </span>
+                                    }
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a className={"post-button"}>
+                                    <span style={{verticalAlign: "text-top"}}>
+                                        <Glyphicon glyph="comment"/>
+                                        &nbsp;
+                                        {Texts.COMMENTER.text_fr}
+                                    </span>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                {
+                                    item.isMine === true &&
+
+                                    <a
+                                        onClick={this.onPublicationDelete.bind(this, item)}
+                                        className={"post-button cross-background"}
+                                    >
+
+                                        <span style={{verticalAlign: "text-top"}}>
+                                            <Glyphicon glyph="remove"/>
+                                            &nbsp;
+                                            {Texts.SUPPRIMER.text_fr}
+                                        </span>
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+        );
     }
 
     render() {
@@ -305,88 +437,7 @@ class ProfileSocial extends React.Component {
                 <Panel className={"commentsZone"}>
                     {
                         this.props.publications.map((item) => (
-                            item.type === "PHOTO" ?
-                                (<div key={item._id}>
-                                    <em>{Dates.format(item.date)}</em>
-                                    {
-                                        item.isMine === true &&
-
-                                        <a style={{cursor: "pointer"}}
-                                           onClick={this.onPublicationDelete.bind(this, item)}
-                                           className={"pull-right cross-background"}><Glyphicon glyph="remove"/></a>
-                                    }
-                                    <Well className={"showNewLine"}>
-                                        <h4 style={{textAlign: "center"}}>{item.title}</h4>
-                                        <Image
-                                            alt={item.title}
-                                            src={item.picture}
-                                            className={"center-block profileImage"}
-                                        />
-                                        {item.content}
-                                        <div style={{textAlign: "center"}}>
-                                            <span style={{textAlign: "left"}}>
-                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
-                                            </span>
-                                            &nbsp;
-                                            <span style={{textAlign: "right"}}>
-                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
-                                            </span>
-                                        </div>
-                                    </Well>
-                                </div>)
-                                :
-                                (item.type === "EVENT" ?
-                                    (<div key={item._id}>
-                                        <em>{Dates.format(item.date)}</em>
-                                        {
-                                            item.isMine === true &&
-
-                                            <a style={{cursor: "pointer"}}
-                                               onClick={this.onPublicationDelete.bind(this, item)}
-                                               className={"pull-right cross-background"}><Glyphicon glyph="remove"/></a>
-                                        }
-                                        <Well className={"showNewLine"}>
-                                            <h4 style={{textAlign: "center"}}>{Texts.EVENEMENT.text_fr + " " + item.title}</h4>
-                                            <h5 style={{textAlign: "center"}}>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
-                                            <Image
-                                                alt={item.title}
-                                                src={item.picture}
-                                                className={"center-block profileImage"}
-                                            />
-                                            {item.content}
-                                            <div style={{textAlign: "center"}}>
-                                            <span style={{textAlign: "left"}}>
-                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
-                                            </span>
-                                                &nbsp;
-                                                <span style={{textAlign: "right"}}>
-                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
-                                            </span>
-                                            </div>
-                                        </Well>
-                                    </div>)
-                                    :
-                                    (<div key={item._id}>
-                                        <em>{Dates.format(item.date)}</em>
-                                        {
-                                            item.isMine === true &&
-
-                                            <a style={{cursor:"pointer"}} onClick={this.onPublicationDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
-                                        }
-                                        <Well className={"showNewLine"}>
-                                            {item.content}
-                                            <div style={{textAlign: "center"}}>
-                                            <span style={{textAlign: "left"}}>
-                                                {item.nb_likes + " Like" + (item.nb_likes > 1 ? "s" : "")}
-                                            </span>
-                                                &nbsp;
-                                                <span style={{textAlign: "right"}}>
-                                                {item.nb_comments + " Comment" + (item.nb_comments > 1 ? "s" : "")}
-                                            </span>
-                                            </div>
-                                        </Well>
-                                    </div>)
-                                )
+                            this.displayPost(item)
                         ))
                     }
                 </Panel>
