@@ -140,7 +140,11 @@ class ProfileSocial extends React.Component {
                             comments: [],
                             nb_comments: 0,
                             nb_likes: 0,
-                            isMine: true
+                            isMine: true,
+                            is_center: true,
+                            type: "PUBLICATION",
+                            posterName: response.data.posterName,
+                            posterPicture: response.data.posterPicture
                         });
                         me.props.setCurrentPublication("");
 
@@ -255,7 +259,7 @@ class ProfileSocial extends React.Component {
         return (
             <div key={item._id}>
 
-                <div className={"showNewLine post"}>
+                <div className={"showNewLine " + (isPost === true ? "post" : "post-comment")}>
 
                     <h5>
                         <Image

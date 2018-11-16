@@ -162,7 +162,11 @@ class ProfilePhotos extends React.Component {
                             picture_id: response.data.picture_id,
                             comments: [],
                             nb_comments: 0,
-                            nb_likes: 0
+                            nb_likes: 0,
+                            is_center: true,
+                            type: "PHOTO",
+                            posterName: response.data.posterName,
+                            posterPicture: response.data.posterPicture
                         });
                         me.props.setPictureTitle("");
                         me.props.setPictureDescription("");
