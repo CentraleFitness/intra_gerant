@@ -95,7 +95,7 @@ class Validation extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,

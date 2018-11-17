@@ -131,7 +131,7 @@ class CustomPrograms extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -195,7 +195,7 @@ class CustomPrograms extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -621,12 +621,14 @@ class CustomPrograms extends React.Component {
     filterKeyWord(value) {
         let me = this;
         let updatedPrograms = this.props.initial_custom_programs;
-        updatedPrograms = updatedPrograms.filter(function(item){
-            return me.getAvailableBool(me.props.filter_available, item) && me.getKeywordsBool(value, item) &&
-                me.getUnavailableBool(me.props.filter_unavailable, item) &&
-                me.getNumberActivitiesBool(me.props.filter_number_activities, item) &&
-                me.getTotalDurationBool(me.props.filter_total_duration, item);
-        });
+        if (updatedPrograms !== undefined) {
+            updatedPrograms = updatedPrograms.filter(function (item) {
+                return me.getAvailableBool(me.props.filter_available, item) && me.getKeywordsBool(value, item) &&
+                    me.getUnavailableBool(me.props.filter_unavailable, item) &&
+                    me.getNumberActivitiesBool(me.props.filter_number_activities, item) &&
+                    me.getTotalDurationBool(me.props.filter_total_duration, item);
+            });
+        }
         this.props.setCustomPrograms(JSON.parse(JSON.stringify(updatedPrograms)));
     }
 
@@ -757,82 +759,82 @@ class CustomPrograms extends React.Component {
         return (
             <Panel header={<div><Glyphicon glyph="time" /> {Texts.PROGRAMMES_PERSONNALISES.text_fr}</div>} bsStyle="primary">
                 <Panel>
-                        <Panel header={<div><Glyphicon glyph="filter" /> {Texts.FILTRE.text_fr}</div>}>
-                            <Form horizontal>
-                                <Col xs={12} sm={12} md={6} lg={6}>
-                                    <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
-                                            {Texts.PAR_NOM.text_fr}
-                                        </Col>
-                                        <Col xs={12} sm={12} md={7} lg={7}>
-                                            <FormControl
-                                                type="text"
-                                                placeholder={Texts.NOM.text_fr}
-                                                value={this.props.filter_keywords}
-                                                onChange={this.keyWordFilterChange.bind(this)}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={4} lg={4}>
-                                            {Texts.PAR_DISPONIBILITE.text_fr}
-                                        </Col>
-                                        <Col xs={0} sm={0} md={1} lg={1}>
+                    <Panel header={<div><Glyphicon glyph="filter" /> {Texts.FILTRE.text_fr}</div>}>
+                        <Form horizontal>
+                            <Col xs={12} sm={12} md={6} lg={6}>
+                                <FormGroup>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
+                                        {Texts.PAR_NOM.text_fr}
+                                    </Col>
+                                    <Col xs={12} sm={12} md={7} lg={7}>
+                                        <FormControl
+                                            type="text"
+                                            placeholder={Texts.NOM.text_fr}
+                                            value={this.props.filter_keywords}
+                                            onChange={this.keyWordFilterChange.bind(this)}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={4} lg={4}>
+                                        {Texts.PAR_DISPONIBILITE.text_fr}
+                                    </Col>
+                                    <Col xs={0} sm={0} md={1} lg={1}>
 
-                                        </Col>
-                                        <Col xs={12} sm={12} md={6} lg={6}>
-                                            <Radio name="filterAvailability" inline onChange={this.availableFilterChange.bind(this)} checked={this.props.filter_available}>
-                                                {Texts.DISPONIBLE.text_fr}
-                                            </Radio>{' '}
-                                            <Radio name="filterAvailability" inline onChange={this.unavailableFilterChange.bind(this)} checked={this.props.filter_unavailable}>
-                                                {Texts.INDISPONIBLE.text_fr}
-                                            </Radio>{' '}
-                                        </Col>
-                                    </FormGroup>
-                                </Col>
-                                <Col xs={12} sm={12} md={6} lg={6}>
-                                    <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
-                                            {Texts.PAR_NOMBRE_D_ACTIVITES.text_fr}
-                                        </Col>
-                                        <Col xs={12} sm={12} md={7} lg={7}>
-                                            <FormControl
-                                                type="number"
-                                                min={0}
-                                                placeholder={Texts.NOMBRE_D_ACTIVITES.text_fr}
-                                                value={this.props.filter_number_activities}
-                                                onChange={this.numberActivitiesFilterChange.bind(this)}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
-                                            {Texts.PAR_DUREE_TOTALE.text_fr + ' (min)'}
-                                        </Col>
-                                        <Col xs={12} sm={12} md={7} lg={7}>
-                                            <FormControl
-                                                type="number"
-                                                min={0}
-                                                placeholder={Texts.DUREE.text_fr + ' (min)'}
-                                                value={this.props.filter_total_duration}
-                                                onChange={this.totalDurationFilterChange.bind(this)}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                </Col>
-                            </Form>
-                        </Panel>
-                        <Button
-                            onClick={this.resetFilters.bind(this)}
-                        >
-                            <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_FILTRES.text_fr}
-                        </Button>
-                        <Button
-                            className={"pull-right"}
-                            onClick={this.onCreateProgramClick.bind(this)}
-                        >
-                            <Glyphicon glyph="plus" />  {Texts.CREER_UN_PROGRAMME.text_fr}
-                        </Button>
+                                    </Col>
+                                    <Col xs={12} sm={12} md={6} lg={6}>
+                                        <Radio name="filterAvailability" inline onChange={this.availableFilterChange.bind(this)} checked={this.props.filter_available}>
+                                            {Texts.DISPONIBLE.text_fr}
+                                        </Radio>{' '}
+                                        <Radio name="filterAvailability" inline onChange={this.unavailableFilterChange.bind(this)} checked={this.props.filter_unavailable}>
+                                            {Texts.INDISPONIBLE.text_fr}
+                                        </Radio>{' '}
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                            <Col xs={12} sm={12} md={6} lg={6}>
+                                <FormGroup>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
+                                        {Texts.PAR_NOMBRE_D_ACTIVITES.text_fr}
+                                    </Col>
+                                    <Col xs={12} sm={12} md={7} lg={7}>
+                                        <FormControl
+                                            type="number"
+                                            min={0}
+                                            placeholder={Texts.NOMBRE_D_ACTIVITES.text_fr}
+                                            value={this.props.filter_number_activities}
+                                            onChange={this.numberActivitiesFilterChange.bind(this)}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
+                                        {Texts.PAR_DUREE_TOTALE.text_fr + ' (min)'}
+                                    </Col>
+                                    <Col xs={12} sm={12} md={7} lg={7}>
+                                        <FormControl
+                                            type="number"
+                                            min={0}
+                                            placeholder={Texts.DUREE.text_fr + ' (min)'}
+                                            value={this.props.filter_total_duration}
+                                            onChange={this.totalDurationFilterChange.bind(this)}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                        </Form>
+                    </Panel>
+                    <Button
+                        onClick={this.resetFilters.bind(this)}
+                    >
+                        <Glyphicon glyph="refresh" /> {Texts.REINITIALISER_LES_FILTRES.text_fr}
+                    </Button>
+                    <Button
+                        className={"pull-right"}
+                        onClick={this.onCreateProgramClick.bind(this)}
+                    >
+                        <Glyphicon glyph="plus" />  {Texts.CREER_UN_PROGRAMME.text_fr}
+                    </Button>
                 </Panel>
                 <Table striped bordered condensed hover responsive>
                     <thead>
@@ -862,6 +864,8 @@ class CustomPrograms extends React.Component {
                     </thead>
                     <tbody>
                     {
+                        this.props.custom_programs !== undefined &&
+
                         this.props.custom_programs.map((item) => (
                             <tr key={item._id}
                             >

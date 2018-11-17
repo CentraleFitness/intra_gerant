@@ -132,7 +132,7 @@ class Events extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -463,11 +463,13 @@ class Events extends React.Component {
     filterStatus(value) {
         let me = this;
         let updatedEvents = this.props.initial_events;
-        updatedEvents = updatedEvents.filter(function(item){
-            return me.getStatusBool(value, item) && me.getKeywordsBool(me.props.filter_keywords, item) &&
-                me.getNbSubscribersBool(me.props.filter_subscribers_select, me.props.filter_number_subscribers, item) &&
-                me.getPeriodBool(me.props.filter_start_date, me.props.filter_end_date, item);
-        });
+        if (updatedEvents !== undefined) {
+            updatedEvents = updatedEvents.filter(function (item) {
+                return me.getStatusBool(value, item) && me.getKeywordsBool(me.props.filter_keywords, item) &&
+                    me.getNbSubscribersBool(me.props.filter_subscribers_select, me.props.filter_number_subscribers, item) &&
+                    me.getPeriodBool(me.props.filter_start_date, me.props.filter_end_date, item);
+            });
+        }
         this.props.setEvents(updatedEvents);
     }
 
@@ -789,6 +791,8 @@ class Events extends React.Component {
                 <Grid fluid={true}>
                     <Row>
                         {
+                            this.props.events !== undefined &&
+
                             this.props.events.map((item) => (
                                 <Col key={item._id} xs={12} md={3}>
                                     <Thumbnail>

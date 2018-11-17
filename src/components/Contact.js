@@ -84,11 +84,13 @@ class Contact extends React.Component {
     filterStatus(value) {
         let me = this;
         let updatedFeedbacks = this.props.initial_feedbacks;
-        updatedFeedbacks = updatedFeedbacks.filter(function(item){
-            return ((value === 0 || item.feedback_state === value) &&
-                ((item.title.toLowerCase().search(me.props.filter_keywords.toLowerCase()) !== -1) ||
-                    (item.description.toLowerCase().search(me.props.filter_keywords.toLowerCase()) !== -1)));
-        });
+        if (updatedFeedbacks !== undefined) {
+            updatedFeedbacks = updatedFeedbacks.filter(function (item) {
+                return ((value === 0 || item.feedback_state === value) &&
+                    ((item.title.toLowerCase().search(me.props.filter_keywords.toLowerCase()) !== -1) ||
+                        (item.description.toLowerCase().search(me.props.filter_keywords.toLowerCase()) !== -1)));
+            });
+        }
         this.props.setFeedbacks(updatedFeedbacks);
     }
 
@@ -240,7 +242,7 @@ class Contact extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -304,7 +306,7 @@ class Contact extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.response.status);
+                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -468,6 +470,8 @@ class Contact extends React.Component {
                 </Panel>
                 <ListGroup>
                     {
+                        this.props.feedbacks !== undefined &&
+
                         this.props.feedbacks.map((item) => (
                             <ListGroupItem
                                 key={item._id}
