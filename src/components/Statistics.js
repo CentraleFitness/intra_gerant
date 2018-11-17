@@ -46,15 +46,15 @@ class Statistics extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined) {
+                        if (me !== undefined)
                             me.props.setStatistics({
                                 production_day: response.data.production_day,
                                 production_month: response.data.production_month,
                                 frequentation_day: response.data.frequentation_day,
                                 frequentation_month: response.data.frequentation_month
                             });
+                        if (me !== undefined)
                             me.props.setStatisticsIsLoad();
-                        }
 
                     } else {
 

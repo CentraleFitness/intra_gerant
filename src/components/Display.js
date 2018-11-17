@@ -139,7 +139,7 @@ class Display extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined) {
+                        if (me !== undefined)
                             me.props.setDisplayConfiguration({
                                 show_events: response.data.show_events,
                                 selected_events: response.data.selected_events,
@@ -152,8 +152,8 @@ class Display extends React.Component {
                                 show_global_ranking: response.data.show_global_ranking,
                                 show_national_production_rank: response.data.show_national_production_rank
                             });
-                            me.props.setDisplayConfigurationIsLoad();
-                        }
+                        if (me !== undefined)
+                                me.props.setDisplayConfigurationIsLoad();
 
                     } else {
 

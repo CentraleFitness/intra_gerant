@@ -72,7 +72,7 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined) {
+                        if (me !== undefined)
                             me.props.setHomeSummary({
                                 center_name: response.data.center_name,
                                 manager_first_name: response.data.manager_first_name,
@@ -80,8 +80,8 @@ class Home extends React.Component {
                                 nb_subscribers: response.data.nb_subscribers,
                                 events: response.data.events
                             });
+                        if (me !== undefined)
                             me.props.setHomeSummaryIsLoad();
-                        }
 
                     } else {
 
@@ -138,15 +138,15 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined) {
+                        if (me !== undefined)
                             me.props.setStatistics({
                                 production_day: response.data.production_day,
                                 production_month: response.data.production_month,
                                 frequentation_day: response.data.frequentation_day,
                                 frequentation_month: response.data.frequentation_month
                             });
+                        if (me !== undefined)
                             me.props.setStatisticsIsLoad();
-                        }
 
                     } else {
 
