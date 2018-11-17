@@ -308,7 +308,7 @@ class ProfilePhotos extends React.Component {
                 <Panel>
                     <Grid>
                         <Row>
-                            <Col xs={8} sm={6} md={3} lg={3}>
+                            <Col xs={12} sm={6} md={3} lg={3}>
                                 <FormGroup controlId="formControlsFile">
                                     <ControlLabel>{Texts.SELECTIONNER_IMG.text_fr}</ControlLabel>
                                     <FormControl
@@ -320,7 +320,7 @@ class ProfilePhotos extends React.Component {
                                     <HelpBlock>{Texts.FORMATS_AUTORISES.text_fr}</HelpBlock>
                                 </FormGroup>
                             </Col>
-                            <Col xs={2} sm={3} md={4} lg={4}>
+                            <Col xs={12} sm={3} md={4} lg={4}>
                                 <FormGroup controlId="formControlsTitle">
                                     <FormControl
                                         type="text"
@@ -344,7 +344,7 @@ class ProfilePhotos extends React.Component {
                                     <Glyphicon glyph="plus" /> {Texts.AJOUTER.text_fr}
                                 </Button>
                             </Col>
-                            <Col xs={2} sm={3} md={5} lg={5}>
+                            <Col xs={12} sm={3} md={5} lg={5}>
                                 <Image
                                     src={this.props.picture_preview}
                                     rounded
@@ -365,7 +365,7 @@ class ProfilePhotos extends React.Component {
                                     key={item.picture_id}
                                 >
 
-                                        <Col xs={2} sm={2} md={2} lg={2}>
+                                        <Col xs={12} sm={12} md={2} lg={2}>
                                             <a onClick={this.onPhotoDelete.bind(this, item)} className={"pull-right cross-background"}><Glyphicon glyph="remove" /></a>
                                             <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                                                 <Popover title={item.title} id={"PhotoPopover"} className={"blockEllipsis"}>

@@ -761,10 +761,10 @@ class CustomPrograms extends React.Component {
                             <Form horizontal>
                                 <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                             {Texts.PAR_NOM.text_fr}
                                         </Col>
-                                        <Col xs={7} sm={7} md={7} lg={7}>
+                                        <Col xs={12} sm={12} md={7} lg={7}>
                                             <FormControl
                                                 type="text"
                                                 placeholder={Texts.NOM.text_fr}
@@ -774,13 +774,13 @@ class CustomPrograms extends React.Component {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={4} sm={4} md={4} lg={4}>
+                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={4} lg={4}>
                                             {Texts.PAR_DISPONIBILITE.text_fr}
                                         </Col>
-                                        <Col xs={1} sm={1} md={1} lg={1}>
+                                        <Col xs={0} sm={0} md={1} lg={1}>
 
                                         </Col>
-                                        <Col xs={6} sm={6} md={6} lg={6}>
+                                        <Col xs={12} sm={12} md={6} lg={6}>
                                             <Radio name="filterAvailability" inline onChange={this.availableFilterChange.bind(this)} checked={this.props.filter_available}>
                                                 {Texts.DISPONIBLE.text_fr}
                                             </Radio>{' '}
@@ -792,10 +792,10 @@ class CustomPrograms extends React.Component {
                                 </Col>
                                 <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={5} sm={5} md={5} lg={5}>
+                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
                                             {Texts.PAR_NOMBRE_D_ACTIVITES.text_fr}
                                         </Col>
-                                        <Col xs={7} sm={7} md={7} lg={7}>
+                                        <Col xs={12} sm={12} md={7} lg={7}>
                                             <FormControl
                                                 type="number"
                                                 min={0}
@@ -806,10 +806,10 @@ class CustomPrograms extends React.Component {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup>
-                                        <Col componentClass={ControlLabel} xs={5} sm={5} md={5} lg={5}>
+                                        <Col componentClass={ControlLabel} xs={12} sm={12} md={5} lg={5}>
                                             {Texts.PAR_DUREE_TOTALE.text_fr + ' (min)'}
                                         </Col>
-                                        <Col xs={7} sm={7} md={7} lg={7}>
+                                        <Col xs={12} sm={12} md={7} lg={7}>
                                             <FormControl
                                                 type="number"
                                                 min={0}
@@ -834,7 +834,7 @@ class CustomPrograms extends React.Component {
                             <Glyphicon glyph="plus" />  {Texts.CREER_UN_PROGRAMME.text_fr}
                         </Button>
                 </Panel>
-                <Table striped bordered condensed hover>
+                <Table striped bordered condensed hover responsive>
                     <thead>
                         <tr>
                             <th>
@@ -949,10 +949,10 @@ class CustomPrograms extends React.Component {
                         </FormGroup>
                         <Form horizontal>
                             <FormGroup validationState={this.getValidationStateName()}>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.NOM.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         type="text"
                                         placeholder={Texts.NOM.text_fr}
@@ -962,10 +962,10 @@ class CustomPrograms extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.SELECTIONNER_IMG.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         type="file"
                                         accept=".png,.jpg,.svg"
@@ -976,20 +976,20 @@ class CustomPrograms extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
 
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <Checkbox checked={this.props.current_available} onChange={this.onCurrentAvailableChange.bind(this)}>
                                         {Texts.RENDRE_DISPONIBLE.text_fr}
                                     </Checkbox>
                                 </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.AJOUTER_UNE_ACTIVITE.text_fr}
                                 </Col>
-                                <Col xs={2} sm={2} md={2} lg={2}>
+                                <Col xs={12} sm={12} md={2} lg={2}>
                                     <FormControl componentClass="select" inputRef={ ref => this.selectActivityInputRef = ref }>
                                         {
                                             this.props.activities.map((activity_b, index) => (
@@ -1000,20 +1000,20 @@ class CustomPrograms extends React.Component {
                                         }
                                     </FormControl>
                                 </Col>
-                                <Col xs={2} sm={2} md={2} lg={2}>
+                                <Col xs={12} sm={12} md={2} lg={2}>
                                     <FormControl type="number" placeholder={Texts.DUREE.text_fr + " (min)"} inputRef={ ref => this.selectActivityDurationInputRef = ref }/>
                                 </Col>
-                                <Col xs={2} sm={2} md={2} lg={2}>
+                                <Col xs={12} sm={12} md={2} lg={2}>
                                     <FormControl type="number" placeholder={Texts.DUREE.text_fr + " (sec)"} inputRef={ ref => this.selectActivityDurationSecInputRef = ref }/>
                                 </Col>
-                                <Col xs={1} sm={1} md={1} lg={1}>
+                                <Col xs={12} sm={12} md={1} lg={1}>
                                     <Button onClick={this.onAddActivityClick.bind(this)}>
                                         <Glyphicon glyph="plus" /> {Texts.AJOUTER.text_fr}
                                     </Button>
                                 </Col>
                             </FormGroup>
                         </Form>
-                        <Table striped bordered condensed hover>
+                        <Table striped bordered condensed hover responsive>
                             <thead>
                             <tr>
                                 <th style={{width: 15 + "%"}}>

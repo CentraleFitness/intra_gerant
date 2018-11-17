@@ -690,10 +690,10 @@ class Events extends React.Component {
                         <Form horizontal>
                             <Col xs={12} sm={12} md={6} lg={6}>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                         {Texts.PAR_MOTS_CLEFS.text_fr}
                                     </Col>
-                                    <Col xs={9} sm={9} md={9} lg={9}>
+                                    <Col xs={12} sm={12} md={9} lg={9}>
                                         <FormControl
                                             type="text"
                                             placeholder={Texts.MOTS_CLEFS.text_fr}
@@ -703,10 +703,10 @@ class Events extends React.Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                         {Texts.PAR_PERIODE.text_fr + ", " + Texts.DE.text_fr + " :"}
                                     </Col>
-                                    <Col xs={4} sm={4} md={4} lg={4}>
+                                    <Col xs={12} sm={12} md={4} lg={4}>
                                         <FormControl
                                             type="date"
                                             format={"dd/mm/YYYY"}
@@ -714,10 +714,10 @@ class Events extends React.Component {
                                             onChange={this.filterStartDateChange.bind(this)}
                                         />
                                     </Col>
-                                    <Col componentClass={ControlLabel} xs={1} sm={1} md={1} lg={1}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={1} lg={1}>
                                         {Texts.A.text_fr + " :"}
                                     </Col>
-                                    <Col xs={4} sm={4} md={4} lg={4}>
+                                    <Col xs={12} sm={12} md={4} lg={4}>
                                         <FormControl
                                             type="date"
                                             format={"dd/mm/YYYY"}
@@ -729,10 +729,10 @@ class Events extends React.Component {
                             </Col>
                             <Col xs={12} sm={12} md={6} lg={6}>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={4} sm={4} md={4} lg={4}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={4} lg={4}>
                                         {Texts.PAR_STATUS.text_fr}
                                     </Col>
-                                    <Col xs={8} sm={8} md={8} lg={8}>
+                                    <Col xs={12} sm={12} md={8} lg={8}>
                                         <ToggleButtonGroup
                                             type="checkbox"
                                             name="date"
@@ -747,10 +747,10 @@ class Events extends React.Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={4} sm={4} md={4} lg={4}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={4} lg={4}>
                                         {Texts.PAR_NOMBRE_D_INSCRIT.text_fr}
                                     </Col>
-                                    <Col xs={4} sm={4} md={4} lg={4}>
+                                    <Col xs={12} sm={12} md={4} lg={4}>
                                         <Select
                                             clearable={false}
                                             value={this.props.filter_subscribers_select}
@@ -762,7 +762,7 @@ class Events extends React.Component {
                                             ]}
                                         />
                                     </Col>
-                                    <Col xs={4} sm={4} md={4} lg={4}>
+                                    <Col xs={12} sm={12} md={4} lg={4}>
                                         <FormControl
                                             type="number"
                                             min={0}
@@ -859,10 +859,10 @@ class Events extends React.Component {
                         </FormGroup>
                         <Form horizontal>
                             <FormGroup validationState={this.getValidationState('title')}>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.TITRE.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         type="text"
                                         placeholder={Texts.TITRE.text_fr}
@@ -872,10 +872,10 @@ class Events extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup validationState={this.getValidationState('start_date')}>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.DATE_DE_DEBUT.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         type="date"
                                         format={"dd/mm/YYYY"}
@@ -885,10 +885,10 @@ class Events extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup validationState={this.getValidationState('end_date')}>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.DATE_DE_FIN.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         type="date"
                                         format={"dd/mm/YYYY"}
@@ -898,7 +898,7 @@ class Events extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Col xs={3} sm={3} md={3} lg={3}>
+                                <Col xs={0} sm={0} md={3} lg={3}>
 
                                 </Col>
                                 <Col xs={6} sm={6} md={6} lg={6}>
@@ -913,10 +913,10 @@ class Events extends React.Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup validationState={this.getValidationState('description')}>
-                                <Col componentClass={ControlLabel} xs={3} sm={3} md={3} lg={3}>
+                                <Col componentClass={ControlLabel} xs={12} sm={12} md={3} lg={3}>
                                     {Texts.DESCRIPTION.text_fr}
                                 </Col>
-                                <Col xs={6} sm={6} md={6} lg={6}>
+                                <Col xs={12} sm={12} md={6} lg={6}>
                                     <FormControl
                                         rows={6}
                                         placeholder={Texts.DESCRIPTION.text_fr}

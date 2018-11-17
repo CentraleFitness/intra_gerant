@@ -216,7 +216,7 @@ class Equipment extends React.Component {
                             </FormControl.Static>
                         </FormGroup>
                     </form>
-                    <Table>
+                    <Table responsive>
                         <thead style={{textAlign: "center"}}>
                             <tr>
                                 <th style={{textAlign: "center"}}>UUID</th>

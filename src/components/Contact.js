@@ -383,14 +383,14 @@ class Contact extends React.Component {
         return (
             <Panel header={<div><Glyphicon glyph="envelope" /> {Texts.CONTACT.text_fr}</div>} bsStyle="primary">
                 <Panel>
-                    <Col xs={8} sm={8} md={9} lg={9}>
+                    <Col xs={12} sm={12} md={9} lg={9}>
                         <Panel header={<div><Glyphicon glyph="filter" /> {Texts.FILTRE.text_fr}</div>}>
                             <Form horizontal>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={2} sm={2} md={2} lg={2}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={2} lg={2}>
                                         {Texts.PAR_MOTS_CLEFS.text_fr}
                                     </Col>
-                                    <Col xs={10} sm={10} md={10} lg={10}>
+                                    <Col xs={12} sm={12} md={10} lg={10}>
                                         <FormControl
                                             type="text"
                                             placeholder={Texts.MOTS_CLEFS.text_fr}
@@ -400,10 +400,10 @@ class Contact extends React.Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup>
-                                    <Col componentClass={ControlLabel} xs={2} sm={2} md={2} lg={2}>
+                                    <Col componentClass={ControlLabel} xs={12} sm={12} md={2} lg={2}>
                                         {Texts.PAR_STATUS.text_fr}
                                     </Col>
-                                    <Col xs={10} sm={10} md={10} lg={10}>
+                                    <Col xs={12} sm={12} md={10} lg={10}>
                                         <ToggleButtonGroup
                                             type="radio"
                                             name="status"
@@ -435,7 +435,7 @@ class Contact extends React.Component {
                             <Glyphicon glyph="comment" />  {Texts.FAIRE_UN_RETOUR_DINFORMATION.text_fr}
                         </Button>
                     </Col>
-                    <Col xs={4} sm={4} md={3} lg={3}>
+                    <Col xs={12} sm={12} md={3} lg={3}>
                         <Panel header={Texts.CENTRALE_FITNESS.text_fr}>
                             <Form horizontal>
                                 <FormGroup>

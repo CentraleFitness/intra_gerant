@@ -634,7 +634,7 @@ class ProfileInfo extends React.Component {
                 <Panel header={<div><Glyphicon glyph="user" /> {Texts.PROFIL.text_fr + " " + Texts.GERANT.text_fr}</div>} bsStyle="primary">
                     <Grid fluid={true}>
                         <Row>
-                            <Col xs={9} sm={9} md={9} lg={9}>
+                            <Col xs={12} sm={12} md={10} lg={10}>
                                 <Form horizontal>
                                     <FormGroup controlId="formHorizontalFirstName" validationState={this.getValidationState('manager_first_name')}>
                                         <Col componentClass={ControlLabel} sm={2}>
@@ -695,7 +695,7 @@ class ProfileInfo extends React.Component {
                                     </FormGroup>
                                 </Form>
                             </Col>
-                            <Col xs={2} sm={2} md={2} lg={2}>
+                            <Col xs={12} sm={12} md={2} lg={2}>
                                 <Image
                                     src={(this.props.manager_picture === "" ? "/img/user.svg" : this.props.manager_picture)}
                                     circle
@@ -751,7 +751,7 @@ class ProfileInfo extends React.Component {
                 <Panel header={<div><Glyphicon glyph="info-sign" /> {Texts.PROFIL_SALLE.text_fr}</div>} bsStyle="primary">
                     <Grid fluid={true}>
                         <Row>
-                            <Col xs={9} sm={9} md={9} lg={9}>
+                            <Col xs={12} sm={12} md={10} lg={10}>
                                 <Form horizontal>
                                     <FormGroup controlId="formHorizontalName" validationState={this.getValidationState('center_name')}>
                                         <Col componentClass={ControlLabel} sm={2}>
@@ -863,7 +863,7 @@ class ProfileInfo extends React.Component {
                                     </FormGroup>
                                 </Form>
                             </Col>
-                            <Col xs={2} sm={2} md={2} lg={2}>
+                            <Col xs={12} sm={12} md={2} lg={2}>
                                 <Image
                                     src={(this.props.center_picture === "" ? "/img/store.svg" : this.props.center_picture)}
                                     rounded
@@ -915,9 +915,9 @@ class ProfileInfo extends React.Component {
                     </Modal>
 
                 </Panel>
-                <Col xs={4} sm={4} md={4} lg={4}>
+                <Col xs={0} sm={0} md={4} lg={4}>
                 </Col>
-                <Col xs={2} sm={2} md={2} lg={2}>
+                <Col xs={12} sm={12} md={2} lg={2}>
                     <Button
                         block
                         onClick={this.onResetClick.bind(this)}
@@ -925,7 +925,7 @@ class ProfileInfo extends React.Component {
                         <Glyphicon glyph="repeat" /> {Texts.REINITIALISER.text_fr}
                     </Button>
                 </Col>
-                <Col xs={2} sm={2} md={2} lg={2}>
+                <Col xs={12} sm={12} md={2} lg={2}>
                     <Button
                         block
                         bsStyle="primary"
@@ -934,7 +934,7 @@ class ProfileInfo extends React.Component {
                         <Glyphicon glyph="floppy-disk" /> {Texts.SAUVEGARDER.text_fr}
                     </Button>
                 </Col>
-                <Col xs={4} sm={4} md={4} lg={4}>
+                <Col xs={0} sm={0} md={4} lg={4}>
                 </Col>
             </Panel>
         );
