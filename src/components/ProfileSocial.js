@@ -532,32 +532,27 @@ class ProfileSocial extends React.Component {
                         {
                             this.displayPost(this.state.publication, true, true)
                         }
-                            <Panel hidden={
-                                (this.state.publication.comments === undefined ||
-                                this.state.publication.comments.length === 0) &&
-                                this.state.showCommentArea === false
-                            }>
-                                <Panel hidden={this.state.showCommentArea === false}>
-                                    <FormControl
-                                        componentClass="textarea"
-                                        placeholder={Texts.COMMENTER.text_fr + " ..."}
-                                        value={this.state.current_comment}
-                                        onChange={ this.handleModalCurrentCommentChange.bind(this) }
-                                    />
-                                    <Col sm={10}>
+                            <Panel hidden={this.state.showCommentArea === false}>
+                                <FormControl
+                                    componentClass="textarea"
+                                    placeholder={Texts.COMMENTER.text_fr + " ..."}
+                                    value={this.state.current_comment}
+                                    onChange={ this.handleModalCurrentCommentChange.bind(this) }
+                                />
+                                <Col sm={10}>
 
-                                    </Col>
-                                    <Col sm={2}>
-                                        <Button
-                                            block
-                                            bsStyle="primary"
-                                            className={"submitButton"}
-                                            onClick={this.onCommentClick.bind(this)}
-                                        >
-                                            <Glyphicon glyph="send" /> {Texts.COMMENTER.text_fr}
-                                        </Button>
-                                    </Col>
-                                </Panel>
+                                </Col>
+                                <Col sm={2}>
+                                    <Button
+                                        block
+                                        bsStyle="primary"
+                                        className={"submitButton"}
+                                        onClick={this.onCommentClick.bind(this)}
+                                    >
+                                        <Glyphicon glyph="send" /> {Texts.COMMENTER.text_fr}
+                                    </Button>
+                                </Col>
+                            </Panel>
                             {
                                 this.state.publication.comments !== undefined &&
 
@@ -565,7 +560,6 @@ class ProfileSocial extends React.Component {
                                     this.displayPost(item, false, true)
                                 ))
                             }
-                            </Panel>
                         </Panel>
                     </Modal.Body>
                     <Modal.Footer>
