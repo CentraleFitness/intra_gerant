@@ -532,7 +532,11 @@ class ProfileSocial extends React.Component {
                         {
                             this.displayPost(this.state.publication, true, true)
                         }
-                            <Panel hidden={this.state.publication.comments === undefined || this.state.publication.comments.length === 0}>
+                            <Panel hidden={
+                                (this.state.publication.comments === undefined ||
+                                this.state.publication.comments.length === 0) &&
+                                this.state.showCommentArea === false
+                            }>
                                 <Panel hidden={this.state.showCommentArea === false}>
                                     <FormControl
                                         componentClass="textarea"
