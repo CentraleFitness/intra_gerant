@@ -26,6 +26,7 @@ import {
     SET_CENTER_PICTURE,
 
     SET_PUBLICATIONS,
+    SET_PUBLICATION_LIKED_BY_ME,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
     DELETE_PUBLICATION,
@@ -215,12 +216,24 @@ export const setCenterPicture = (value) => {
     };
 };
 
+
+
+
+
 export const setPublications = (publications) => {
     return {
         type: SET_PUBLICATIONS,
         payload: publications
     };
 };
+
+export const setPublicationLikedByMe = (publication) => {
+    return {
+        type: SET_PUBLICATION_LIKED_BY_ME,
+        payload: publication
+    };
+};
+
 
 export const addPublication = (publication) => {
     return {
@@ -255,6 +268,11 @@ export const setCurrentPublication = (value) => {
         payload: value
     };
 };
+
+
+
+
+
 
 export const resetProfileInfo = () => {
     return {

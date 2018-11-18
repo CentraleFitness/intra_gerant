@@ -744,6 +744,10 @@ const Texts = {
     JE_NAIME_PAS: {
         text_fr: "Je n'aime pas",
         text_en: "I don't like"
+    },
+    PUBLICATION_DE: {
+        text_fr: "Publication de",
+        text_en: "Post of"
     }
 };
 

@@ -27,6 +27,7 @@ import {
     SET_CENTER_PICTURE,
 
     SET_PUBLICATIONS,
+    SET_PUBLICATION_LIKED_BY_ME,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
     DELETE_PUBLICATION,
@@ -81,6 +82,8 @@ const initialState = {
     center_picture_preview: "/img/folder.svg",
     manager_picture: "",
     center_picture: "",
+
+    updatePublications: false,
     publications: [],
     current_publication: "",
 
@@ -102,6 +105,9 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+
+    let tmp_publications;
+
     switch (action.type) {
         case DISPLAY_MANAGER_PICTURE_MODAL:
             return {
@@ -266,13 +272,32 @@ export default (state = initialState, action) => {
                 ...state,
                 center_picture: action.payload
             };
+
+
+
+
+
         case SET_PUBLICATIONS:
             return {
                 ...state,
                 publications: action.payload
             };
+        case SET_PUBLICATION_LIKED_BY_ME:
+
+            tmp_publications = state.publications;
+            let index = tmp_publications.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_publications[index].nb_likes = tmp_publications[index].nb_likes +
+                (tmp_publications[index].likedByMe === true ? -1 : 1);
+            tmp_publications[index].likedByMe = tmp_publications[index].likedByMe === false;
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
         case ADD_PUBLICATION:
-            let tmp_publications = state.publications;
+            tmp_publications = state.publications;
             tmp_publications.unshift(action.payload);
             return {
                 ...state,
@@ -308,6 +333,10 @@ export default (state = initialState, action) => {
                 ...state,
                 current_publication: action.payload
             };
+
+
+
+
         case RESET_PROFILE_INFO:
             return {
                 ...state,
