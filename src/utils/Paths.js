@@ -1,5 +1,6 @@
 const Paths = {
     HOST: "http://91.121.155.83:5446",
+    //HOST: "http://localhost:5445",
 
     REGISTRATION: "/registration",
 
@@ -28,6 +29,7 @@ const Paths = {
     CENTER_GET_ALBUM: "/club/get/album",
 
     CENTER_ADD_PUBLICATION: "/club/add/publication",
+    CENTER_LIKE_PUBLICATION: "/club/like/publication",
     CENTER_DELETE_PUBLICATION: "/club/delete/publication",
     CENTER_GET_PUBLICATIONS: "/club/get/publications",
 

@@ -35,8 +35,9 @@ const Fields = {
     SIRET: "siret",
     IS_VALIDATED: "is_validated",
     IS_ACTIVE: "is_active",
-    FITNESS_CENTER_MANAGER_ID: "fitness_center_manager_id"
-
+    FITNESS_CENTER_MANAGER_ID: "fitness_center_manager_id",
+    COMMENT_ID: "comment_id",
+    LIKE: "like"
 };
 
 export default Fields;

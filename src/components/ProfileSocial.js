@@ -17,6 +17,8 @@ import {
     setCurrentPublication,
     setPublications,
     setPublicationLikedByMe,
+    publicationAddComment,
+    publicationDeleteComment,
     addPublication,
     deletePublication,
     displayPublicationDeleteConfirm,
@@ -128,11 +130,16 @@ class ProfileSocial extends React.Component {
         this.addPublication();
     }
 
-    addPublication() {
+    addPublication(isPost = true) {
         let params = {};
 
         params[Fields.TOKEN] = localStorage.getItem("token");
-        params[Fields.TEXT] = this.props.current_publication;
+        if (isPost) {
+            params[Fields.TEXT] = this.props.current_publication;
+        } else {
+            params[Fields.TEXT] = this.state.current_comment;
+            params[Fields.PUBLICATION_ID] = this.state.publication._id;
+        }
 
         let me = this;
 
@@ -143,20 +150,46 @@ class ProfileSocial extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         let now = new Date();
-                        me.props.addPublication({
-                            _id: response.data.publication_id,
-                            content: me.props.current_publication,
-                            date: now.getTime(),
-                            comments: [],
-                            nb_comments: 0,
-                            nb_likes: 0,
-                            isMine: true,
-                            is_center: true,
-                            type: "PUBLICATION",
-                            posterName: response.data.posterName,
-                            posterPicture: response.data.posterPicture
-                        });
-                        me.props.setCurrentPublication("");
+
+                        if (isPost) {
+
+                            me.props.addPublication({
+                                _id: response.data.publication_id,
+                                content: me.props.current_publication,
+                                date: now.getTime(),
+                                comments: [],
+                                nb_comments: 0,
+                                nb_likes: 0,
+                                isMine: true,
+                                is_center: true,
+                                type: "PUBLICATION",
+                                likedByMe: false,
+                                posterName: response.data.posterName,
+                                posterPicture: response.data.posterPicture
+                            });
+                            me.props.setCurrentPublication("");
+
+                        } else {
+
+                            me.props.publicationAddComment({
+                                _id: me.state.publication._id,
+                                comment: {
+                                    _id: response.data.publication_id,
+                                    content: me.state.current_comment,
+                                    date: now.getTime(),
+                                    isMine: true,
+                                    is_center: true,
+                                    type: "PUBLICATION",
+                                    posterName: response.data.posterName,
+                                    posterPicture: response.data.posterPicture
+                                }
+                            });
+                            me.setState({
+                                showCommentArea: false,
+                                current_comment: ""
+                            });
+
+                        }
 
                     } else {
 
@@ -194,12 +227,75 @@ class ProfileSocial extends React.Component {
         );
     }
 
+    likePublication(item) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PUBLICATION_ID] = item._id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_LIKE_PUBLICATION, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        if (me !== undefined)
+                            me.props.setPublicationLikedByMe(item);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                console.log(error.name + " " + error.message + " " + error.stack);
+                if (me !== undefined) {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            }
+        );
+    }
+
     deletePublication() {
 
         let params = {};
 
         params[Fields.TOKEN] = localStorage.getItem("token");
         params[Fields.PUBLICATION_ID] = this.props.delete_publication_id;
+        if (this.props.delete_comment_id !== "") {
+            params[Fields.COMMENT_ID] = this.props.delete_comment_id;
+        }
 
         let me = this;
 
@@ -209,7 +305,14 @@ class ProfileSocial extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        me.props.deletePublication(me.props.delete_publication_id);
+                        if (me.props.delete_comment_id !== "") {
+                            me.props.publicationDeleteComment({
+                                publication_id: me.props.delete_publication_id,
+                                comment_id: me.props.delete_comment_id
+                            })
+                        } else {
+                            me.props.deletePublication(me.props.delete_publication_id);
+                        }
                         me.handleDeletePublicationConfirmDismiss();
 
                     } else {
@@ -253,7 +356,9 @@ class ProfileSocial extends React.Component {
     }
 
     onPublicationDelete(item) {
-        this.props.displayPublicationDeleteConfirm(item._id);
+        this.props.displayPublicationDeleteConfirm({
+            publication_id: item._id
+        });
     }
 
     handleDeletePublicationConfirmDismiss() {
@@ -289,10 +394,7 @@ class ProfileSocial extends React.Component {
     }
 
     onCommentClick() {
-        this.setState({
-            showCommentArea: false,
-            current_comment: ""
-        });
+        this.addPublication(false);
     }
 
     handleShowCommentArea() {
@@ -302,10 +404,17 @@ class ProfileSocial extends React.Component {
     }
 
     handleLikeClick(item) {
-        this.props.setPublicationLikedByMe(item);
+        this.likePublication(item);
     }
 
-    displayPost(item, isPost = true, isModal = false) {
+    onCommentDelete(item, publication_id) {
+        this.props.displayPublicationDeleteConfirm({
+            publication_id: publication_id,
+            comment_id: item._id
+        });
+    }
+
+    displayPost(item, isPost = true, isModal = false, publication_id = "") {
 
         return (
             <div key={item._id}>
@@ -441,7 +550,10 @@ class ProfileSocial extends React.Component {
                                     item.isMine === true &&
 
                                     <a
-                                        onClick={this.onPublicationDelete.bind(this, item)}
+                                        onClick={isPost === true ?
+                                            this.onPublicationDelete.bind(this, item) :
+                                            this.onCommentDelete.bind(this, item, publication_id)
+                                        }
                                         className={"post-button cross-background"}
                                     >
 
@@ -556,9 +668,11 @@ class ProfileSocial extends React.Component {
                             {
                                 this.state.publication.comments !== undefined &&
 
-                                this.state.publication.comments.map((item) => (
-                                    this.displayPost(item, false, true)
-                                ))
+                                this.state.publication.comments.map((item) => {
+                                    if (item !== null && item !== undefined) {
+                                        return this.displayPost(item, false, true, this.state.publication._id)
+                                    }
+                                })
                             }
                         </Panel>
                     </Modal.Body>
@@ -608,6 +722,7 @@ function mapStateToProps(state) {
 
         showDeletePublicationConfirm: state.profile.showDeletePublicationConfirm,
         delete_publication_id: state.profile.delete_publication_id,
+        delete_comment_id: state.profile.delete_comment_id,
 
         showAlert: state.global.showAlert,
         alertTitle: state.global.alertTitle,
@@ -623,6 +738,8 @@ export default connect(mapStateToProps, {
 
     setCurrentPublication,
     setPublicationLikedByMe,
+    publicationAddComment,
+    publicationDeleteComment,
     setPublications,
     addPublication,
     deletePublication,

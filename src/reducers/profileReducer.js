@@ -28,6 +28,8 @@ import {
 
     SET_PUBLICATIONS,
     SET_PUBLICATION_LIKED_BY_ME,
+    PUBLICATION_ADD_COMMENT,
+    PUBLICATION_DELETE_COMMENT,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
     DELETE_PUBLICATION,
@@ -88,6 +90,7 @@ const initialState = {
     current_publication: "",
 
     delete_publication_id: "",
+    delete_comment_id: "",
     showDeletePublicationConfirm: false,
 
     delete_picture_id: "",
@@ -107,6 +110,7 @@ const initialState = {
 export default (state = initialState, action) => {
 
     let tmp_publications;
+    let index;
 
     switch (action.type) {
         case DISPLAY_MANAGER_PICTURE_MODAL:
@@ -285,12 +289,41 @@ export default (state = initialState, action) => {
         case SET_PUBLICATION_LIKED_BY_ME:
 
             tmp_publications = state.publications;
-            let index = tmp_publications.findIndex(function (item) {
+            index = tmp_publications.findIndex(function (item) {
                 return item._id === action.payload._id;
             });
             tmp_publications[index].nb_likes = tmp_publications[index].nb_likes +
                 (tmp_publications[index].likedByMe === true ? -1 : 1);
             tmp_publications[index].likedByMe = tmp_publications[index].likedByMe === false;
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
+        case PUBLICATION_ADD_COMMENT:
+
+            tmp_publications = state.publications;
+            index = tmp_publications.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_publications[index].nb_comments = tmp_publications[index].nb_comments + 1;
+            tmp_publications[index].comments.unshift(action.payload.comment);
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
+        case PUBLICATION_DELETE_COMMENT:
+
+            tmp_publications = state.publications;
+            index = tmp_publications.findIndex(function (item) {
+                return item._id === action.payload.publication_id;
+            });
+            tmp_publications[index].nb_comments = tmp_publications[index].nb_comments - 1;
+            let idx = tmp_publications[index].comments.findIndex(function (item) {
+                return item._id === action.payload.comment_id
+            });
+            tmp_publications[index].comments.splice(idx, 1);
             return {
                 ...state,
                 publications: tmp_publications,
@@ -306,12 +339,9 @@ export default (state = initialState, action) => {
         case DELETE_PUBLICATION:
             let tmp_publications_delete = state.publications;
             let index_publications_delete = tmp_publications_delete.findIndex(function (item) {
-                if (item !== undefined) {
-                    return item._id === action.payload;
-                }
-                return false;
+                return item._id === action.payload;
             });
-            delete tmp_publications_delete[index_publications_delete];
+            tmp_publications_delete.splice(index_publications_delete, 1);
             return {
                 ...state,
                 publications: tmp_publications_delete
@@ -320,13 +350,15 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 showDeletePublicationConfirm: true,
-                delete_publication_id: action.payload
+                delete_publication_id: action.payload.publication_id,
+                delete_comment_id: (action.payload.comment_id === undefined ? "" : action.payload.comment_id)
             };
         case DISMISS_PUBLICATION_DELETE_CONFIRM:
             return {
                 ...state,
                 showDeletePublicationConfirm: false,
-                delete_publication_id: ""
+                delete_publication_id: "",
+                delete_comment_id: ""
             };
         case SET_CURRENT_PUBLICATION:
             return {

@@ -27,6 +27,8 @@ import {
 
     SET_PUBLICATIONS,
     SET_PUBLICATION_LIKED_BY_ME,
+    PUBLICATION_ADD_COMMENT,
+    PUBLICATION_DELETE_COMMENT,
     ADD_PUBLICATION,
     SET_CURRENT_PUBLICATION,
     DELETE_PUBLICATION,
@@ -234,6 +236,20 @@ export const setPublicationLikedByMe = (publication) => {
     };
 };
 
+export const publicationAddComment = (infos) => {
+    return {
+        type: PUBLICATION_ADD_COMMENT,
+        payload: infos
+    };
+};
+
+export const publicationDeleteComment = (infos) => {
+    return {
+        type: PUBLICATION_DELETE_COMMENT,
+        payload: infos
+    };
+};
+
 
 export const addPublication = (publication) => {
     return {
@@ -249,10 +265,10 @@ export const deletePublication = (id) => {
     };
 };
 
-export const displayPublicationDeleteConfirm = (id) => {
+export const displayPublicationDeleteConfirm = (ids) => {
     return {
         type: DISPLAY_PUBLICATION_DELETE_CONFIRM,
-        payload: id
+        payload: ids
     };
 };
 
