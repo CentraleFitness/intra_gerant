@@ -670,8 +670,9 @@ class ProfileSocial extends React.Component {
 
                                 this.state.publication.comments.map((item) => {
                                     if (item !== null && item !== undefined) {
-                                        return this.displayPost(item, false, true, this.state.publication._id)
+                                        return this.displayPost(item, false, true, this.state.publication._id);
                                     }
+                                    return null;
                                 })
                             }
                         </Panel>

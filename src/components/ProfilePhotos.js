@@ -29,7 +29,8 @@ import {
     setPicturePreview,
     displayDeletePictureConfirm,
     dismissDeletePictureConfirm,
-    deletePhoto
+    deletePhoto,
+    addPublication
 } from "../actions/profileActions";
 
 import {
@@ -169,6 +170,25 @@ class ProfilePhotos extends React.Component {
                             posterName: response.data.posterName,
                             posterPicture: response.data.posterPicture
                         });
+                        if (me.props.publications_is_load === true) {
+
+                            me.props.addPublication({
+                                _id: response.data.publication_id,
+                                title: me.props.picture_title,
+                                content: me.props.picture_description,
+                                picture: me.props.picture_preview,
+                                date: now.getTime(),
+                                comments: [],
+                                nb_comments: 0,
+                                nb_likes: 0,
+                                isMine: true,
+                                is_center: true,
+                                type: "PHOTO",
+                                likedByMe: false,
+                                posterName: response.data.posterName,
+                                posterPicture: response.data.posterPicture
+                            });
+                        }
                         me.props.setPictureTitle("");
                         me.props.setPictureDescription("");
                         me.props.setPicturePreview("");
@@ -446,7 +466,8 @@ function mapStateToProps(state) {
         alertTitle: state.global.alertTitle,
         alertText: state.global.alertText,
 
-        album_is_load: state.global.album_is_load
+        album_is_load: state.global.album_is_load,
+        publications_is_load: state.global.publications_is_load
     };
 }
 
@@ -463,6 +484,8 @@ export default connect(mapStateToProps, {
     displayDeletePictureConfirm,
     dismissDeletePictureConfirm,
     deletePhoto,
+
+    addPublication,
 
     setAlbumIsLoad
 })(ProfilePhotos);

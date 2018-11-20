@@ -51,6 +51,10 @@ import {
 } from "../actions/eventsActions";
 
 import {
+    addPublication
+} from "../actions/profileActions";
+
+import {
     displayAlert,
     dismissAlert,
     setEventsIsLoad
@@ -315,10 +319,34 @@ class Events extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
+                        let now = new Date().getTime();
+
                         me.props.setEventLastPost({
                             _id: event_id,
-                            last_post: new Date().getTime()
+                            last_post: now
                         });
+                        if (me.props.publications_is_load === true) {
+
+                            me.props.addPublication({
+                                _id: response.data.publication_id,
+                                content: response.data.description,
+                                title: response.data.title,
+                                picture: response.data.picture,
+                                event_id: response.data.event_id,
+                                start_date: response.data.start_date,
+                                end_date: response.data.end_date,
+                                date: now,
+                                comments: [],
+                                nb_comments: 0,
+                                nb_likes: 0,
+                                isMine: true,
+                                is_center: true,
+                                type: "EVENT",
+                                likedByMe: false,
+                                posterName: response.data.posterName,
+                                posterPicture: response.data.posterPicture
+                            });
+                        }
                         me.forceUpdate();
 
                     } else {
@@ -349,6 +377,7 @@ class Events extends React.Component {
                 }
             },
             function (error) {
+                console.log(error);
                 me.props.displayAlert({
                     alertTitle: Texts.ERREUR_TITRE.text_fr,
                     alertText: Texts.ERR_RESEAU.text_fr
@@ -675,7 +704,6 @@ class Events extends React.Component {
     }
 
     postEventClick(item) {
-        console.log(item);
         this.postEvent(item._id);
     }
 
@@ -1030,7 +1058,8 @@ function mapStateToProps(state) {
         alertTitle: state.global.alertTitle,
         alertText: state.global.alertText,
 
-        events_is_load: state.global.events_is_load
+        events_is_load: state.global.events_is_load,
+        publications_is_load: state.global.publications_is_load
     };
 }
 
@@ -1061,6 +1090,8 @@ export default connect(mapStateToProps, {
     setEventModalCurrentPicture,
     setDeletionCause,
     setEventLastPost,
+
+    addPublication,
 
     setEventsIsLoad
 })(Events);

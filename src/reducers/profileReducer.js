@@ -334,7 +334,8 @@ export default (state = initialState, action) => {
             tmp_publications.unshift(action.payload);
             return {
                 ...state,
-                publications: tmp_publications
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
             };
         case DELETE_PUBLICATION:
             let tmp_publications_delete = state.publications;
