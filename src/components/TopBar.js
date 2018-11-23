@@ -274,7 +274,7 @@ class TopBar extends React.Component {
                     <Navbar.Collapse>
                         <Nav pullRight>
                             <NavDropdown eventKey={3} title={
-                                <span>{"Compte "}<Glyphicon glyph="user" /></span>
+                                <span>{"Compte "}</span>
                             } id="basic-nav-dropdown">
                                 <MenuItem eventKey={3.1} onClick={this.handleChangePasswordClick.bind(this)}>
                                     <Glyphicon glyph="pencil" />&nbsp;{Texts.MODIFIER_MDP.text_fr}
