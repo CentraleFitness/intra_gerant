@@ -27,6 +27,7 @@ import {
 
     SET_PUBLICATIONS,
     SET_PUBLICATION_LIKED_BY_ME,
+    SET_PUBLICATION_REPORTED_BY_ME,
     PUBLICATION_ADD_COMMENT,
     PUBLICATION_DELETE_COMMENT,
     ADD_PUBLICATION,
@@ -235,6 +236,14 @@ export const setPublicationLikedByMe = (publication) => {
         payload: publication
     };
 };
+
+export const setPublicationReportedByMe = (publication) => {
+    return {
+        type: SET_PUBLICATION_REPORTED_BY_ME,
+        payload: publication
+    };
+};
+
 
 export const publicationAddComment = (infos) => {
     return {

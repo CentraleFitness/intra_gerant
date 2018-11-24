@@ -748,6 +748,14 @@ const Texts = {
     PUBLICATION_DE: {
         text_fr: "Publication de",
         text_en: "Post of"
+    },
+    ANNULER_SIGNALEMENT: {
+        text_fr: "Annuler le signalement",
+        text_en: "Cancel report"
+    },
+    SIGNALER: {
+        text_fr: "Signaler",
+        text_en: "Report"
     }
 };
 

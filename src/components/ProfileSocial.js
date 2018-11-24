@@ -17,6 +17,7 @@ import {
     setCurrentPublication,
     setPublications,
     setPublicationLikedByMe,
+    setPublicationReportedByMe,
     publicationAddComment,
     publicationDeleteComment,
     addPublication,
@@ -287,6 +288,66 @@ class ProfileSocial extends React.Component {
         );
     }
 
+    reportPublication(item) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.PUBLICATION_ID] = item._id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.CENTER_REPORT_PUBLICATION, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        if (me !== undefined)
+                            me.props.setPublicationReportedByMe(item);
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                console.log(error.name + " " + error.message + " " + error.stack);
+                if (me !== undefined) {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            }
+        );
+    }
+
     deletePublication() {
 
         let params = {};
@@ -405,6 +466,10 @@ class ProfileSocial extends React.Component {
 
     handleLikeClick(item) {
         this.likePublication(item);
+    }
+
+    handleReportClick(item) {
+        this.reportPublication(item);
     }
 
     onCommentDelete(item, publication_id) {
@@ -562,6 +627,31 @@ class ProfileSocial extends React.Component {
                                         &nbsp;
                                         {Texts.SUPPRIMER.text_fr}
                                     </span>
+                                    </a>
+                                }
+                                &nbsp;
+                                &nbsp;
+                                {
+                                    (item.is_center === undefined || item.is_center === false) &&
+
+                                    <a className={"post-button"} onClick={this.handleReportClick.bind(this, item)}>
+                                        {
+                                            item.reported_by_club === true ?
+
+                                                <span>
+                                                <Glyphicon glyph="bullhorn"/>
+                                                    &nbsp;
+                                                    {Texts.ANNULER_SIGNALEMENT.text_fr}
+                                            </span>
+
+                                                :
+
+                                                <span>
+                                            <Glyphicon glyph="bullhorn"/>
+                                                    &nbsp;
+                                                    {Texts.SIGNALER.text_fr}
+                                        </span>
+                                        }
                                     </a>
                                 }
                             </div>
@@ -739,6 +829,7 @@ export default connect(mapStateToProps, {
 
     setCurrentPublication,
     setPublicationLikedByMe,
+    setPublicationReportedByMe,
     publicationAddComment,
     publicationDeleteComment,
     setPublications,

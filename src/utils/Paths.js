@@ -30,6 +30,7 @@ const Paths = {
 
     CENTER_ADD_PUBLICATION: "/club/add/publication",
     CENTER_LIKE_PUBLICATION: "/club/like/publication",
+    CENTER_REPORT_PUBLICATION: "/club/report/publication",
     CENTER_DELETE_PUBLICATION: "/club/delete/publication",
     CENTER_GET_PUBLICATIONS: "/club/get/publications",
 

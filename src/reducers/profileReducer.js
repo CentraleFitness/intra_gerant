@@ -28,6 +28,7 @@ import {
 
     SET_PUBLICATIONS,
     SET_PUBLICATION_LIKED_BY_ME,
+    SET_PUBLICATION_REPORTED_BY_ME,
     PUBLICATION_ADD_COMMENT,
     PUBLICATION_DELETE_COMMENT,
     ADD_PUBLICATION,
@@ -294,7 +295,19 @@ export default (state = initialState, action) => {
             });
             tmp_publications[index].nb_likes = tmp_publications[index].nb_likes +
                 (tmp_publications[index].likedByMe === true ? -1 : 1);
-            tmp_publications[index].likedByMe = tmp_publications[index].likedByMe === false;
+            tmp_publications[index].likedByMe = (tmp_publications[index].likedByMe === false);
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
+        case SET_PUBLICATION_REPORTED_BY_ME:
+
+            tmp_publications = state.publications;
+            index = tmp_publications.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+            tmp_publications[index].reported_by_club = (tmp_publications[index].reported_by_club === false);
             return {
                 ...state,
                 publications: tmp_publications,
