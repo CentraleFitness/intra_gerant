@@ -390,7 +390,7 @@ class Home extends React.Component {
                     </Panel>
                 </Col>
                 <Col xs={12} sm={12} md={6} lg={6} >
-                    <Panel header={<div><Glyphicon glyph="calendar" /> {Texts.EVENEMENTS_A_VENIR.text_fr} </div>} style={{textAlign: "center"}}>
+                    <Panel header={<div><Glyphicon glyph="calendar" /> {Texts.EVENEMENTS.text_fr} </div>} style={{textAlign: "center"}}>
                         <div>
                         {
                             this.props.events.map((item) => (
