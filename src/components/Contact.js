@@ -147,6 +147,8 @@ class Contact extends React.Component {
                             title: me.props.feedback_title,
                             description: me.props.feedback_description,
                             feedback_state: 1,
+                            responses: [],
+                            fitness_manager_name: response.data.fitness_manager_name,
                             creation_date: now.getTime(),
                             update_date: now.getTime()
                         });
@@ -374,10 +376,12 @@ class Contact extends React.Component {
 
     handleFeedbackOnClick(item) {
         this.props.displayFeedbackEditModal({
+            feedback_id: item._id,
             feedback_title: item.title,
             feedback_state_code: item.feedback_state,
             feedback_description: item.description,
-            feedback_update_date: item.update_date
+            feedback_update_date: item.update_date,
+            feedback_fitness_manager_name: item.fitness_manager_name
         });
     }
 
@@ -480,9 +484,15 @@ class Contact extends React.Component {
                                 onClick={this.handleFeedbackOnClick.bind(this, item)}
                                 className={"showNewLine"}
                             >
-                                {item.description + " ("}
-                                <em>{Texts.DERNIERE_MODIFICATION.text_fr + " " + Dates.format(item.update_date)}</em>
-                                {")"}
+                                {item.description}
+                                <br />
+                                <em>
+                                    {
+                                        "( " + item.fitness_manager_name + " - " +
+                                        Texts.DERNIERE_MODIFICATION.text_fr + " : " +
+                                        Dates.format(item.update_date) + " )"
+                                    }
+                                </em>
                             </ListGroupItem>
                         ))
                     }
@@ -500,6 +510,16 @@ class Contact extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <FormControl.Static hidden={this.props.feedback_update_date === -1}>
+                            <p>
+                                <span style={{fontWeight: "bold"}}>{Texts.GERANT.text_fr + " : "}</span>
+                                {this.props.feedback_fitness_manager_name}
+                            </p>
+                            <p>
+                                <span style={{fontWeight: "bold"}}>{Texts.DERNIERE_MODIFICATION.text_fr + " : "}</span>
+                                {Dates.format(this.props.feedback_update_date)}
+                            </p>
+                        </FormControl.Static>
                         <FormGroup controlId="formControlsTitle" validationState={this.getValidationState('title')}>
                             <FormControl
                                 readOnly={!this.props.feedback_modal_title_enabled}
@@ -519,9 +539,6 @@ class Contact extends React.Component {
                                 onChange={this.handleFeedbackDescriptionChange.bind(this)}
                             />
                         </FormGroup>
-                        <FormControl.Static hidden={this.props.feedback_update_date === -1}>
-                            {Texts.DERNIERE_MODIFICATION.text_fr + " " + Dates.format(this.props.feedback_update_date) + " "}
-                        </FormControl.Static>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleFeedbackModalDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
@@ -564,6 +581,7 @@ function mapStateToProps(state) {
         filter_status: state.contact.filter_status,
         showFeedbackModal: state.contact.showFeedbackModal,
         feedback_title: state.contact.feedback_title,
+        feedback_fitness_manager_name: state.contact.feedback_fitness_manager_name,
         feedback_description: state.contact.feedback_description,
         feedback_modal_title_enabled: state.contact.feedback_modal_title_enabled,
         feedback_modal_description_enabled: state.contact.feedback_modal_description_enabled,
