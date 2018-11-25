@@ -37,7 +37,8 @@ import {
     displayFeedbackModal,
     dismissFeedbackModal,
     displayFeedbackEditModal,
-    setFeedbackCurrentResponse
+    setFeedbackCurrentResponse,
+    addFeedbackResponse
 } from "../actions/contactActions";
 
 import Texts from "../utils/Texts";
@@ -157,6 +158,69 @@ class Contact extends React.Component {
                         me.filterStatus(me.props.filter_status);
 
                         me.handleFeedbackModalDismiss();
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: message
+                        });
+
+                        if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                            localStorage.removeItem("token");
+                            browserHistory.replace('/auth');
+                        }
+                    }
+                } else {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            },
+            function (error) {
+                me.props.displayAlert({
+                    alertTitle: Texts.ERREUR_TITRE.text_fr,
+                    alertText: Texts.ERR_RESEAU.text_fr
+                });
+            }
+        );
+    }
+
+    addFeedbackResponse() {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.CONTENT] = this.props.feedback_current_response;
+        params[Fields.FEEDBACK_ID] = this.props.feedback_id;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.ADD_RESPONSE_FEEDBACK, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        let now = new Date();
+                        me.props.addFeedbackResponse({
+                            _id: me.props.feedback_id,
+                            feedback_state: 1,
+                            is_admin: false,
+                            content: me.props.feedback_current_response,
+                            date: now.getTime(),
+                            author: response.data.fitness_manager_name
+                        });
+
+                        me.filterStatus(me.props.filter_status);
 
                     } else {
 
@@ -386,8 +450,15 @@ class Contact extends React.Component {
             feedback_state_code: item.feedback_state,
             feedback_description: item.description,
             feedback_update_date: item.update_date,
+            feedback_responses: item.responses,
             feedback_fitness_manager_name: item.fitness_manager_name
         });
+    }
+
+    handleFeedbackResponseSend() {
+        if (this.props.feedback_current_response.length > 0) {
+            this.addFeedbackResponse();
+        }
     }
 
     displayresponse(item) {
@@ -585,12 +656,11 @@ class Contact extends React.Component {
                                         <p>
                                             {this.props.feedback_description}
                                         </p>
-                                        {this.displayresponse({
-                                            content: "Hellow world",
-                                            author: "Julien LONGAYROU",
-                                            is_admin: true,
-                                            date: 1543101611615
-                                        })}
+                                        {
+                                            this.props.feedback_responses.map((item) => (
+                                                this.displayresponse(item)
+                                            ))
+                                        }
                                     </FormControl.Static>
                                 </FormGroup>
                                 <div className={"response"}>
@@ -607,6 +677,7 @@ class Contact extends React.Component {
                                         <Button
                                             className={"pull-right"}
                                             bsStyle={"primary"}
+                                            onClick={this.handleFeedbackResponseSend.bind(this)}
                                         >
                                             <Glyphicon glyph="send" /> {Texts.REPONDRE.text_fr}
                                         </Button>
@@ -662,6 +733,7 @@ function mapStateToProps(state) {
         showFeedbackModal: state.contact.showFeedbackModal,
         feedback_id: state.contact.feedback_id,
         feedback_title: state.contact.feedback_title,
+        feedback_responses: state.contact.feedback_responses,
         feedback_fitness_manager_name: state.contact.feedback_fitness_manager_name,
         feedback_description: state.contact.feedback_description,
         feedback_modal_title_enabled: state.contact.feedback_modal_title_enabled,
@@ -695,7 +767,7 @@ export default connect(mapStateToProps, {
     dismissFeedbackModal,
     displayFeedbackEditModal,
     setFeedbackCurrentResponse,
-
+    addFeedbackResponse,
 
     setFeedbacksIsLoad,
     setFeedbacksStatusIsLoad

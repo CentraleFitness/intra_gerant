@@ -37,7 +37,9 @@ const Fields = {
     IS_ACTIVE: "is_active",
     FITNESS_CENTER_MANAGER_ID: "fitness_center_manager_id",
     COMMENT_ID: "comment_id",
-    LIKE: "like"
+    LIKE: "like",
+    CONTENT: "content",
+    FEEDBACK_ID: "feedback_id"
 };
 
 export default Fields;

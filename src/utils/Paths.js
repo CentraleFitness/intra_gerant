@@ -36,6 +36,7 @@ const Paths = {
 
     ADD_FEEDBACK: "/manager/add/feedback",
     GET_FEEDBACKS: "/manager/get/feedbacks",
+    ADD_RESPONSE_FEEDBACK: "/manager/add/response_feedback",
     GET_FEEDBACK_STATES: "/manager/get/feedbackstates",
 
     ADD_EVENT: "/center/add/event",

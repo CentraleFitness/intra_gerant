@@ -10,7 +10,8 @@ import {
     DISPLAY_FEEDBACK_MODAL,
     DISMISS_FEEDBACK_MODAL,
     DISPLAY_FEEDBACK_EDIT_MODAL,
-    SET_FEEDBACK_CURRENT_RESPONSE
+    SET_FEEDBACK_CURRENT_RESPONSE,
+    ADD_FEEDBACK_RESPONSE
 } from "../actions/types"
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
     showFeedbackModal: false,
     feedback_id: "",
     feedback_title: "",
+    feedback_responses: [],
     feedback_fitness_manager_name: "",
     feedback_state_code: -1,
     feedback_description: "",
@@ -85,6 +87,7 @@ export default (state = initialState, action) => {
                 ...state,
                 showFeedbackModal: true,
                 feedback_id: "",
+                feedback_responses: [],
                 feedback_update_date: -1,
                 feedback_state_code: -1,
                 feedback_modal_title_enabled: true,
@@ -96,6 +99,7 @@ export default (state = initialState, action) => {
                 ...state,
                 showFeedbackModal: false,
                 feedback_title: "",
+                feedback_responses: [],
                 feedback_id: "",
                 feedback_fitness_manager_name: "",
                 feedback_update_date: -1,
@@ -110,6 +114,7 @@ export default (state = initialState, action) => {
                 ...state,
                 showFeedbackModal: true,
                 feedback_id: action.payload.feedback_id,
+                feedback_responses: action.payload.feedback_responses,
                 feedback_update_date: action.payload.feedback_update_date,
                 feedback_title: action.payload.feedback_title,
                 feedback_fitness_manager_name: action.payload.feedback_fitness_manager_name,
@@ -124,6 +129,29 @@ export default (state = initialState, action) => {
                 ...state,
                 feedback_current_response: action.payload
             };
+        case ADD_FEEDBACK_RESPONSE:
+            let tmp_feedback_update = state.initial_feedbacks;
+            let index = tmp_feedback_update.findIndex(function (item) {
+                return item._id === action.payload._id;
+            });
+
+            tmp_feedback_update[index].responses.push({
+                content: action.payload.content,
+                date: action.payload.date,
+                author: action.payload.author,
+                is_admin: action.payload.is_admin
+            });
+
+            tmp_feedback_update[index].feedback_state = action.payload.feedback_state;
+            tmp_feedback_update[index].update_date = action.payload.date;
+
+            return {
+                ...state,
+                feedback_current_response: "",
+                feedbacks: tmp_feedback_update,
+                initial_feedbacks: tmp_feedback_update
+            };
+
         default:
             return state;
     }
