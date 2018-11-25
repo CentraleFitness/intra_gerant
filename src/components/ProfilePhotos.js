@@ -179,6 +179,7 @@ class ProfilePhotos extends React.Component {
                                 content: me.props.picture_description,
                                 picture: me.props.picture_preview,
                                 date: now.getTime(),
+                                picture_id: response.data.picture_id,
                                 comments: [],
                                 nb_comments: 0,
                                 nb_likes: 0,
