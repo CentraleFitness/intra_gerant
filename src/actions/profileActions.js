@@ -36,6 +36,7 @@ import {
     DISPLAY_PUBLICATION_DELETE_CONFIRM,
     DISMISS_PUBLICATION_DELETE_CONFIRM,
     SET_EVENT_PUBLICATIONS_IS_DELETED,
+    SET_EVENT_PUBLICATIONS_IS_UPDATED,
 
     RESET_PROFILE_INFO,
 
@@ -244,6 +245,13 @@ export const setEventPublicationsIsDeleted = (event_id) => {
     return {
         type: SET_EVENT_PUBLICATIONS_IS_DELETED,
         payload: event_id
+    };
+};
+
+export const setEventPublicationsIsUpdated = (event) => {
+    return {
+        type: SET_EVENT_PUBLICATIONS_IS_UPDATED,
+        payload: event
     };
 };
 

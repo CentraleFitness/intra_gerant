@@ -51,7 +51,9 @@ import {
 } from "../actions/eventsActions";
 
 import {
-    addPublication
+    addPublication,
+    setEventPublicationsIsDeleted,
+    setEventPublicationsIsUpdated
 } from "../actions/profileActions";
 
 import {
@@ -59,10 +61,6 @@ import {
     dismissAlert,
     setEventsIsLoad
 } from "../actions/globalActions";
-
-import {
-    setEventPublicationsIsDeleted
-} from "../actions/profileActions";
 
 import Texts from "../utils/Texts";
 import Dates from "../utils/Dates";
@@ -210,8 +208,20 @@ class Events extends React.Component {
                                 start_date: me.props.current_start_date,
                                 end_date: me.props.current_end_date,
                                 update_date: now.getTime(),
-                                nb_subscribers: response.data.nb_subscribers
+                                nb_subscribers: response.data.nb_subscribers,
+                                last_post: response.data.last_post
                             });
+
+                            if (me.props.publications_is_load === true) {
+                                me.props.setEventPublicationsIsUpdated({
+                                    _id: me.props.current_id,
+                                    picture: me.props.current_picture,
+                                    title: me.props.current_title,
+                                    description: me.props.current_description,
+                                    start_date: me.props.current_start_date,
+                                    end_date: me.props.current_end_date
+                                })
+                            }
 
                         }
 
@@ -1103,6 +1113,7 @@ export default connect(mapStateToProps, {
 
     addPublication,
     setEventPublicationsIsDeleted,
+    setEventPublicationsIsUpdated,
 
     setEventsIsLoad
 })(Events);

@@ -37,6 +37,7 @@ import {
     DISPLAY_PUBLICATION_DELETE_CONFIRM,
     DISMISS_PUBLICATION_DELETE_CONFIRM,
     SET_EVENT_PUBLICATIONS_IS_DELETED,
+    SET_EVENT_PUBLICATIONS_IS_UPDATED,
 
     RESET_PROFILE_INFO,
 
@@ -313,6 +314,23 @@ export default (state = initialState, action) => {
             tmp_publications.forEach(function (item, index) {
                 if (item.event_id === action.payload) {
                     tmp_publications[index].event_is_deleted = true;
+                }
+            });
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
+        case SET_EVENT_PUBLICATIONS_IS_UPDATED:
+
+            tmp_publications = state.publications;
+            tmp_publications.forEach(function (item, index) {
+                if (item.event_id === action.payload._id) {
+                    tmp_publications[index].picture = action.payload.picture;
+                    tmp_publications[index].title = action.payload.title;
+                    tmp_publications[index].content = action.payload.description;
+                    tmp_publications[index].start_date = action.payload.start_date;
+                    tmp_publications[index].end_date = action.payload.end_date;
                 }
             });
             return {

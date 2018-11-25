@@ -58,6 +58,10 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+
+    let tmp_events_update;
+    let index;
+
     switch (action.type) {
         case DISPLAY_DELETE_CONFIRM:
             return {
@@ -102,8 +106,8 @@ export default (state = initialState, action) => {
                 initial_events: tmp_events
             };
         case UPDATE_EVENT:
-            let tmp_events_update = state.initial_events;
-            let index = tmp_events_update.findIndex(function (item) {
+            tmp_events_update = state.initial_events;
+            index = tmp_events_update.findIndex(function (item) {
                 return item._id === action.payload._id;
             });
             tmp_events_update[index].title = action.payload.title;
@@ -112,6 +116,9 @@ export default (state = initialState, action) => {
             tmp_events_update[index].end_date = action.payload.end_date;
             tmp_events_update[index].update_date = action.payload.update_date;
             tmp_events_update[index].picture = action.payload.picture;
+            tmp_events_update[index].nb_subscribers = action.payload.nb_subscribers;
+            tmp_events_update[index].last_post = action.payload.last_post;
+
             return {
                 ...state,
                 events: tmp_events_update,
