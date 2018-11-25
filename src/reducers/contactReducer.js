@@ -9,7 +9,8 @@ import {
     SET_FEEDBACK_DESCRIPTION,
     DISPLAY_FEEDBACK_MODAL,
     DISMISS_FEEDBACK_MODAL,
-    DISPLAY_FEEDBACK_EDIT_MODAL
+    DISPLAY_FEEDBACK_EDIT_MODAL,
+    SET_FEEDBACK_CURRENT_RESPONSE
 } from "../actions/types"
 
 const initialState = {
@@ -30,7 +31,8 @@ const initialState = {
     feedback_update_date: -1,
     feedback_modal_title_enabled: true,
     feedback_modal_description_enabled: true,
-    feedback_modal_confirm_button_enabled: true
+    feedback_modal_confirm_button_enabled: true,
+    feedback_current_response: ""
 };
 
 export default (state = initialState, action) => {
@@ -116,6 +118,11 @@ export default (state = initialState, action) => {
                 feedback_modal_title_enabled: false,
                 feedback_modal_description_enabled: false,
                 feedback_modal_confirm_button_enabled: false
+            };
+        case SET_FEEDBACK_CURRENT_RESPONSE:
+            return {
+                ...state,
+                feedback_current_response: action.payload
             };
         default:
             return state;

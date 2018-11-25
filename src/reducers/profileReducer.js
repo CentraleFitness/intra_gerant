@@ -36,6 +36,7 @@ import {
     DELETE_PUBLICATION,
     DISPLAY_PUBLICATION_DELETE_CONFIRM,
     DISMISS_PUBLICATION_DELETE_CONFIRM,
+    SET_EVENT_PUBLICATIONS_IS_DELETED,
 
     RESET_PROFILE_INFO,
 
@@ -47,6 +48,8 @@ import {
     SET_PHOTOS,
     ADD_PHOTO,
     DELETE_PHOTO,
+    DELETE_PUBLICATION_PHOTO,
+    DELETE_PHOTO_PUBLICATION,
     SET_PICTURE_TITLE,
     SET_PICTURE_DESCRIPTION,
     SET_PICTURE_PREVIEW
@@ -99,6 +102,7 @@ const initialState = {
 
     showPhotoModal: false,
     photos: [],
+    updatePhotos: false,
     current_title: "",
     current_source: "",
     current_description: "",
@@ -112,6 +116,8 @@ export default (state = initialState, action) => {
 
     let tmp_publications;
     let index;
+    let tmp_photos_delete;
+    let index_delete;
 
     switch (action.type) {
         case DISPLAY_MANAGER_PICTURE_MODAL:
@@ -301,6 +307,19 @@ export default (state = initialState, action) => {
                 publications: tmp_publications,
                 updatePublications: state.updatePublications === false
             };
+        case SET_EVENT_PUBLICATIONS_IS_DELETED:
+
+            tmp_publications = state.publications;
+            tmp_publications.forEach(function (item, index) {
+                if (item.event_id === action.payload) {
+                    tmp_publications[index].event_is_deleted = true;
+                }
+            });
+            return {
+                ...state,
+                publications: tmp_publications,
+                updatePublications: state.updatePublications === false
+            };
         case SET_PUBLICATION_REPORTED_BY_ME:
 
             tmp_publications = state.publications;
@@ -457,17 +476,46 @@ export default (state = initialState, action) => {
                 photos: tmp_photos
             };
         case DELETE_PHOTO:
-            let tmp_photos_delete = state.photos;
-            let index_delete = tmp_photos_delete.findIndex(function (item) {
+            tmp_photos_delete = state.photos;
+            index_delete = tmp_photos_delete.findIndex(function (item) {
                 if (item !== undefined) {
                     return item.picture_id === action.payload;
                 }
                 return false;
             });
-            delete tmp_photos_delete[index_delete];
+            tmp_photos_delete.splice(index_delete, 1);
             return {
                 ...state,
-                photos: tmp_photos_delete
+                photos: tmp_photos_delete,
+                updatePhotos: state.updatePhotos === false
+            };
+        case DELETE_PUBLICATION_PHOTO:
+            tmp_publications_delete = state.publications;
+            index_delete = tmp_publications_delete.findIndex(function (item) {
+                if (item !== undefined) {
+                    return item.picture_id === action.payload;
+                }
+                return false;
+            });
+            tmp_publications_delete.splice(index_delete, 1);
+            return {
+                ...state,
+                publications: tmp_publications_delete,
+                updatePublications: state.updatePublications === false
+            };
+        case DELETE_PHOTO_PUBLICATION:
+            tmp_photos_delete = state.photos;
+            index_delete = tmp_photos_delete.findIndex(function (item) {
+                if (item !== undefined) {
+                    return item._id === action.payload;
+                }
+                return false;
+            });
+            tmp_photos_delete.splice(index_delete, 1);
+            return {
+                ...state,
+                photos: tmp_photos_delete,
+                updatePhotos: state.updatePhotos === false
             };
         case SET_PICTURE_TITLE:
             return {

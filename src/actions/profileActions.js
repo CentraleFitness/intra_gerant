@@ -35,6 +35,7 @@ import {
     DELETE_PUBLICATION,
     DISPLAY_PUBLICATION_DELETE_CONFIRM,
     DISMISS_PUBLICATION_DELETE_CONFIRM,
+    SET_EVENT_PUBLICATIONS_IS_DELETED,
 
     RESET_PROFILE_INFO,
 
@@ -46,6 +47,8 @@ import {
     SET_PHOTOS,
     ADD_PHOTO,
     DELETE_PHOTO,
+    DELETE_PUBLICATION_PHOTO,
+    DELETE_PHOTO_PUBLICATION,
     SET_PICTURE_TITLE,
     SET_PICTURE_DESCRIPTION,
     SET_PICTURE_PREVIEW
@@ -237,6 +240,13 @@ export const setPublicationLikedByMe = (publication) => {
     };
 };
 
+export const setEventPublicationsIsDeleted = (event_id) => {
+    return {
+        type: SET_EVENT_PUBLICATIONS_IS_DELETED,
+        payload: event_id
+    };
+};
+
 export const setPublicationReportedByMe = (publication) => {
     return {
         type: SET_PUBLICATION_REPORTED_BY_ME,
@@ -369,6 +379,20 @@ export const dismissDeletePictureConfirm = () => {
 export const deletePhoto = (id) => {
     return {
         type: DELETE_PHOTO,
+        payload: id
+    };
+};
+
+export const deletePhotoPublication = (id) => {
+    return {
+        type: DELETE_PHOTO_PUBLICATION,
+        payload: id
+    };
+};
+
+export const deletePublicationPhoto = (id) => {
+    return {
+        type: DELETE_PUBLICATION_PHOTO,
         payload: id
     };
 };

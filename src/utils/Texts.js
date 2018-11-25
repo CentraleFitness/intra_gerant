@@ -542,7 +542,7 @@ const Texts = {
         text_en: "Display global performances ( sum of all users ) by activities"
     },
     AFFICHER_LES_CLASSEMENTS_PAR_ACTIVITE: {
-        text_fr: "Afficher les classements des sportif par activités",
+        text_fr: "Afficher les classements des sportifs par activités",
         text_en: "Display ranking of users by activities"
     },
     AFFICHER_LE_CLASSEMENT_GLOBAL: {
@@ -756,6 +756,22 @@ const Texts = {
     SIGNALER: {
         text_fr: "Signaler",
         text_en: "Report"
+    },
+    OBJET: {
+        text_fr: "Objet",
+        text_en: "Object"
+    },
+    REPONSE: {
+        text_fr: "Réponse",
+        text_en: "Response"
+    },
+    REPONDRE: {
+        text_fr: "Répondre",
+        text_en: "Respond"
+    },
+    ANNULE: {
+        text_fr: "Annulé",
+        text_en: "Cancelled"
     }
 };
 

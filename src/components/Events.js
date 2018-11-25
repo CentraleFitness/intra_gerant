@@ -60,6 +60,10 @@ import {
     setEventsIsLoad
 } from "../actions/globalActions";
 
+import {
+    setEventPublicationsIsDeleted
+} from "../actions/profileActions";
+
 import Texts from "../utils/Texts";
 import Dates from "../utils/Dates";
 import Fields from "../utils/Fields";
@@ -266,6 +270,12 @@ class Events extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         me.props.deleteEvent(me.props.delete_id);
+
+                        if (me.props.publications_is_load === true) {
+
+                            me.props.setEventPublicationsIsDeleted(me.props.delete_id);
+                        }
+
                         me.filterStatus(me.props.filter_status);
                         me.handleDeleteConfirmDismiss();
 
@@ -1092,6 +1102,7 @@ export default connect(mapStateToProps, {
     setEventLastPost,
 
     addPublication,
+    setEventPublicationsIsDeleted,
 
     setEventsIsLoad
 })(Events);

@@ -30,7 +30,8 @@ import {
     displayDeletePictureConfirm,
     dismissDeletePictureConfirm,
     deletePhoto,
-    addPublication
+    addPublication,
+    deletePublicationPhoto
 } from "../actions/profileActions";
 
 import {
@@ -245,6 +246,7 @@ class ProfilePhotos extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         me.props.deletePhoto(me.props.delete_picture_id);
+                        me.props.deletePublicationPhoto(me.props.delete_picture_id);
                         me.handleDeletePictureConfirmDismiss();
 
                     } else {
@@ -379,6 +381,7 @@ class ProfilePhotos extends React.Component {
                 <Grid fluid={true}>
                     <Row>
                         {
+                            (this.props.updatePhotos === true || this.props.updatePhotos === false) &&
                             this.props.photos.map((item) => (
                                 <span
                                     style={{cursor:"pointer"}}
@@ -451,6 +454,7 @@ function mapStateToProps(state) {
     return {
         showPhotoModal: state.profile.showPhotoModal,
         photos: state.profile.photos,
+        updatePhotos: state.profile.updatePhotos,
         current_title: state.profile.current_title,
         current_source: state.profile.current_source,
         current_description: state.profile.current_description,
@@ -486,6 +490,7 @@ export default connect(mapStateToProps, {
     deletePhoto,
 
     addPublication,
+    deletePublicationPhoto,
 
     setAlbumIsLoad
 })(ProfilePhotos);

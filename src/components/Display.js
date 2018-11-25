@@ -49,6 +49,8 @@ import ListGroup from "react-bootstrap/es/ListGroup";
 import ListGroupItem from "react-bootstrap/es/ListGroupItem";
 import Dates from "../utils/Dates";
 
+import 'react-select/dist/react-select.css';
+
 class Display extends React.Component {
 
     componentWillMount() {
@@ -115,7 +117,6 @@ class Display extends React.Component {
                 }
             },
             function (error) {
-                console.log(error);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -187,7 +188,6 @@ class Display extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -321,7 +321,7 @@ class Display extends React.Component {
         });
 
         if ((this.props.show_events === true && !one_selected_event) ||
-            (this.props.show_news === true && (this.props.news_type === "" || this.props.news_type === null)) ||
+            (this.props.show_news === true && (this.props.news_type === null || this.props.news_type.length === 0)) ||
             (this.props.show_global_performances === true && (this.props.performances_type === "" || this.props.performances_type === null)) ||
             (this.props.show_ranking_discipline === true && (this.props.ranking_discipline_type === "" || this.props.ranking_discipline_type === null))) {
 
@@ -350,10 +350,12 @@ class Display extends React.Component {
     }
 
     newsTypeSelectChange(selected) {
-        if (selected)
-            this.props.setNewsType(selected.value);
-        else
-            this.props.setNewsType("");
+        if (selected) {
+            this.props.setNewsType(selected);
+        }
+        else {
+            this.props.setNewsType([]);
+        }
     }
 
     disciplineTypeSelectChange(selected) {
@@ -423,7 +425,7 @@ class Display extends React.Component {
                             </span>
                             <Panel hidden={!this.props.show_news}>
                                 <Select
-                                    clearable={false}
+                                    multi
                                     value={this.props.news_type}
                                     placeholder={Texts.TYPE_D_ACTUALITE.text_fr}
                                     onChange={this.newsTypeSelectChange.bind(this)}

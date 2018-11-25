@@ -9,7 +9,8 @@ import {
     SET_FEEDBACK_DESCRIPTION,
     DISPLAY_FEEDBACK_MODAL,
     DISMISS_FEEDBACK_MODAL,
-    DISPLAY_FEEDBACK_EDIT_MODAL
+    DISPLAY_FEEDBACK_EDIT_MODAL,
+    SET_FEEDBACK_CURRENT_RESPONSE
 } from "./types"
 
 export const setFeedbacks = (feedbacks) => {
@@ -85,5 +86,12 @@ export const displayFeedbackEditModal = (feedbackModalInfo) => {
     return {
         type: DISPLAY_FEEDBACK_EDIT_MODAL,
         payload: feedbackModalInfo
+    };
+};
+
+export const setFeedbackCurrentResponse = (response) => {
+    return {
+        type: SET_FEEDBACK_CURRENT_RESPONSE,
+        payload: response
     };
 };

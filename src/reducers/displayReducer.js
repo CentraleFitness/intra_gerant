@@ -22,10 +22,7 @@ const initialState = {
     ],
 
     ranking_discipline_type_store: [
-        {value: 'running', label: "Course"},
-        {value: 'elliptic', label: "Elliptique"},
-        {value: 'pulldown', label: "Développé nuque"},
-        {value: 'biking', label: "Biking"}
+        {value: 'elliptic', label: "Elliptique"}
     ],
 
     periodicity_store: [
@@ -37,7 +34,7 @@ const initialState = {
     events: [],
     selected_events: [],
     show_news: false,
-    news_type: "",
+    news_type: [],
     show_global_performances: false,
     performances_type: "",
     show_ranking_discipline: false,
@@ -51,7 +48,7 @@ const initialState = {
     keep_events: [],
     keep_selected_events: [],
     keep_show_news: false,
-    keep_news_type: "",
+    news_type: [],
     keep_show_global_performances: false,
     keep_performances_type: "",
     keep_show_ranking_discipline: false,
@@ -135,6 +132,7 @@ export default (state = initialState, action) => {
                 has_changed: has_changed
             };
         case SET_NEWS_TYPE:
+
             return {
                 ...state,
                 news_type: action.payload,
@@ -153,9 +151,16 @@ export default (state = initialState, action) => {
                 has_changed: has_changed
             };
         case SET_SHOW_RANKING_DISCIPLINE:
+            let defaultType = state.ranking_discipline_type;
+
+            if (action.payload === true && state.ranking_discipline_type_store.length === 1) {
+                defaultType = state.ranking_discipline_type_store[0].value;
+            }
+
             return {
                 ...state,
                 show_ranking_discipline: action.payload,
+                ranking_discipline_type: defaultType,
                 has_changed: has_changed
             };
         case SET_RANKING_DISCIPLINE_TYPE:

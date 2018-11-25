@@ -22,6 +22,7 @@ import {
     publicationDeleteComment,
     addPublication,
     deletePublication,
+    deletePhotoPublication,
     displayPublicationDeleteConfirm,
     dismissPublicationDeleteConfirm
 } from "../actions/profileActions";
@@ -373,6 +374,7 @@ class ProfileSocial extends React.Component {
                             })
                         } else {
                             me.props.deletePublication(me.props.delete_publication_id);
+                            me.props.deletePhotoPublication(me.props.delete_publication_id);
                         }
                         me.handleDeletePublicationConfirmDismiss();
 
@@ -508,6 +510,11 @@ class ProfileSocial extends React.Component {
 
                             <div>
                                 <h4>{Texts.EVENEMENT.text_fr + " : " + item.title}</h4>
+                                {
+                                    item.event_is_deleted === true &&
+
+                                    <span style={{color: "red"}}>{"( " + Texts.ANNULE.text_fr + " )"}</span>
+                                }
                                 <h5>{Dates.formatDateOnly(item.start_date) + " - " + Dates.formatDateOnly(item.end_date)}</h5>
                             </div>
                         }
@@ -835,6 +842,7 @@ export default connect(mapStateToProps, {
     setPublications,
     addPublication,
     deletePublication,
+    deletePhotoPublication,
     displayPublicationDeleteConfirm,
     dismissPublicationDeleteConfirm,
 

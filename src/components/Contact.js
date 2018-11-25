@@ -13,7 +13,7 @@ import {
     ListGroup,
     ListGroupItem,
     Modal,
-    Label
+    Label, Grid
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {browserHistory} from 'react-router';
@@ -36,7 +36,8 @@ import {
     setFeedbackDescription,
     displayFeedbackModal,
     dismissFeedbackModal,
-    displayFeedbackEditModal
+    displayFeedbackEditModal,
+    setFeedbackCurrentResponse
 } from "../actions/contactActions";
 
 import Texts from "../utils/Texts";
@@ -329,6 +330,10 @@ class Contact extends React.Component {
         return "";
     }
 
+    handleFeedbackCurrentResponseChange(event) {
+        this.props.setFeedbackCurrentResponse(event.target.value);
+    }
+
     getStatusStyle(feedback_state) {
         let style = "";
         switch (feedback_state) {
@@ -383,6 +388,27 @@ class Contact extends React.Component {
             feedback_update_date: item.update_date,
             feedback_fitness_manager_name: item.fitness_manager_name
         });
+    }
+
+    displayresponse(item) {
+
+        return (
+            <div>
+                <div className={"showNewLine response"}>
+                    <span style={{fontWeight: "bold"}}>
+                        {
+                            item.author + " - " +
+                            (item.is_admin ? Texts.ADMIN.text_fr : Texts.GERANT.text_fr)
+                        }
+                    </span>
+                    <br />
+                    <em>{Dates.format(item.date)}</em>
+                    <br />
+                    <br />
+                    {item.content}
+                </div>
+            </div>
+        );
     }
 
     render() {
@@ -510,7 +536,7 @@ class Contact extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <FormControl.Static hidden={this.props.feedback_update_date === -1}>
+                        <FormControl.Static hidden={this.props.feedback_id === ""}>
                             <p>
                                 <span style={{fontWeight: "bold"}}>{Texts.GERANT.text_fr + " : "}</span>
                                 {this.props.feedback_fitness_manager_name}
@@ -520,35 +546,88 @@ class Contact extends React.Component {
                                 {Dates.format(this.props.feedback_update_date)}
                             </p>
                         </FormControl.Static>
-                        <FormGroup controlId="formControlsTitle" validationState={this.getValidationState('title')}>
-                            <FormControl
-                                readOnly={!this.props.feedback_modal_title_enabled}
-                                type="text"
-                                placeholder={Texts.TITRE.text_fr}
-                                value={this.props.feedback_title}
-                                onChange={this.handleFeedbackTitleChange.bind(this)}
-                            />
-                        </FormGroup>
-                        <FormGroup controlId="formControlsDescription" validationState={this.getValidationState('description')}>
-                            <FormControl
-                                readOnly={!this.props.feedback_modal_description_enabled}
-                                rows={6}
-                                componentClass="textarea"
-                                placeholder={Texts.DESCRIPTION.text_fr}
-                                value={this.props.feedback_description}
-                                onChange={this.handleFeedbackDescriptionChange.bind(this)}
-                            />
-                        </FormGroup>
+                        {
+                            this.props.feedback_id === "" &&
+
+                            <Form>
+                                <FormGroup controlId="formControlsTitle" validationState={this.getValidationState('title')}>
+                                    <FormControl
+                                        readOnly={!this.props.feedback_modal_title_enabled}
+                                        type="text"
+                                        placeholder={Texts.OBJET.text_fr}
+                                        value={this.props.feedback_title}
+                                        onChange={this.handleFeedbackTitleChange.bind(this)}
+                                    />
+                                </FormGroup>
+
+                                <FormGroup controlId="formControlsDescription" validationState={this.getValidationState('description')}>
+                                    <FormControl
+                                        readOnly={!this.props.feedback_modal_description_enabled}
+                                        rows={6}
+                                        componentClass="textarea"
+                                        placeholder={Texts.DESCRIPTION.text_fr}
+                                        value={this.props.feedback_description}
+                                        onChange={this.handleFeedbackDescriptionChange.bind(this)}
+                                    />
+                                </FormGroup>
+                            </Form>
+                        }
+                        {
+                            this.props.feedback_id !== "" &&
+
+                            <Form>
+                                <FormGroup>
+                                    <FormControl.Static>
+                                        <p>
+                                            <span style={{fontWeight: "bold"}}>{Texts.OBJET.text_fr + " : "}</span>
+                                            {this.props.feedback_title}
+                                        </p>
+                                        <p>
+                                            {this.props.feedback_description}
+                                        </p>
+                                        {this.displayresponse({
+                                            content: "Hellow world",
+                                            author: "Julien LONGAYROU",
+                                            is_admin: true,
+                                            date: 1543101611615
+                                        })}
+                                    </FormControl.Static>
+                                </FormGroup>
+                                <div className={"response"}>
+                                    <FormGroup>
+                                        <FormControl
+                                            componentClass="textarea"
+                                            rows={2}
+                                            placeholder={Texts.REPONSE.text_fr}
+                                            value={this.props.feedback_current_response}
+                                            onChange={this.handleFeedbackCurrentResponseChange.bind(this)}
+                                        />
+                                    </FormGroup>
+                                    <Grid fluid>
+                                        <Button
+                                            className={"pull-right"}
+                                            bsStyle={"primary"}
+                                        >
+                                            <Glyphicon glyph="send" /> {Texts.REPONDRE.text_fr}
+                                        </Button>
+                                    </Grid>
+                                </div>
+                            </Form>
+                        }
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleFeedbackModalDismiss.bind(this)}><Glyphicon glyph="remove" /> {Texts.FERMER.text_fr}</Button>
-                        <Button
-                            disabled={!this.props.feedback_modal_confirm_button_enabled}
-                            bsStyle={"primary"}
-                            onClick={this.handleFeedbackModalConfirm.bind(this)}
-                        >
-                            <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
-                        </Button>
+                        {
+                            this.props.feedback_modal_confirm_button_enabled === true &&
+
+                            <Button
+                                disabled={!this.props.feedback_modal_confirm_button_enabled}
+                                bsStyle={"primary"}
+                                onClick={this.handleFeedbackModalConfirm.bind(this)}
+                            >
+                                <Glyphicon glyph="ok" /> {Texts.CONFIRMER.text_fr}
+                            </Button>
+                        }
                     </Modal.Footer>
                 </Modal>
 
@@ -579,7 +658,9 @@ function mapStateToProps(state) {
         status: state.contact.status,
         filter_keywords: state.contact.filter_keywords,
         filter_status: state.contact.filter_status,
+
         showFeedbackModal: state.contact.showFeedbackModal,
+        feedback_id: state.contact.feedback_id,
         feedback_title: state.contact.feedback_title,
         feedback_fitness_manager_name: state.contact.feedback_fitness_manager_name,
         feedback_description: state.contact.feedback_description,
@@ -588,6 +669,7 @@ function mapStateToProps(state) {
         feedback_modal_confirm_button_enabled: state.contact.feedback_modal_confirm_button_enabled,
         feedback_update_date: state.contact.feedback_update_date,
         feedback_state_code: state.contact.feedback_state_code,
+        feedback_current_response: state.contact.feedback_current_response,
 
         showAlert: state.global.showAlert,
         alertTitle: state.global.alertTitle,
@@ -612,6 +694,7 @@ export default connect(mapStateToProps, {
     displayFeedbackModal,
     dismissFeedbackModal,
     displayFeedbackEditModal,
+    setFeedbackCurrentResponse,
 
 
     setFeedbacksIsLoad,
