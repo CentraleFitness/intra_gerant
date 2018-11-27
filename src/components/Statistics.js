@@ -119,7 +119,7 @@ class Statistics extends React.Component {
                                     {
                                         this.props.production_total !== undefined ?
 
-                                        this.props.production_total + " kWh"
+                                        parseFloat(this.props.production_total).toFixed(2) + " kWh"
                                             :
                                         "0 kWh"
                                     }
@@ -149,7 +149,7 @@ class Statistics extends React.Component {
                                     {
                                         this.props.average_by_module !== undefined ?
 
-                                        this.props.average_by_module + " kWh"
+                                        parseFloat(this.props.average_by_module).toFixed(2) + " kWh"
                                             :
                                         "0 kWh"
                                     }
@@ -168,7 +168,7 @@ class Statistics extends React.Component {
                                 {
                                     this.props.production_day !== undefined ?
 
-                                    this.props.production_day + " kWh"
+                                    parseFloat(this.props.production_day).toFixed(2) + " kWh"
                                         :
                                     "0 kWh"
                                 }
@@ -181,7 +181,7 @@ class Statistics extends React.Component {
                                 {
                                     this.props.production_month !== undefined ?
 
-                                    this.props.production_month + " kWh"
+                                    parseFloat(this.props.production_month).toFixed(2) + " kWh"
                                         :
                                     "0 kWh"
                                 }
@@ -194,9 +194,9 @@ class Statistics extends React.Component {
                                 {
                                     this.props.production_year !== undefined ?
 
-                                        this.props.production_year + " kWh"
+                                    parseFloat(this.props.production_year).toFixed(2) + " kWh"
                                         :
-                                        "0 kWh"
+                                    "0 kWh"
                                 }
                             </h3>
                         </Panel>
