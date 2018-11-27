@@ -606,12 +606,12 @@ const Texts = {
         text_en: "Modules"
     },
     PRODUIT_AUJOURDHUI: {
-        text_fr: "produits aujourd'hui",
-        text_en: "producted today"
+        text_fr: "Produit aujourd'hui",
+        text_en: "Producted today"
     },
     UTILISATEURS_AUJOURDHUI: {
-        text_fr: "utilisateurs aujourd'hui",
-        text_en: "users today"
+        text_fr: "Utilisateurs aujourd'hui",
+        text_en: "Users today"
     },
     NUMERO_DE_SIRET: {
         text_fr: "Numéro de SIRET",

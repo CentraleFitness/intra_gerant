@@ -139,15 +139,15 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined)
+                        if (me !== undefined) {
                             me.props.setStatistics({
                                 production_day: response.data.production_day,
                                 production_month: response.data.production_month,
                                 frequentation_day: response.data.frequentation_day,
                                 frequentation_month: response.data.frequentation_month
                             });
-                        if (me !== undefined)
                             me.props.setStatisticsIsLoad();
+                        }
 
                     } else {
 
@@ -181,7 +181,6 @@ class Home extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -205,10 +204,10 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined)
+                        if (me !== undefined) {
                             me.props.setModules(response.data.modules);
-                        if (me !== undefined)
                             me.props.setModulesIsLoad();
+                        }
 
                     } else {
 
@@ -242,7 +241,6 @@ class Home extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -266,10 +264,10 @@ class Home extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined)
+                        if (me !== undefined) {
                             me.props.setModuleStates(response.data.module_states);
-                        if (me !== undefined)
                             me.props.setModuleStatesIsLoad();
+                        }
 
                     } else {
 
@@ -303,7 +301,6 @@ class Home extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -357,17 +354,20 @@ class Home extends React.Component {
                 <Panel style={{textAlign: "center"}}>
                     <Col xs={12} sm={6} md={4} lg={4} >
                         <Panel style={{textAlign: "center"}}>
-                            {this.props.production_day + " kWh"} <br/> {Texts.PRODUIT_AUJOURDHUI.text_fr}
+                            <h4>{Texts.PRODUIT_AUJOURDHUI.text_fr}</h4>
+                            <h3>{this.props.production_day + " kWh"}</h3>
                         </Panel>
                     </Col>
                     <Col xs={12} sm={6} md={4} lg={4} >
                         <Panel style={{textAlign: "center"}}>
-                            {this.props.nb_subscribers} <br/> {Texts.ABONNE.text_fr + (this.props.nb_subscribers > 0 ? "s" : "")}
+                            <h4>{Texts.NOMBRE_D_INSCRIT.text_fr}</h4>
+                            <h3>{this.props.nb_subscribers}</h3>
                         </Panel>
                     </Col>
                     <Col xs={12} sm={6} md={4} lg={4} >
                         <Panel style={{textAlign: "center"}}>
-                            {this.props.frequentation_day} <br/> {Texts.UTILISATEURS_AUJOURDHUI.text_fr}
+                            <h4>{Texts.UTILISATEURS_AUJOURDHUI.text_fr}</h4>
+                            <h3>{this.props.frequentation_day}</h3>
                         </Panel>
                     </Col>
                 </Panel>
