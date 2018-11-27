@@ -464,7 +464,7 @@ class Contact extends React.Component {
     displayresponse(item) {
 
         return (
-            <div>
+            <div key={item.date}>
                 <div className={"showNewLine response"}>
                     <span style={{fontWeight: "bold"}}>
                         {
@@ -608,14 +608,12 @@ class Contact extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <FormControl.Static hidden={this.props.feedback_id === ""}>
-                            <p>
-                                <span style={{fontWeight: "bold"}}>{Texts.GERANT.text_fr + " : "}</span>
-                                {this.props.feedback_fitness_manager_name}
-                            </p>
-                            <p>
-                                <span style={{fontWeight: "bold"}}>{Texts.DERNIERE_MODIFICATION.text_fr + " : "}</span>
-                                {Dates.format(this.props.feedback_update_date)}
-                            </p>
+                            <span style={{fontWeight: "bold"}}>{Texts.GERANT.text_fr + " : "}</span>
+                            {this.props.feedback_fitness_manager_name}
+                        </FormControl.Static>
+                        <FormControl.Static hidden={this.props.feedback_id === ""}>
+                            <span style={{fontWeight: "bold"}}>{Texts.DERNIERE_MODIFICATION.text_fr + " : "}</span>
+                            {Dates.format(this.props.feedback_update_date)}
                         </FormControl.Static>
                         {
                             this.props.feedback_id === "" &&
@@ -649,19 +647,17 @@ class Contact extends React.Component {
                             <Form>
                                 <FormGroup>
                                     <FormControl.Static>
-                                        <p>
                                             <span style={{fontWeight: "bold"}}>{Texts.OBJET.text_fr + " : "}</span>
                                             {this.props.feedback_title}
-                                        </p>
-                                        <p>
-                                            {this.props.feedback_description}
-                                        </p>
-                                        {
-                                            this.props.feedback_responses.map((item) => (
-                                                this.displayresponse(item)
-                                            ))
-                                        }
                                     </FormControl.Static>
+                                    <FormControl.Static>
+                                            {this.props.feedback_description}
+                                    </FormControl.Static>
+                                    {
+                                        this.props.feedback_responses.map((item) => (
+                                            this.displayresponse(item)
+                                        ))
+                                    }
                                 </FormGroup>
                                 <div className={"response"}>
                                     <FormGroup>

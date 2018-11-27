@@ -772,6 +772,42 @@ const Texts = {
     ANNULE: {
         text_fr: "Annulé",
         text_en: "Cancelled"
+    },
+    ENERGIE_PRODUITE: {
+        text_fr: "Energie produite",
+        text_en: "Producted energy"
+    },
+    PRODUIT_CE_MOIS: {
+        text_fr: "Produit ce mois",
+        text_en: "Producted this month"
+    },
+    NOUVEAUX_UTILISATEURS: {
+        text_fr: "Nouveaux utilisateurs",
+        text_en: "New users"
+    },
+    CE_JOUR: {
+        text_fr: "Ce jour",
+        text_en: "This day"
+    },
+    CE_MOIS: {
+        text_fr: "Ce mois",
+        text_en: "This month"
+    },
+    GENERAL: {
+        text_fr: "Général",
+        text_en: "General"
+    },
+    PRODUCTION_TOTALE: {
+        text_fr: "Production totale",
+        text_en: "Total production"
+    },
+    MOYENNE_PAR_MODULE: {
+        text_fr: "Moyenne par module",
+        text_en: "Average by module"
+    },
+    CETTE_ANNEE: {
+        text_fr: "Cette année",
+        text_en: "This year"
     }
 };
 

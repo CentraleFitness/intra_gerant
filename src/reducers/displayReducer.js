@@ -48,7 +48,7 @@ const initialState = {
     keep_events: [],
     keep_selected_events: [],
     keep_show_news: false,
-    news_type: [],
+    keep_news_type: [],
     keep_show_global_performances: false,
     keep_performances_type: "",
     keep_show_ranking_discipline: false,
