@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Panel,
-    Glyphicon, Col, Thumbnail
+    Glyphicon, Col, Thumbnail, Grid
 } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
