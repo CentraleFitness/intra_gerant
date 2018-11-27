@@ -3,6 +3,8 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    updateGrid: false,
+
     production_day: 0,
     production_month: 0,
     production_year: 0,
@@ -22,6 +24,8 @@ export default (state = initialState, action) => {
         case SET_STATISTICS:
             return {
                 ...state,
+                updateGrid: state.updateGrid === false,
+
                 production_day: action.payload.production_day,
                 production_month: action.payload.production_month,
                 production_year: action.payload.production_year,

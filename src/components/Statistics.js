@@ -109,144 +109,150 @@ class Statistics extends React.Component {
     render() {
         return (
             <Panel header={<div><Glyphicon glyph="stats" /> {Texts.STATISTIQUES_SALLE.text_fr}</div>} bsStyle="primary">
-                <Col xs={12} sm={12} md={12} lg={12} >
-                    <Panel header={<div><Glyphicon glyph="info-sign" /> {Texts.GENERAL.text_fr} </div>} style={{textAlign: "center"}}>
+                {
+                    (this.props.updateGrid === true || this.props.updateGrid === false) &&
 
-                        <Col xs={12} sm={12} md={4} lg={4} >
-                            <Panel style={{textAlign: "center"}}>
-                                <h4>{Texts.PRODUCTION_TOTALE.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.production_total !== undefined ?
+                    <Grid fluid={true}>
+                        <Col xs={12} sm={12} md={12} lg={12} >
+                            <Panel header={<div><Glyphicon glyph="info-sign" /> {Texts.GENERAL.text_fr} </div>} style={{textAlign: "center"}}>
 
-                                        parseFloat(this.props.production_total).toFixed(2) + " kWh"
-                                            :
-                                        "0 kWh"
-                                    }
-                                </h3>
+                                <Col xs={12} sm={12} md={4} lg={4} >
+                                    <Panel style={{textAlign: "center"}}>
+                                        <h4>{Texts.PRODUCTION_TOTALE.text_fr}</h4>
+                                        <h3>
+                                            {
+                                                this.props.production_total !== undefined ?
+
+                                                parseFloat(this.props.production_total).toFixed(2) + " kWh"
+                                                    :
+                                                "0 kWh"
+                                            }
+                                        </h3>
+                                    </Panel>
+                                </Col>
+
+                                <Col xs={12} sm={12} md={4} lg={4} >
+                                    <Panel style={{textAlign: "center"}}>
+                                        <h4>{Texts.NOMBRE_D_INSCRIT.text_fr}</h4>
+                                        <h3>
+                                            {
+                                                this.props.nb_subscribers !== undefined ?
+
+                                                this.props.nb_subscribers
+                                                    :
+                                                "0"
+                                            }
+                                        </h3>
+                                    </Panel>
+                                </Col>
+
+                                <Col xs={12} sm={12} md={4} lg={4} >
+                                    <Panel style={{textAlign: "center"}}>
+                                        <h4>{Texts.MOYENNE_PAR_MODULE.text_fr}</h4>
+                                        <h3>
+                                            {
+                                                this.props.average_by_module !== undefined ?
+
+                                                parseFloat(this.props.average_by_module).toFixed(2) + " kWh"
+                                                    :
+                                                "0 kWh"
+                                            }
+                                        </h3>
+                                    </Panel>
+                                </Col>
+
                             </Panel>
                         </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} >
+                            <Panel header={<div><Glyphicon glyph="flash" /> {Texts.ENERGIE_PRODUITE.text_fr} </div>} style={{textAlign: "center"}}>
 
-                        <Col xs={12} sm={12} md={4} lg={4} >
-                            <Panel style={{textAlign: "center"}}>
-                                <h4>{Texts.NOMBRE_D_INSCRIT.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.nb_subscribers !== undefined ?
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CE_JOUR.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.production_day !== undefined ?
 
-                                        this.props.nb_subscribers
-                                            :
-                                        "0"
-                                    }
-                                </h3>
+                                            parseFloat(this.props.production_day).toFixed(2) + " kWh"
+                                                :
+                                            "0 kWh"
+                                        }
+                                    </h3>
+                                </Panel>
+
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CE_MOIS.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.production_month !== undefined ?
+
+                                            parseFloat(this.props.production_month).toFixed(2) + " kWh"
+                                                :
+                                            "0 kWh"
+                                        }
+                                    </h3>
+                                </Panel>
+
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.production_year !== undefined ?
+
+                                            parseFloat(this.props.production_year).toFixed(2) + " kWh"
+                                                :
+                                            "0 kWh"
+                                        }
+                                    </h3>
+                                </Panel>
+
                             </Panel>
                         </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} >
+                            <Panel header={<div><Glyphicon glyph="user" /> {Texts.NOUVEAUX_UTILISATEURS.text_fr} </div>} style={{textAlign: "center"}}>
 
-                        <Col xs={12} sm={12} md={4} lg={4} >
-                            <Panel style={{textAlign: "center"}}>
-                                <h4>{Texts.MOYENNE_PAR_MODULE.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.average_by_module !== undefined ?
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CE_JOUR.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.frequentation_day !== undefined ?
 
-                                        parseFloat(this.props.average_by_module).toFixed(2) + " kWh"
-                                            :
-                                        "0 kWh"
-                                    }
-                                </h3>
+                                            this.props.frequentation_day
+                                                :
+                                            0
+                                        }
+                                    </h3>
+                                </Panel>
+
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CE_MOIS.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.frequentation_month !== undefined ?
+
+                                            this.props.frequentation_month
+                                                :
+                                            0
+                                        }
+                                        </h3>
+                                </Panel>
+
+                                <Panel style={{textAlign: "center"}}>
+                                    <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
+                                    <h3>
+                                        {
+                                            this.props.frequentation_year !== undefined ?
+
+                                                this.props.frequentation_year
+                                                :
+                                                0
+                                        }
+                                    </h3>
+                                </Panel>
+
                             </Panel>
                         </Col>
-
-                    </Panel>
-                </Col>
-                <Col xs={12} sm={12} md={6} lg={6} >
-                    <Panel header={<div><Glyphicon glyph="flash" /> {Texts.ENERGIE_PRODUITE.text_fr} </div>} style={{textAlign: "center"}}>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CE_JOUR.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.production_day !== undefined ?
-
-                                    parseFloat(this.props.production_day).toFixed(2) + " kWh"
-                                        :
-                                    "0 kWh"
-                                }
-                            </h3>
-                        </Panel>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CE_MOIS.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.production_month !== undefined ?
-
-                                    parseFloat(this.props.production_month).toFixed(2) + " kWh"
-                                        :
-                                    "0 kWh"
-                                }
-                            </h3>
-                        </Panel>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.production_year !== undefined ?
-
-                                    parseFloat(this.props.production_year).toFixed(2) + " kWh"
-                                        :
-                                    "0 kWh"
-                                }
-                            </h3>
-                        </Panel>
-
-                    </Panel>
-                </Col>
-                <Col xs={12} sm={12} md={6} lg={6} >
-                    <Panel header={<div><Glyphicon glyph="user" /> {Texts.NOUVEAUX_UTILISATEURS.text_fr} </div>} style={{textAlign: "center"}}>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CE_JOUR.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.frequentation_day !== undefined ?
-
-                                    this.props.frequentation_day
-                                        :
-                                    0
-                                }
-                            </h3>
-                        </Panel>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CE_MOIS.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.frequentation_month !== undefined ?
-
-                                    this.props.frequentation_month
-                                        :
-                                    0
-                                }
-                                </h3>
-                        </Panel>
-
-                        <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
-                            <h3>
-                                {
-                                    this.props.frequentation_year !== undefined ?
-
-                                        this.props.frequentation_year
-                                        :
-                                        0
-                                }
-                            </h3>
-                        </Panel>
-
-                    </Panel>
-                </Col>
+                    </Grid>
+                }
             </Panel>
         );
     }
@@ -254,6 +260,8 @@ class Statistics extends React.Component {
 
 function mapStateToProps(state) {
     return {
+
+        updateGrid: state.statistics.updateGrid,
 
         production_day: state.statistics.production_day,
         production_month: state.statistics.production_month,
