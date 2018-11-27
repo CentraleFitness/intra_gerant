@@ -46,7 +46,7 @@ class Statistics extends React.Component {
                 if (response.status === 200) {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
-                        if (me !== undefined)
+                        if (me !== undefined) {
                             me.props.setStatistics({
                                 production_day: response.data.production_day,
                                 production_month: response.data.production_month,
@@ -61,8 +61,8 @@ class Statistics extends React.Component {
                                 frequentation_month: response.data.frequentation_month,
                                 frequentation_year: response.data.frequentation_year
                             });
-                        if (me !== undefined)
                             me.props.setStatisticsIsLoad();
+                        }
 
                     } else {
 
@@ -96,7 +96,6 @@ class Statistics extends React.Component {
                 }
             },
             function (error) {
-                console.log(error.name + " " + error.message + " " + error.stack);
                 if (me !== undefined) {
                     me.props.displayAlert({
                         alertTitle: Texts.ERREUR_TITRE.text_fr,
@@ -114,7 +113,7 @@ class Statistics extends React.Component {
                     <Panel header={<div><Glyphicon glyph="info-sign" /> {Texts.GENERAL.text_fr} </div>} style={{textAlign: "center"}}>
 
                         <Col xs={12} sm={12} md={4} lg={4} >
-                            <Thumbnail style={{textAlign: "center"}}>
+                            <Panel style={{textAlign: "center"}}>
                                 <h4>{Texts.PRODUCTION_TOTALE.text_fr}</h4>
                                 <h3>
                                     {
@@ -125,11 +124,11 @@ class Statistics extends React.Component {
                                         "0 kWh"
                                     }
                                 </h3>
-                            </Thumbnail>
+                            </Panel>
                         </Col>
 
                         <Col xs={12} sm={12} md={4} lg={4} >
-                            <Thumbnail style={{textAlign: "center"}}>
+                            <Panel style={{textAlign: "center"}}>
                                 <h4>{Texts.NOMBRE_D_INSCRIT.text_fr}</h4>
                                 <h3>
                                     {
@@ -140,11 +139,11 @@ class Statistics extends React.Component {
                                         "0"
                                     }
                                 </h3>
-                            </Thumbnail>
+                            </Panel>
                         </Col>
 
                         <Col xs={12} sm={12} md={4} lg={4} >
-                            <Thumbnail style={{textAlign: "center"}}>
+                            <Panel style={{textAlign: "center"}}>
                                 <h4>{Texts.MOYENNE_PAR_MODULE.text_fr}</h4>
                                 <h3>
                                     {
@@ -155,7 +154,7 @@ class Statistics extends React.Component {
                                         "0 kWh"
                                     }
                                 </h3>
-                            </Thumbnail>
+                            </Panel>
                         </Col>
 
                     </Panel>
@@ -163,100 +162,88 @@ class Statistics extends React.Component {
                 <Col xs={12} sm={12} md={6} lg={6} >
                     <Panel header={<div><Glyphicon glyph="flash" /> {Texts.ENERGIE_PRODUITE.text_fr} </div>} style={{textAlign: "center"}}>
 
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CE_JOUR.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.production_day !== undefined ?
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CE_JOUR.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.production_day !== undefined ?
 
-                                        this.props.production_day + " kWh"
-                                            :
+                                    this.props.production_day + " kWh"
+                                        :
+                                    "0 kWh"
+                                }
+                            </h3>
+                        </Panel>
+
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CE_MOIS.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.production_month !== undefined ?
+
+                                    this.props.production_month + " kWh"
+                                        :
+                                    "0 kWh"
+                                }
+                            </h3>
+                        </Panel>
+
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.production_year !== undefined ?
+
+                                        this.props.production_year + " kWh"
+                                        :
                                         "0 kWh"
-                                    }
-                                </h3>
-                            </Thumbnail>
-                        </div>
-
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CE_MOIS.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.production_month !== undefined ?
-
-                                        this.props.production_month + " kWh"
-                                            :
-                                        "0 kWh"
-                                    }
-                                </h3>
-                            </Thumbnail>
-                        </div>
-
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.production_year !== undefined ?
-
-                                            this.props.production_year + " kWh"
-                                            :
-                                            "0 kWh"
-                                    }
-                                </h3>
-                            </Thumbnail>
-                        </div>
+                                }
+                            </h3>
+                        </Panel>
 
                     </Panel>
                 </Col>
                 <Col xs={12} sm={12} md={6} lg={6} >
                     <Panel header={<div><Glyphicon glyph="user" /> {Texts.NOUVEAUX_UTILISATEURS.text_fr} </div>} style={{textAlign: "center"}}>
 
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CE_JOUR.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.frequentation_day !== undefined ?
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CE_JOUR.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.frequentation_day !== undefined ?
 
-                                        this.props.frequentation_day
-                                            :
-                                        0
-                                    }
+                                    this.props.frequentation_day
+                                        :
+                                    0
+                                }
+                            </h3>
+                        </Panel>
+
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CE_MOIS.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.frequentation_month !== undefined ?
+
+                                    this.props.frequentation_month
+                                        :
+                                    0
+                                }
                                 </h3>
-                            </Thumbnail>
-                        </div>
+                        </Panel>
 
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CE_MOIS.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.frequentation_month !== undefined ?
+                        <Panel style={{textAlign: "center"}}>
+                            <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
+                            <h3>
+                                {
+                                    this.props.frequentation_year !== undefined ?
 
-                                        this.props.frequentation_month
-                                            :
+                                        this.props.frequentation_year
+                                        :
                                         0
-                                    }
-                                    </h3>
-                            </Thumbnail>
-                        </div>
-
-                        <div>
-                            <Thumbnail style={{textAlign: "center"}}>
-                                <h4>{Texts.CETTE_ANNEE.text_fr}</h4>
-                                <h3>
-                                    {
-                                        this.props.frequentation_year !== undefined ?
-
-                                            this.props.frequentation_year
-                                            :
-                                            0
-                                    }
-                                </h3>
-                            </Thumbnail>
-                        </div>
+                                }
+                            </h3>
+                        </Panel>
 
                     </Panel>
                 </Col>
