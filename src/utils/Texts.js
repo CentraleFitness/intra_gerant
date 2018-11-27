@@ -808,6 +808,10 @@ const Texts = {
     CETTE_ANNEE: {
         text_fr: "Cette année",
         text_en: "This year"
+    },
+    NOUVEAUX_UTILISATEURS_AUJOURDHUI: {
+        text_fr: "Nouveaux utilisateurs aujourd'hui",
+        text_en: "News users today"
     }
 };
 

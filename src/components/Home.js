@@ -366,7 +366,7 @@ class Home extends React.Component {
                     </Col>
                     <Col xs={12} sm={6} md={4} lg={4} >
                         <Panel style={{textAlign: "center"}}>
-                            <h4>{Texts.UTILISATEURS_AUJOURDHUI.text_fr}</h4>
+                            <h4>{Texts.NOUVEAUX_UTILISATEURS_AUJOURDHUI.text_fr}</h4>
                             <h3>{this.props.frequentation_day}</h3>
                         </Panel>
                     </Col>
