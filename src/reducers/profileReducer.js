@@ -340,12 +340,8 @@ export default (state = initialState, action) => {
             };
         case SET_PUBLICATION_REPORTED_BY_ME:
 
-            console.log(action.payload);
-
             let id = (action.payload.publication_id === undefined ?
                         action.payload.publication._id : action.payload.publication_id);
-
-            console.log(id);
 
             tmp_publications = state.publications;
             index = tmp_publications.findIndex(function (item) {
