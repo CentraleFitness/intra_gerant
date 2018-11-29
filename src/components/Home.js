@@ -5,7 +5,6 @@ import {
     Modal,
     FormControl,
     Button,
-    Thumbnail,
     Col,
     ListGroup,
     ListGroupItem
@@ -143,8 +142,16 @@ class Home extends React.Component {
                             me.props.setStatistics({
                                 production_day: response.data.production_day,
                                 production_month: response.data.production_month,
+                                production_year: response.data.production_year,
+                                production_total: response.data.production_total,
+
+                                average_by_module: response.data.average_by_module,
+
+                                nb_subscribers: response.data.nb_subscribers,
+
                                 frequentation_day: response.data.frequentation_day,
-                                frequentation_month: response.data.frequentation_month
+                                frequentation_month: response.data.frequentation_month,
+                                frequentation_year: response.data.frequentation_year
                             });
                             me.props.setStatisticsIsLoad();
                         }
