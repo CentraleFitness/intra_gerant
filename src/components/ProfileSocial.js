@@ -289,7 +289,7 @@ class ProfileSocial extends React.Component {
         );
     }
 
-    reportPublication(item) {
+    reportPublication(item, publication_id = "") {
         let params = {};
 
         params[Fields.TOKEN] = localStorage.getItem("token");
@@ -304,7 +304,16 @@ class ProfileSocial extends React.Component {
                     if (response.data.code === Status.GENERIC_OK.code) {
 
                         if (me !== undefined)
-                            me.props.setPublicationReportedByMe(item);
+                            if (publication_id === "") {
+                                me.props.setPublicationReportedByMe({
+                                    publication: item
+                                });
+                            } else {
+                                me.props.setPublicationReportedByMe({
+                                    publication: item,
+                                    publication_id: publication_id
+                                });
+                            }
 
                     } else {
 
@@ -470,8 +479,12 @@ class ProfileSocial extends React.Component {
         this.likePublication(item);
     }
 
-    handleReportClick(item) {
-        this.reportPublication(item);
+    handleReportClick(item, isPost, publication_id) {
+        if (isPost) {
+            this.reportPublication(item);
+        } else {
+            this.reportPublication(item, publication_id);
+        }
     }
 
     onCommentDelete(item, publication_id) {
@@ -641,7 +654,7 @@ class ProfileSocial extends React.Component {
                                 {
                                     (item.is_center === undefined || item.is_center === false) &&
 
-                                    <a className={"post-button"} onClick={this.handleReportClick.bind(this, item)}>
+                                    <a className={"post-button"} onClick={this.handleReportClick.bind(this, item, isPost, publication_id)}>
                                         {
                                             item.reported_by_club === true ?
 
