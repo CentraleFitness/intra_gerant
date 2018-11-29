@@ -340,8 +340,12 @@ export default (state = initialState, action) => {
             };
         case SET_PUBLICATION_REPORTED_BY_ME:
 
+            console.log(action.payload);
+
             let id = (action.payload.publication_id === undefined ?
-                        action.payload._id : action.payload.publication_id);
+                        action.payload.publication._id : action.payload.publication_id);
+
+            console.log(id);
 
             tmp_publications = state.publications;
             index = tmp_publications.findIndex(function (item) {
@@ -351,7 +355,7 @@ export default (state = initialState, action) => {
                 tmp_publications[index].reported_by_club = (tmp_publications[index].reported_by_club === false);
             } else {
                 let index_tmp = tmp_publications[index].comments.findIndex(function (item) {
-                    return item._id === action.payload._id;
+                    return item._id === action.payload.publication._id;
                 });
                 tmp_publications[index].comments[index_tmp].reported_by_club = (
                     tmp_publications[index].comments[index_tmp].reported_by_club === false

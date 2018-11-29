@@ -480,7 +480,7 @@ class ProfileSocial extends React.Component {
     }
 
     handleReportClick(item, isPost, publication_id) {
-        if (isPost) {
+        if (isPost === true) {
             this.reportPublication(item);
         } else {
             this.reportPublication(item, publication_id);
