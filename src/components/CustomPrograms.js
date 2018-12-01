@@ -470,7 +470,6 @@ class CustomPrograms extends React.Component {
     }
 
     onItemAvailabilityChange(item, event) {
-        console.log("=====>", event.target.checked);
         this.props.updateCustomProgramAvailability({
             _id: item._id,
             available: event.target.checked
@@ -534,6 +533,7 @@ class CustomPrograms extends React.Component {
         this.props.addToCurrentActivities({
             _id: this.props.activities[idx]._id,
             name: this.props.activities[idx].name,
+            is_module: this.props.activities[idx].is_module,
             time: ((parseInt((duration === "" || duration === null) ? 0 : duration, 10) * 60) + parseInt((duration_sec === "" || duration_sec === null) ? 0 : duration_sec, 10)),
             icon: this.props.activities[idx].icon
         });
@@ -899,6 +899,7 @@ class CustomPrograms extends React.Component {
                                     item.activities.map((activity_a, index) => (
                                         <div key={"A" + activity_a._id + index}>
                                             <Image
+                                                style={{width: 50, height: 50}}
                                                 src={activity_a.icon}
                                             />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{activity_a.name} {Dates.formatMinutesDuration(activity_a.time)}
                                         </div>
@@ -1041,6 +1042,7 @@ class CustomPrograms extends React.Component {
                                     >
                                         <td style={{ textAlign: "center"}}>
                                             <Image
+                                                style={{width: 50, height: 50}}
                                                 src={item_ca.icon}
                                             />
                                         </td>
