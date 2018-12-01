@@ -1042,7 +1042,7 @@ class CustomPrograms extends React.Component {
                                     >
                                         <td style={{ textAlign: "center"}}>
                                             <Image
-                                                style={{width: 28, height: 28}}
+                                                style={{width: 32, height: 32}}
                                                 src={item_ca.icon}
                                             />
                                         </td>
