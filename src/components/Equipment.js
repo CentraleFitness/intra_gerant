@@ -233,7 +233,7 @@ class Equipment extends React.Component {
     }
 
     getStateLabel(id) {
-        let text = "EN COURS D'ENVOI";
+        let text = "En cours d'envoi";
         this.props.module_states.map(function (item) {
             if (item._id === id) {
                 text = item.text_fr;
@@ -313,7 +313,7 @@ class Equipment extends React.Component {
                                                 {" ( "}
                                                 <a
                                                     style={{textDecoration: "underline", cursor: "pointer"}}
-                                                    onClick={this.handleSetModuleReceived.bind(this, item, false)}>
+                                                    onClick={this.handleSetModuleReceived.bind(this, item, true)}>
                                                     {Texts.VOUS_AVEZ_RECU_CE_MODULE.text_fr}
                                                 </a>
                                                 {" ) "}
@@ -326,7 +326,7 @@ class Equipment extends React.Component {
                                                 {" ( "}
                                                 <a
                                                     style={{textDecoration: "underline", cursor: "pointer"}}
-                                                    onClick={this.handleSetModuleReceived.bind(this, item, true)}>
+                                                    onClick={this.handleSetModuleReceived.bind(this, item, false)}>
                                                     {Texts.VOUS_NAVEZ_PAS_RECU_CE_MODULE.text_fr}
                                                 </a>
                                                 {" ) "}
