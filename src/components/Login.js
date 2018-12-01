@@ -268,7 +268,7 @@ class Login extends React.Component {
                         <Button bsStyle="success" onClick={this.handleRegisterClick.bind(this)}>
                             <Glyphicon glyph="wrench" /> {Texts.CREER_COMPTE.text_fr}
                         </Button>
-                        <Button hidden={true}><Glyphicon glyph="warning-sign" /> {Texts.MDP_OUBLIE.text_fr}</Button>
+                        {/*<Button><Glyphicon glyph="warning-sign" /> {Texts.MDP_OUBLIE.text_fr}</Button>*/}
                         <Button bsStyle="primary" onClick={this.handleLoginClick.bind(this)}>
                             <Glyphicon glyph="log-in" /> {Texts.CONNEXION_TITRE.text_fr}
                         </Button>
