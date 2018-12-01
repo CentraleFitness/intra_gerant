@@ -59,6 +59,7 @@ const Paths = {
 
     GET_MODULES: "/center/get/modules",
     GET_MODULE_STATES: "/center/get/modulestates",
+    SET_MODULE_RECEIVED: "/center/set/modulereceived",
 
     GET_STATISTICS: "/center/get/statistics",
 
