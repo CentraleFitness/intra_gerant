@@ -812,6 +812,14 @@ const Texts = {
     NOUVEAUX_UTILISATEURS_AUJOURDHUI: {
         text_fr: "Nouveaux utilisateurs aujourd'hui",
         text_en: "News users today"
+    },
+    JAI_RECU_CE_MODULE: {
+        text_fr: "J'ai reçu ce module",
+        text_en: "I received this module"
+    },
+    JE_NAI_PAS_RECU_CE_MODULE: {
+        text_fr: "Je n'ai pas reçu ce module",
+        text_en: "I didn't receive this module"
     }
 };
 

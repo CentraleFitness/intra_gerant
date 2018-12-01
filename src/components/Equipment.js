@@ -204,6 +204,10 @@ class Equipment extends React.Component {
         );
     }
 
+    handleSetModuleReceived(item, is_received) {
+
+    }
+
     render() {
 
         return (
@@ -222,6 +226,7 @@ class Equipment extends React.Component {
                                 <th style={{textAlign: "center"}}>UUID</th>
                                 <th style={{textAlign: "center"}}>{Texts.TYPE_DE_MACHINE.text_fr}</th>
                                 <th style={{textAlign: "center"}}>{Texts.ETAT.text_fr}</th>
+                                <th style={{textAlign: "center"}}>-</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -233,6 +238,26 @@ class Equipment extends React.Component {
                                     <td style={{textAlign: "center"}}>
                                         {this.getModuleStateGlyph(item.module_state_code)}
                                         {this.getStateLabel(item.module_state_id)}
+                                    </td>
+                                    <td style={{textAlign: "center"}}>
+                                        {
+                                            item.module_state_code === 1 &&
+
+                                            <a
+                                                style={{textDecoration: "underline", cursor: "pointer"}}
+                                                onClick={this.handleSetModuleReceived.bind(this, item, false)}>
+                                                {Texts.JAI_RECU_CE_MODULE.text_fr}
+                                            </a>
+                                        }
+                                        {
+                                            item.module_state_code === 0 &&
+
+                                            <a
+                                                style={{textDecoration: "underline", cursor: "pointer"}}
+                                                onClick={this.handleSetModuleReceived.bind(this, item, true)}>
+                                                {Texts.JE_NAI_PAS_RECU_CE_MODULE.text_fr}
+                                            </a>
+                                        }
                                     </td>
                                 </tr>
                             ))
