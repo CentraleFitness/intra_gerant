@@ -239,7 +239,7 @@ class Equipment extends React.Component {
                                         {this.getModuleStateGlyph(item.module_state_code)}
                                         {this.getStateLabel(item.module_state_id)}
                                         {
-                                            item.module_state_code === 1 &&
+                                            item.module_state_code === 0 &&
 
                                             <span>
                                                 {" ( "}
@@ -252,7 +252,7 @@ class Equipment extends React.Component {
                                             </span>
                                         }
                                         {
-                                            item.module_state_code === 0 &&
+                                            item.module_state_code === 1 &&
 
                                             <span>
                                                 {" ( "}
