@@ -13,7 +13,8 @@ import {browserHistory} from 'react-router';
 
 import {
     setModules,
-    setModuleStates
+    setModuleStates,
+    setModuleReceived
 } from "../actions/equipmentActions";
 
 import {
@@ -162,6 +163,71 @@ class Equipment extends React.Component {
         );
     }
 
+    setModuleReceived(item, is_received) {
+        let params = {};
+
+        params[Fields.TOKEN] = localStorage.getItem("token");
+        params[Fields.MODULE_ID] = item._id;
+        params[Fields.IS_RECEIVED] = is_received;
+
+        let me = this;
+
+        let communication = new Communication('post', Paths.HOST + Paths.SET_MODULE_RECEIVED, params);
+        communication.sendRequest(
+            function (response) {
+                if (response.status === 200) {
+                    if (response.data.code === Status.GENERIC_OK.code) {
+
+                        if (me !== undefined)
+                            me.props.setModuleReceived({
+                                module_id: item._id,
+                                module_state_id: response.data.module_state_id,
+                                module_state_code: response.data.module_state_code
+                            });
+
+                    } else {
+
+                        let message = "";
+                        for (let key in Status) {
+                            if (Status[key].code === response.data.code) {
+                                message = Status[key].message_fr;
+                                break;
+                            }
+                        }
+
+                        if (me !== undefined) {
+                            me.props.displayAlert({
+                                alertTitle: Texts.ERREUR_TITRE.text_fr,
+                                alertText: message
+                            });
+
+                            if (Status.AUTH_ERROR_ACCOUNT_INACTIVE.code === response.data.code) {
+                                localStorage.removeItem("token");
+                                browserHistory.replace('/auth');
+                            }
+                        }
+                    }
+                } else {
+                    if (me !== undefined) {
+                        me.props.displayAlert({
+                            alertTitle: Texts.ERREUR_TITRE.text_fr,
+                            alertText: Texts.ERR_RESEAU.text_fr
+                        });
+                    }
+                }
+            },
+            function (error) {
+                console.log(error.name + " " + error.message + " " + error.stack);
+                if (me !== undefined) {
+                    me.props.displayAlert({
+                        alertTitle: Texts.ERREUR_TITRE.text_fr,
+                        alertText: Texts.ERR_RESEAU.text_fr
+                    });
+                }
+            }
+        );
+    }
+
     handleAlertDismiss() {
         this.props.dismissAlert();
     }
@@ -205,7 +271,7 @@ class Equipment extends React.Component {
     }
 
     handleSetModuleReceived(item, is_received) {
-
+        this.setModuleReceived(item, is_received);
     }
 
     render() {
@@ -231,6 +297,8 @@ class Equipment extends React.Component {
                         </thead>
                         <tbody>
                         {
+                            (this.props.updateGrid === true || this.props.updateGrid === false) &&
+
                             this.props.modules && this.props.modules.map((item) => (
                                 <tr key={item._id}>
                                     <td style={{textAlign: "center"}}>{item.UUID}</td>
@@ -246,7 +314,7 @@ class Equipment extends React.Component {
                                                 <a
                                                     style={{textDecoration: "underline", cursor: "pointer"}}
                                                     onClick={this.handleSetModuleReceived.bind(this, item, false)}>
-                                                    {Texts.JAI_RECU_CE_MODULE.text_fr}
+                                                    {Texts.VOUS_AVEZ_RECU_CE_MODULE.text_fr}
                                                 </a>
                                                 {" ) "}
                                             </span>
@@ -259,7 +327,7 @@ class Equipment extends React.Component {
                                                 <a
                                                     style={{textDecoration: "underline", cursor: "pointer"}}
                                                     onClick={this.handleSetModuleReceived.bind(this, item, true)}>
-                                                    {Texts.JE_NAI_PAS_RECU_CE_MODULE.text_fr}
+                                                    {Texts.VOUS_NAVEZ_PAS_RECU_CE_MODULE.text_fr}
                                                 </a>
                                                 {" ) "}
                                             </span>
@@ -293,6 +361,7 @@ class Equipment extends React.Component {
 function mapStateToProps(state) {
     return {
         modules: state.equipment.modules,
+        updateGrid: state.equipment.updateGrid,
         module_states: state.equipment.module_states,
 
         showAlert: state.global.showAlert,
@@ -310,6 +379,7 @@ export default connect(mapStateToProps, {
     dismissAlert,
     setModules,
     setModuleStates,
+    setModuleReceived,
 
     setModulesIsLoad,
     setModuleStatesIsLoad

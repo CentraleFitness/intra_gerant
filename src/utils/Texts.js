@@ -813,13 +813,13 @@ const Texts = {
         text_fr: "Nouveaux utilisateurs aujourd'hui",
         text_en: "News users today"
     },
-    JAI_RECU_CE_MODULE: {
-        text_fr: "J'ai reçu ce module",
-        text_en: "I received this module"
+    VOUS_AVEZ_RECU_CE_MODULE: {
+        text_fr: "Vous avez reçu ce module ?",
+        text_en: "Did you receive this module ?"
     },
-    JE_NAI_PAS_RECU_CE_MODULE: {
-        text_fr: "Je n'ai pas reçu ce module",
-        text_en: "I didn't receive this module"
+    VOUS_NAVEZ_PAS_RECU_CE_MODULE: {
+        text_fr: "Vous n'avez pas reçu ce module ?",
+        text_en: "Didn't you receive this module ?"
     }
 };
 

@@ -96,6 +96,7 @@ export const SET_NATIONAL_PRODUCTION_RANK = "SET_NATIONAL_PRODUCTION_RANK";
 /* Equipment */
 export const SET_MODULES = "SET_MODULES";
 export const SET_MODULE_STATES = "SET_MODULE_STATES";
+export const SET_MODULE_RECEIVED = "SET_MODULE_RECEIVED";
 
 /* Statistics */
 export const SET_STATISTICS = "SET_STATISTICS";

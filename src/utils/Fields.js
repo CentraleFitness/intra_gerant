@@ -39,7 +39,9 @@ const Fields = {
     COMMENT_ID: "comment_id",
     LIKE: "like",
     CONTENT: "content",
-    FEEDBACK_ID: "feedback_id"
+    FEEDBACK_ID: "feedback_id",
+    MODULE_ID: "module_id",
+    IS_RECEIVED: "is_received"
 };
 
 export default Fields;
