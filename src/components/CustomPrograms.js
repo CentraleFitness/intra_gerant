@@ -899,7 +899,7 @@ class CustomPrograms extends React.Component {
                                     item.activities.map((activity_a, index) => (
                                         <div key={"A" + activity_a._id + index}>
                                             <Image
-                                                style={{width: 50, height: 50}}
+                                                style={{width: 32, height: 32}}
                                                 src={activity_a.icon}
                                             />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{activity_a.name} {Dates.formatMinutesDuration(activity_a.time)}
                                         </div>
@@ -1042,7 +1042,7 @@ class CustomPrograms extends React.Component {
                                     >
                                         <td style={{ textAlign: "center"}}>
                                             <Image
-                                                style={{width: 50, height: 50}}
+                                                style={{width: 32, height: 32}}
                                                 src={item_ca.icon}
                                             />
                                         </td>
