@@ -486,7 +486,7 @@ class CustomPrograms extends React.Component {
     }
 
     getValidationStateName() {
-        if (Validator.name(this.props.current_name))
+        if (Validator.description(this.props.current_name))
             return "success";
         return "warning";
     }
