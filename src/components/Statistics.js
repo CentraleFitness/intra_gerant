@@ -125,9 +125,9 @@ class Statistics extends React.Component {
                                             {
                                                 this.props.production_total !== undefined ?
 
-                                                parseFloat(this.props.production_total).toFixed(2) + " kWh"
+                                                (parseFloat(this.props.production_total).toFixed(2) + " " + (this.props.production_total > 999.99 ? "k" : "") + "W")
                                                     :
-                                                "0 kWh"
+                                                "0 W"
                                             }
                                         </h3>
                                     </Panel>
@@ -155,9 +155,9 @@ class Statistics extends React.Component {
                                             {
                                                 this.props.average_by_module !== undefined ?
 
-                                                parseFloat(this.props.average_by_module).toFixed(2) + " kWh"
+                                                (parseFloat(this.props.average_by_module).toFixed(2) + " " + (this.props.average_by_module > 999.99 ? "k" : "") + "W")
                                                     :
-                                                "0 kWh"
+                                                "0 W"
                                             }
                                         </h3>
                                     </Panel>
@@ -174,9 +174,9 @@ class Statistics extends React.Component {
                                         {
                                             this.props.production_day !== undefined ?
 
-                                            parseFloat(this.props.production_day).toFixed(2) + " kWh"
+                                            (parseFloat(this.props.production_day).toFixed(2) + " " + (this.props.production_day > 999.99 ? "k" : "") + "W")
                                                 :
-                                            "0 kWh"
+                                            "0 W"
                                         }
                                     </h3>
                                 </Panel>
@@ -187,9 +187,9 @@ class Statistics extends React.Component {
                                         {
                                             this.props.production_month !== undefined ?
 
-                                            parseFloat(this.props.production_month).toFixed(2) + " kWh"
+                                            (parseFloat(this.props.production_month).toFixed(2) + " " + (this.props.production_month > 999.99 ? "k" : "") + "W")
                                                 :
-                                            "0 kWh"
+                                            "0 W"
                                         }
                                     </h3>
                                 </Panel>
@@ -200,9 +200,9 @@ class Statistics extends React.Component {
                                         {
                                             this.props.production_year !== undefined ?
 
-                                            parseFloat(this.props.production_year).toFixed(2) + " kWh"
+                                            (parseFloat(this.props.production_year).toFixed(2) + " " + (this.props.production_year > 999.99 ? "k" : "") + "W")
                                                 :
-                                            "0 kWh"
+                                            "0 W"
                                         }
                                     </h3>
                                 </Panel>

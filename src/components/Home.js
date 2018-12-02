@@ -362,7 +362,9 @@ class Home extends React.Component {
                     <Col xs={12} sm={6} md={4} lg={4} >
                         <Panel style={{textAlign: "center"}}>
                             <h4>{Texts.PRODUIT_AUJOURDHUI.text_fr}</h4>
-                            <h3>{parseFloat(this.props.production_day).toFixed(2) + " kWh"}</h3>
+                            <h3>
+                                {parseFloat(this.props.production_day).toFixed(2) + " " + (this.props.production_day > 999.99 ? "k" : "") + "W"}
+                            </h3>
                         </Panel>
                     </Col>
                     <Col xs={12} sm={6} md={4} lg={4} >
