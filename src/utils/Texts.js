@@ -549,9 +549,9 @@ const Texts = {
         text_fr: "Afficher le classement général des meilleurs sportifs de la salle",
         text_en: "Display global ranking of best users of the club"
     },
-    AFFICHER_LE_RANG_NATIONAL_DE_PRODUCTION: {
-        text_fr: "Afficher le rang national de la salle en production d'energie",
-        text_en: "Display national rank of the club on energy production"
+    AFFICHER_LA_PRODUCTION_TOTALE_ANNUELLE: {
+        text_fr: "Afficher la production d'énergie totale annuelle de la salle",
+        text_en: "Display total energy production for this year"
     },
     EQUIPEMENTS: {
         text_fr: "Equipements",
