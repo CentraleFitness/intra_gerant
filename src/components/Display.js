@@ -434,7 +434,7 @@ class Display extends React.Component {
                             </Panel>
                         </FormGroup>
 
-                        <FormGroup>
+                        {/*<FormGroup>
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_global_performances} onChange={this.handleShowGlobalPerformancesChange.bind(this)}>
                                     {Texts.AFFICHER_LES_PERFORMANCES_GLOBALES.text_fr}
@@ -450,7 +450,7 @@ class Display extends React.Component {
                                     options={this.props.ranking_discipline_type_store}
                                 />
                             </Panel>
-                        </FormGroup>
+                        </FormGroup>*/}
 
                         <FormGroup>
                             <span style={{fontSize: 18}}>
@@ -479,14 +479,14 @@ class Display extends React.Component {
                             </span>
                         </FormGroup>
 
-                        <FormGroup>
+                        {/*<FormGroup>
                             <span style={{fontSize: 18}}>
                                 <Checkbox checked={this.props.show_national_production_rank} onChange={this.handleShowNationalProductionRankChange.bind(this)}>
                                     {Texts.AFFICHER_LE_RANG_NATIONAL_DE_PRODUCTION.text_fr}
                                     <span hidden={this.props.show_national_production_rank === this.props.keep_show_national_production_rank} style={{color: "red", fontSize: 14}}> {"( " + Texts.MODIFIE.text_fr + " )"}</span>
                                 </Checkbox>
                             </span>
-                        </FormGroup>
+                        </FormGroup>*/}
 
                         <Button
 
