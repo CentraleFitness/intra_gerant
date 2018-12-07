@@ -205,7 +205,7 @@ class Register extends React.Component {
         communication.sendRequest(
             function (response) {
                 if (response.status === 200) {
-                    if (response.data.code === Status.CTR_REG_SUCCESS.code) {
+                    if (response.data.code === Status.REG_SUCCESS.code) {
 
                         me.props.displayAlert({
                             alertTitle: Texts.CREATION_COMPTE_TITRE.text_fr,
