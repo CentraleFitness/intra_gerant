@@ -51,7 +51,7 @@ const Status = {
     },
     AUTH_ERROR_ACCOUNT_NOT_YET_VALIDATED: {
         code: "204",
-        message_fr: "Echec lors de l'authentification, votre compte pas encore été validé",
+        message_fr: "Echec lors de l'authentification, votre compte n'a pas encore été validé",
         message_en: "Authentication failed, your account has not been validated yet"
     },
     AUTH_ERROR_ACCOUNT_REFUSED: {
