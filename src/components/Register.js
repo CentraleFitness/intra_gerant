@@ -212,14 +212,7 @@ class Register extends React.Component {
                             alertText: Status.REG_SUCCESS.message_fr
                         });
 
-                        localStorage.setItem('token', token);
-
                         me.props.resetRegisterInfo();
-
-                        setTimeout(function(){
-                            me.props.dismissAlert();
-                            browserHistory.replace('/');
-                        }, 750);
 
 
                     } else {
