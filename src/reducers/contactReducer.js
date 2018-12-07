@@ -142,7 +142,7 @@ export default (state = initialState, action) => {
                 is_admin: action.payload.is_admin
             });
 
-            tmp_feedback_update[index].feedback_state = action.payload.feedback_state;
+            tmp_feedback_update[index].feedback_state_code = action.payload.feedback_state;
             tmp_feedback_update[index].update_date = action.payload.date;
 
             return {
