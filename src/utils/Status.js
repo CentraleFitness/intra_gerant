@@ -46,7 +46,7 @@ const Status = {
     },
     AUTH_ERROR_ACCOUNT_INACTIVE: {
         code: "203",
-        message_fr: "Echec lors de l'authentification, votre compte a été passé en inactif",
+        message_fr: "Echec lors de l'authentification, votre compte a été rendu inactif",
         message_en: "Authentication failed, your account has been set to inactive"
     },
     AUTH_ERROR_ACCOUNT_NOT_YET_VALIDATED: {
